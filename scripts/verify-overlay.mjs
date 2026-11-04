@@ -10,7 +10,7 @@ import { chromium } from 'playwright';
 const base = new URL(process.env.SQUEEKSPIRE_URL || 'http://127.0.0.1:5173/');
 assert(base.protocol === 'http:' && ['127.0.0.1', 'localhost', '[::1]'].includes(base.hostname),
   'Overlay acceptance only supports an HTTP loopback development server.');
-const output = resolve('docs/overlay');
+const output = resolve(process.env.SQUEEKSPIRE_OVERLAY_OUTPUT || 'docs/overlay');
 await mkdir(output, { recursive: true });
 const report = { url: base.href, startedAt: new Date().toISOString(), browser: 'Playwright bundled Chromium',
   fixtureDisclosure: 'Screenshot filenames containing sample use explicitly intercepted browser-only leaderboard and status fixtures. Real filenames use the real same-origin leaderboard and public status endpoints. No data was seeded or submitted.',
@@ -99,7 +99,7 @@ async function composition(context, layout, filename, fixture) {
   const page = await context.newPage();
   await page.setViewportSize({ width: 1440, height: 1000 });
   const url = href(`/overlay?layout=${layout}&scale=1&show=status,boss,board&bg=transparent`);
-  const sourceWidth = layout === 'bar' ? 1200 : 440, sourceHeight = layout === 'bar' ? 260 : 800;
+  const sourceWidth = layout === 'bar' ? 1200 : 440, sourceHeight = layout === 'bar' ? 284 : 716;
   const hostHtml = `<!doctype html><html><head><meta charset="utf-8"><style>
     *{box-sizing:border-box}body{margin:0;background:#0d0a18;color:#f1e9ff;font:14px/1.5 Consolas,monospace;overflow:hidden}
     .scene{height:1000px;position:relative;background:radial-gradient(ellipse at 52% 44%,#33234c55,transparent 60%),linear-gradient(0deg,#0f0a1be8,#100b1b66),repeating-conic-gradient(#21172e 0% 25%,#160f22 0% 50%) 0/48px 48px}
@@ -262,8 +262,8 @@ try {
       assert.equal(configured.searchParams.get('show'), 'status,boss');
       assert.equal(configured.searchParams.get('bg'), 'dark');
       assert.equal(await setup.page.locator('iframe').getAttribute('src'), configured.href);
-      assert.equal(await setup.page.locator('[data-os-width]').innerText(), '660');
-      assert.equal(await setup.page.locator('[data-os-height]').innerText(), '1200');
+      assert.equal(await setup.page.locator('[data-os-width]').innerText(), '1920');
+      assert.equal(await setup.page.locator('[data-os-height]').innerText(), '1080');
       checked('Setup copies the exact URL and configuration updates the live preview and OBS source dimensions');
     }
     await noSideEffects(setup.page, `${name} setup introduces no wallet, audio or storage side effects`);

@@ -1,0 +1,47 @@
+[
+  {
+    "layout": "bar",
+    "scale": 2,
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "shell": {
+      "x": 32,
+      "y": 32,
+      "width": 2336,
+      "height": 396
+    },
+    "text": "8px"
+  },
+  {
+    "layout": "card",
+    "scale": 2,
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "shell": {
+      "x": 32,
+      "y": 32,
+      "width": 816,
+      "height": 1130
+    },
+    "text": "9px"
+  },
+  {
+    "layout": "bar",
+    "scale": 0.5,
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "shell": {
+      "x": 8,
+      "y": 8,
+      "width": 584,
+      "height": 99
+    },
+    "text": "8px"
+  }
+]

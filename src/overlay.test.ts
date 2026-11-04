@@ -151,7 +151,7 @@ describe('read-only OBS overlay', () => {
 
   it('renders selected sections and avoids requests for hidden panels', async () => {
     await mount('?layout=card&show=status&scale=1.5&bg=dark');
-    expect(document.querySelector('.ov-stage')?.getAttribute('style')).toContain('--ov-scale:1.5');
+    expect(document.querySelector<HTMLElement>('.ov-stage')?.style.getPropertyValue('--ov-scale')).toBe('1.5');
     expect(document.documentElement.dataset.overlayBg).toBe('dark');
     expect(document.querySelectorAll('[data-section]')).toHaveLength(1);
     expect(mocks.day).not.toHaveBeenCalled();
@@ -160,6 +160,94 @@ describe('read-only OBS overlay', () => {
     expect(mocks.status).toHaveBeenCalledTimes(2);
     expect(mocks.day).not.toHaveBeenCalled();
     expect(mocks.board).not.toHaveBeenCalled();
+  });
+
+  it('uses display names safely and keeps full identities and extreme numbers in titles', async () => {
+    const data = overview();
+    data.today.entries[0].name = '<unsafe>' + 'A'.repeat(72);
+    data.today.entries[0].score = 1e100;
+    mocks.board.mockResolvedValue(data);
+    mocks.status.mockResolvedValue({ state: 'spinning', rpm: 1e100, distanceMeters: 999999999 });
+    await mount();
+    const player = document.querySelector<HTMLElement>('.ov-player')!;
+    expect(player.textContent).toBe(data.today.entries[0].name);
+    expect(player.title).toContain(address);
+    expect(player.title).toContain(data.today.entries[0].name);
+    expect(document.querySelector('.ov-player unsafe')).toBeNull();
+    expect(document.querySelector('.ov-rankings strong')?.textContent).toBe('1.0e+100 SQK');
+    expect(document.querySelector('.ov-rankings strong')?.getAttribute('title')).toBe(`${(1e100).toLocaleString('en-US')} SQK`);
+    expect(document.querySelector('.ov-metrics')?.textContent).toContain('1.0e+100');
+    expect(document.querySelector('.ov-metrics')?.textContent).toContain('1B');
+  });
+
+  it.each([['compact', 3], ['min', 1]] as const)('limits card rankings for %s density and preserves opacity on the surface only', async (density, count) => {
+    await mount(`?layout=card&density=${density}&opacity=.4&motion=low&pos=bottom-right`);
+    expect(rows()).toHaveLength(count);
+    const stage = document.querySelector<HTMLElement>('.ov-stage')!;
+    expect(stage.dataset.density).toBe(density);
+    expect(stage.dataset.position).toBe('bottom-right');
+    expect(stage.dataset.motion).toBe('low');
+    expect(stage.style.getPropertyValue('--ov-opacity')).toBe('0.4');
+    expect(stage.style.opacity).toBe('');
+    expect(document.querySelector('.ov-surface')).not.toBeNull();
+  });
+
+  it('remeasures uniform fit on source resize without refetching data', async () => {
+    vi.stubGlobal('innerWidth', 600);
+    vi.stubGlobal('innerHeight', 600);
+    await mount('?pos=bottom-right&scale=2');
+    const stage = document.querySelector<HTMLElement>('.ov-stage')!;
+    expect(stage.dataset.effectiveScale).toBe('0.5');
+    expect(stage.style.top).toBe('458px');
+    vi.stubGlobal('innerWidth', 1920);
+    vi.stubGlobal('innerHeight', 1080);
+    window.dispatchEvent(new Event('resize'));
+    expect(stage.dataset.effectiveScale).toBe('1.6');
+    expect(mocks.board).toHaveBeenCalledTimes(1);
+  });
+
+  it('uses the OS reduced motion preference without requiring a URL flag', async () => {
+    vi.spyOn(window, 'matchMedia').mockReturnValue({ matches: true, addEventListener: vi.fn(), removeEventListener: vi.fn() } as unknown as MediaQueryList);
+    await mount();
+    expect(document.querySelector<HTMLElement>('.ov-stage')!.dataset.motion).toBe('low');
+  });
+
+  it('pauses all polling and DOM replacement while hidden, then immediately resumes once', async () => {
+    const pending = deferred<HamsterStatus>();
+    mocks.status.mockReturnValueOnce(pending.promise).mockResolvedValue({ state: 'idle', rpm: 0 });
+    await mount();
+    Object.defineProperty(document, 'hidden', { configurable: true, value: true });
+    document.dispatchEvent(new Event('visibilitychange'));
+    const rendered = document.querySelector('#app')!.innerHTML;
+    pending.resolve({ state: 'spinning', rpm: 15 }); await settle();
+    await vi.advanceTimersByTimeAsync(60_000);
+    expect(document.querySelector('#app')!.innerHTML).toBe(rendered);
+    expect(mocks.status).toHaveBeenCalledTimes(1);
+    expect(mocks.board).toHaveBeenCalledTimes(1);
+    Object.defineProperty(document, 'hidden', { configurable: true, value: false });
+    document.dispatchEvent(new Event('visibilitychange')); await settle();
+    expect(mocks.status).toHaveBeenCalledTimes(2);
+    expect(mocks.board).toHaveBeenCalledTimes(2);
+    await vi.advanceTimersByTimeAsync(15_000);
+    expect(mocks.board).toHaveBeenCalledTimes(3);
+    delete (document as unknown as { hidden?: boolean }).hidden;
+  });
+
+  it('honors OBS source visibility independently from the document and cleans up its listener', async () => {
+    await mount();
+    window.dispatchEvent(new CustomEvent('obsSourceVisibleChanged', { detail: { visible: false } }));
+    await vi.advanceTimersByTimeAsync(60_000);
+    expect(mocks.status).toHaveBeenCalledTimes(1);
+    window.dispatchEvent(new CustomEvent('obsSourceVisibleChanged', { detail: { visible: true } })); await settle();
+    expect(mocks.status).toHaveBeenCalledTimes(2);
+    // Duplicate visible events do not repeatedly refresh the data.
+    window.dispatchEvent(new CustomEvent('obsSourceVisibleChanged', { detail: { visible: true } })); await settle();
+    expect(mocks.status).toHaveBeenCalledTimes(2);
+    dispose!(); dispose = undefined;
+    window.dispatchEvent(new CustomEvent('obsSourceVisibleChanged', { detail: { visible: false } }));
+    window.dispatchEvent(new CustomEvent('obsSourceVisibleChanged', { detail: { visible: true } }));
+    await vi.advanceTimersByTimeAsync(60_000);
+    expect(mocks.status).toHaveBeenCalledTimes(2);
   });
 
   it('makes no wallet, profile-storage or audio requests', async () => {

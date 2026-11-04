@@ -2,12 +2,18 @@ import { getGameDay, loadPublishedDay } from './game/data';
 import type { DayData } from './game/types';
 
 export type OverlaySection = 'status' | 'boss' | 'board';
+export type OverlayPosition = 'top-left' | 'top' | 'top-right' | 'left' | 'center' | 'right' | 'bottom-left' | 'bottom' | 'bottom-right';
 
 export interface OverlayOptions {
   layout: 'bar' | 'card';
   scale: number;
   show: OverlaySection[];
   bg: 'transparent' | 'dark';
+  pos: OverlayPosition;
+  opacity: number;
+  density: 'full' | 'compact' | 'min';
+  safe: 'none' | 'moba' | 'fps';
+  motion: 'normal' | 'low';
 }
 
 export interface HamsterStatus {
@@ -28,6 +34,8 @@ export function parseOverlayOptions(search: string): OverlayOptions {
   const params = new URLSearchParams(search);
   const scaleValue = params.get('scale')?.trim();
   const scale = scaleValue ? Number(scaleValue) : 1;
+  const opacityValue = params.get('opacity')?.trim();
+  const opacity = opacityValue ? Number(opacityValue) : 1;
   const requested = (params.get('show') ?? '').split(',').map(value => value.trim());
   const show = [...new Set(requested.filter((value): value is OverlaySection => SECTIONS.includes(value as OverlaySection)))];
   return {
@@ -35,6 +43,11 @@ export function parseOverlayOptions(search: string): OverlayOptions {
     scale: Number.isFinite(scale) ? Math.min(2, Math.max(0.5, scale)) : 1,
     show: show.length ? show : [...SECTIONS],
     bg: params.get('bg') === 'dark' ? 'dark' : 'transparent',
+    pos: (['top-left', 'top', 'top-right', 'left', 'center', 'right', 'bottom-left', 'bottom', 'bottom-right'] as const).find(value => value === params.get('pos')) ?? 'top-left',
+    opacity: Number.isFinite(opacity) ? Math.min(1, Math.max(0.25, opacity)) : 1,
+    density: params.get('density') === 'compact' ? 'compact' : params.get('density') === 'min' ? 'min' : 'full',
+    safe: params.get('safe') === 'moba' ? 'moba' : params.get('safe') === 'fps' ? 'fps' : 'none',
+    motion: params.get('motion') === 'low' || params.get('low-motion') === '1' ? 'low' : 'normal',
   };
 }
 

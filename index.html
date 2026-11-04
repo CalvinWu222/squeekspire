@@ -6,6 +6,14 @@
     <meta name="theme-color" content="#0c1720" />
     <meta name="description" content="A captured real hamster run snapshot shapes this roguelike deckbuilder (daily refresh coming soon). Testnet data, very real zoomies." />
     <meta name="squeekchain-project" content="ddbde212-c014-45ae-8071-800e29e5e36f">
+    <script>
+      // A browser source must be transparent even before its module/CSS arrives.
+      if (/^\/overlay\/?$/.test(location.pathname)) document.documentElement.classList.add('ov-boot');
+    </script>
+    <style>
+      html.ov-boot, .ov-boot body { margin:0; background:transparent; overflow:hidden; }
+      .ov-boot #app > p { display:none; }
+    </style>
     <title>Squeekspire · One wheel. A captured run, a new adventure.</title>
   </head>
   <body>

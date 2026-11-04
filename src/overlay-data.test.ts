@@ -17,11 +17,11 @@ function mockStatus(value: unknown, ok = true) {
 
 describe('OBS overlay URL options', () => {
   it('provides a transparent bar with every section by default', () => {
-    expect(parseOverlayOptions('')).toEqual({ layout: 'bar', scale: 1, show: ['status', 'boss', 'board'], bg: 'transparent' });
+    expect(parseOverlayOptions('')).toEqual({ layout: 'bar', scale: 1, show: ['status', 'boss', 'board'], bg: 'transparent', pos: 'top-left', opacity: 1, density: 'full', safe: 'none', motion: 'normal' });
   });
 
   it('accepts card layout, scale, dark background and deduplicated sections', () => {
-    expect(parseOverlayOptions('?layout=card&scale=1.25&show=board,status,board,nope&bg=dark')).toEqual({
+    expect(parseOverlayOptions('?layout=card&scale=1.25&show=board,status,board,nope&bg=dark')).toMatchObject({
       layout: 'card', scale: 1.25, show: ['board', 'status'], bg: 'dark',
     });
   });
@@ -30,7 +30,20 @@ describe('OBS overlay URL options', () => {
     ['?layout=evil&scale=NaN&show=nope&bg=red', 1],
     ['?scale=Infinity', 1], ['?scale=', 1], ['?scale=0.01', 0.5], ['?scale=99', 2],
   ])('keeps malformed or extreme options usable: %s', (search, scale) => {
-    expect(parseOverlayOptions(search)).toEqual({ layout: 'bar', scale, show: ['status', 'boss', 'board'], bg: 'transparent' });
+    expect(parseOverlayOptions(search)).toMatchObject({ layout: 'bar', scale, show: ['status', 'boss', 'board'], bg: 'transparent' });
+  });
+
+  it('accepts anchored compact overlays, HUD guides and low motion aliases', () => {
+    expect(parseOverlayOptions('?pos=bottom-right&opacity=.45&density=compact&safe=moba&motion=low')).toMatchObject({ pos: 'bottom-right', opacity: .45, density: 'compact', safe: 'moba', motion: 'low' });
+    expect(parseOverlayOptions('?density=min&safe=fps&low-motion=1')).toMatchObject({ density: 'min', safe: 'fps', motion: 'low' });
+  });
+
+  it.each([['', 1], ['0', .25], ['-.1', .25], ['5', 1], ['NaN', 1], ['Infinity', 1]])('keeps panel opacity usable: %s', (opacity, expected) => {
+    expect(parseOverlayOptions(`?opacity=${opacity}`).opacity).toBe(expected);
+  });
+
+  it('ignores unsupported anchors, density, safety and motion values', () => {
+    expect(parseOverlayOptions('?pos=bogus&density=huge&safe=custom&motion=fast')).toMatchObject({ pos: 'top-left', density: 'full', safe: 'none', motion: 'normal' });
   });
 });
 
