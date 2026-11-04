@@ -27,8 +27,8 @@
 .shop-item.unaffordable > p,
 .shop-item.sold > .card,
 .shop-item.sold > .relic-shop-art { filter: grayscale(1); opacity: .6; }
-.shop-item.unaffordable > button,
-.shop-remove.unaffordable > button { opacity: 1; background: #253337; border-color: #697176; color: #aeb8ba; cursor: not-allowed; }
+.shop-scene .shop-grid .shop-item.unaffordable > button.primary-button:disabled,
+.shop-scene .shop-remove.unaffordable > button.secondary-button:disabled { opacity: 1; background: #253337; border-color: #697176; color: #aeb8ba; cursor: not-allowed; }
 .shop-scene .unaffordable-price { color: #ff9fa6; }
 .shop-remove.unaffordable > select { opacity: .6; cursor: not-allowed; }
 .encounter-wallet-row { margin: 20px 0 16px; }

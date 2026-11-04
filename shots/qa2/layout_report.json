@@ -1676,6 +1676,7 @@
       "shopPurchaseBalance": 5,
       "unaffordable": {
         "disabled": true,
+        "opacity": "1",
         "color": "rgb(255, 159, 166)",
         "filter": "grayscale(1)"
       }

@@ -105,10 +105,12 @@ try {
   await page.locator('.shop-item.unaffordable').first().scrollIntoViewIfNeeded();
   const unaffordable = await page.locator('.shop-item.unaffordable').first().evaluate(e => ({
     disabled: e.querySelector('button').disabled,
+    opacity: getComputedStyle(e.querySelector('button')).opacity,
     color: getComputedStyle(e.querySelector('.shop-price')).color,
     filter: getComputedStyle(e.querySelector('.card,.relic-shop-art')).filter,
   }));
   assert.equal(unaffordable.disabled, true);
+  assert.equal(unaffordable.opacity, '1');
   assert.equal(unaffordable.color, 'rgb(255, 159, 166)');
   assert.equal(unaffordable.filter, 'grayscale(1)');
   await capture('shop_after_prices_mobile');

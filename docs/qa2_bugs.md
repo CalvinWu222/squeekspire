@@ -23,7 +23,7 @@ Baseline: pulled `main` with rebase/autostash before changes; existing unrelated
 | Battle hand | Tiny names/rules and overlapping cards hid neighboring text. | Enlarge names/rules, allow wrapping and flexible card height, compact artwork, remove overlapping hand cards, and keep horizontal scrolling within the hand. |
 | Battle labels | Pile labels, exhausted count and play footer were too small to read. | Use readable sizes/contrast and wrap the play footer. Keep the complete normal mobile battle controls inside the requested viewport. |
 | Shop balance | Balance was buried in muted copy and absent from the sticky leave bar. | Prominent live YOUR COINS counters at the shop top and sticky footer. Both update after purchases and removals. |
-| Unaffordable shop items | Only the buy button was disabled; items lacked clear unaffordable styling. | Grey card/relic items, disable buying/removal, and show red prices plus an explanation. Exact-balance purchases remain enabled. |
+| Unaffordable shop items | Only the buy button was disabled; items lacked clear unaffordable styling. A generic disabled-button opacity rule also dimmed prices. | Grey card/relic items, disable buying/removal, and show full-contrast red prices plus an explanation. Exact-balance purchases remain enabled. |
 | Last-card removal | Shop offered removal of the final deck card, which the engine rejected. | Disable removal/select controls and explain the minimum deck size. |
 | Route map / rest | No explicit screen-level balance. | Add visible coin balances to both screens, retaining the shared run header. |
 
