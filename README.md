@@ -260,3 +260,5 @@ Vite uses a port other than 5173.
 Original project covers and the editable canvas source are in `docs/cover/`.
 Recreate both PNG sizes with `node scripts/render-cover.mjs`, using installed
 headless Edge without additional dependencies or remote content.
+
+squeekchain-project: ddbde212-c014-45ae-8071-800e29e5e36f
