@@ -60,16 +60,21 @@ to play. A static-only host or an unavailable API displays **Offline - local sco
   shops offer two distinct unowned relics (one when only one remains). The Codex
   lists how to get every relic. See [sources, odds, and the 200-run before/after
   acquisition survey](docs/relic_sources.md).
-- Each won battle scores **Squeeks × Mult**. Additive bonuses apply before
-  multiplicative bonuses. Score multipliers never increase combat damage. Top-work
-  hours are gold jackpots: each multiplicative trigger, including chain links, is
-  doubled. Hibernation applies fog and a ×1.2 final score bonus.
+- **Final score rewards progression:** 200 per completed room, 300 extra per elite,
+  1,000 extra per boss, and 20,000 for clearing. Combat adds bounded points with
+  square-root returns: at most 1,500 / 2,100 / 3,000 per normal / elite / boss fight.
+  Late turns reduce those awards to zero. Unfinished runs cap at 19,999, so every
+  clear outranks every non-clear. See [the balance model](docs/balance_model.md).
+  Raw **Squeeks × Mult** combos still grow on screen; multipliers never increase
+  enemy damage. Gold jackpot hours double multiplicative triggers, including chain
+  links. Hibernation adds fog and a ×1.2 combat bonus within the battle cap.
 - Daily consumes one attempt **when started**, per browser profile per UTC
   game day, resetting at 00:00 UTC. Reload resumes the logged run. Abandonment uses
   the attempt. Practice is unlimited; accepted live `SPINNING` status gives practice
   +1 energy per turn.
 - Endless has a persistent five-minute wall clock, including reload time, and ×1.15
-  enemy scaling per entered room. Its separate board ranks the largest scored hit.
+  enemy scaling per entered room. Like every mode, its separate board ranks final
+  score; the largest raw hit is a display stat.
 - Settings persist volume, animation speed, and reduced effects. The UI and five
   illustrated tips are English only. Big scores trigger a local SQUEEK burst; system reduced
   motion and reduced effects pause motion and flashes. More holds the leaderboard,
@@ -148,11 +153,15 @@ are self-reported labels; these controls are basic abuse prevention, not global
 identity or competition enforcement.
 
 Every legal player choice is recorded. **Export action log** downloads versioned JSON
-containing the seed inputs, actions, score claims, and an integrity checksum.
+containing the seed inputs, actions, score claims, `scoreVersion: 2`, and an integrity checksum.
 **Verify replay JSON** reconstructs the map and run from scratch, validates each action,
 and compares the recomputed score. Imported files never enter the local board.
 Completed local runs also replay before being saved. Hidden combo hints stay inside
 the player's run and are never included on the leaderboard or broadcast.
+
+Scoring v2 starts fresh rankings: the API, Redis namespace, and browser boards hide
+old-version scores, and old action saves cannot resume under the new rules.
+Profiles, consumed daily attempts, and streaks remain intact.
 
 [`server/replay.ts`](server/replay.ts) is the API's server-verification boundary.
 `verifySubmission(payload)` supplies the authoritative fixture to the shared engine,

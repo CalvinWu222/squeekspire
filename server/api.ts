@@ -1,6 +1,7 @@
 import { verifySubmission } from './replay.js';
 import { createStore, type BoardQuery, type Environment, type ScoreEntry, type ScoreStore } from './store.js';
 import type { RunMode } from '../src/game/types.js';
+import { SCORE_VERSION } from '../src/game/score.js';
 
 export const MAX_BODY_BYTES = 256 * 1024;
 export const POST_RATE_LIMIT = 12;
@@ -105,19 +106,20 @@ export function createApi(options: { store?: ScoreStore; env?: Environment; now?
       if (!allowed.allowed) { response.setHeader('Retry-After', String(allowed.retryAfter)); throw new ApiError(429, 'rate_limited', 'Too many requests; try again shortly'); }
       if (!isScore) {
         const query = queryFrom(url);
-        send(200, { entries: await store.list(query), ...query, storage: store.kind }); return;
+        const entries = (await store.list(query)).filter(entry => entry.scoreVersion === SCORE_VERSION);
+        send(200, { entries, scoreVersion: SCORE_VERSION, ...query, storage: store.kind }); return;
       }
       const payload = await readBody(request);
       if (!object(payload) || !seedValue(payload.seed)) throw new ApiError(400, 'invalid_payload', 'Submit a seed and run export');
       let verified: ReturnType<typeof verifySubmission>;
-      const run = payload.run ?? { version: payload.version, day: payload.day, mode: payload.mode, actions: payload.actions, claimedScore: payload.claimedScore, claimedBestHit: payload.claimedBestHit, checksum: payload.checksum };
+      const run = payload.run ?? { version: payload.version, scoreVersion: payload.scoreVersion, day: payload.day, mode: payload.mode, actions: payload.actions, claimedScore: payload.claimedScore, claimedBestHit: payload.claimedBestHit, checksum: payload.checksum };
       try { verified = verifySubmission(run, payload.seed); }
       catch (error) { throw new ApiError(400, 'invalid_replay', error instanceof Error ? error.message : 'Invalid replay'); }
       const who = identity(payload, ipHash);
       const actions = JSON.stringify((run as { actions: unknown }).actions, ['type', 'nodeId', 'uid', 'target', 'choice', 'mergePair', 'prediction', 'cardId', 'index', 'option', 'ms']);
-      const id = await digest(JSON.stringify([who.profile, verified.day, verified.seed, verified.mode, verified.spinning, actions]));
+      const id = await digest(JSON.stringify([verified.scoreVersion, who.profile, verified.day, verified.seed, verified.mode, verified.spinning, actions]));
       const entry: ScoreEntry = { id, ...who, ...verified, streak: 0, createdAt: new Date(now()).toISOString() };
-      send(201, { entry: await store.add(entry), storage: store.kind });
+      send(201, { entry: await store.add(entry), scoreVersion: SCORE_VERSION, storage: store.kind });
     } catch (error) {
       if (error instanceof ApiError) send(error.status, { error: error.code, message: error.message });
       else send(503, { error: 'leaderboard_unavailable', message: 'Shared leaderboard unavailable; local scores are still available' });

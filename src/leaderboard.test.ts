@@ -4,11 +4,12 @@ import { fallbackDay } from './game/data';
 import { act, createRun } from './game/engine';
 import { generateMap } from './game/map';
 import { fetchLeaderboard, submitScore } from './leaderboard';
+import { SCORE_VERSION } from './game/score';
 
 const day = fallbackDay('2026-11-04');
 const address = '0x1234567890abcdef1234567890abcdef1234abcd';
 const entry = { id: 'sample', profile: address, day: day.day, seed: day.seed, mode: 'daily',
-  score: 100, bestHit: 30, floor: 1, won: false, hibernation: false, streak: 0 };
+  scoreVersion: SCORE_VERSION, score: 100, bestHit: 30, floor: 1, won: false, hibernation: false, streak: 0 };
 const finished = act(createRun(day, generateMap(day), 'daily'), { type: 'abandon' });
 const response = (data: unknown) => ({ ok: true, json: async () => data });
 
@@ -31,7 +32,7 @@ describe('shared leaderboard client', () => {
     expect(path).toBe('/api/score');
     expect(init!.method).toBe('POST');
     expect(JSON.parse(String(init!.body))).toMatchObject({ seed: day.seed,
-      identity: { walletAddress: address }, run: { actions: [{ type: 'abandon' }], claimedScore: 0 } });
+      identity: { walletAddress: address }, run: { scoreVersion: SCORE_VERSION, actions: [{ type: 'abandon' }], claimedScore: 0 } });
   });
 
   it('uses a guest identity when a wallet is absent', async () => {
@@ -45,6 +46,12 @@ describe('shared leaderboard client', () => {
     await expect(fetchLeaderboard('daily', day.seed)).rejects.toThrow('503');
     vi.mocked(fetch).mockResolvedValue(response({ entries: [{ ...entry, score: 'tampered' }] }) as Response);
     await expect(fetchLeaderboard('daily', day.seed)).rejects.toThrow('Invalid leaderboard');
+  });
+  it('hides old and unversioned scores even if a stale API response includes them', async () => {
+    const { scoreVersion: _version, ...legacy } = entry;
+    vi.mocked(fetch).mockResolvedValue(response({ entries: [legacy,
+      { ...entry, scoreVersion: SCORE_VERSION - 1, score: 1e100 }, entry] }) as Response);
+    expect(await fetchLeaderboard('daily', day.seed)).toEqual([entry]);
   });
 
   it('bounds a stalled connection so offline scores become available', async () => {

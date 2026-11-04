@@ -1,7 +1,7 @@
 import { CARDS, CARD_POOL, STARTER_DECK, RELICS, ENEMIES, type CardType, type Rarity } from './catalog.js';
 import { nextRandom, hashString } from './rng.js';
 import { generateMap } from './map.js';
-import { battleScoreBreakdown, scoreMultipliers, type BattleScoreBreakdown } from './score.js';
+import { battleScoreBreakdown, runScoreSummary, scoreMultipliers, SCORE_VERSION, type BattleScoreBreakdown } from './score.js';
 import type { DayData, MapNode, RunMode } from './types.js';
 import { cardValues, isCardUpgradable, mergeCandidates, triggerFactor } from './cardValues.js';
 
@@ -33,9 +33,9 @@ export type RunAction =
   | { type: 'elapsed'; ms: number }
   | { type: 'abandon' };
 export interface RunState {
-  version: 1; day: DayData; map: MapNode[]; mode: RunMode;
+  version: 1; scoreVersion: number; day: DayData; map: MapNode[]; mode: RunMode;
   phase: 'map' | 'combat' | 'reward' | 'shop' | 'rest' | 'event' | 'won' | 'lost';
-  floor: number; currentNode: number; reachable: number[]; hp: number; maxHp: number; gold: number;
+  floor: number; floorsCleared: number; currentNode: number; reachable: number[]; hp: number; maxHp: number; gold: number;
   deck: CardInstance[]; relics: string[]; combat?: CombatState; reward?: { cards: string[]; relic?: string }; shop?: ShopState;
   totalScore: number; bestHit: number; battles: number; bossKills: number; elapsedMs: number;
   battleScores: BattleScoreBreakdown[]; damageTaken: number;
@@ -43,7 +43,7 @@ export interface RunState {
   runMult: number; minMult: number; buildCount: number; touchGrassUsed: boolean;
   mergeActs: number[]; removeCount: number; hamsterfiUsed: boolean;
 }
-export interface RunExport { version: 1; day: DayData; mode: RunMode; actions: RunAction[]; claimedScore: number; claimedBestHit: number; checksum: string; }
+export interface RunExport { version: 1; scoreVersion: number; day: DayData; mode: RunMode; actions: RunAction[]; claimedScore: number; claimedBestHit: number; checksum: string; }
 const clone = <T>(value: T): T => JSON.parse(JSON.stringify(value)) as T;
 const bounded = (n: number) => Math.min(1e300, Math.max(0, Number.isFinite(n) ? n : 1e300));
 function fail(condition: unknown, message: string): asserts condition { if (!condition) throw new Error(message); }
@@ -77,7 +77,7 @@ export function createRun(day: DayData, map: MapNode[], mode: RunMode): RunState
   fail(['daily', 'practice', 'endless'].includes(mode), 'Invalid mode');
   fail(day.hours.length === 24 && Number.isInteger(day.seed) && day.difficulty >= 0.8 && day.difficulty <= 1.3, 'Invalid daily data');
   fail(map.length === 24, 'Map must contain 24 hours');
-  const s: RunState = { version: 1, day: clone(day), map: clone(map), mode, phase: 'map', floor: 0, currentNode: -1, reachable: [0], hp: 72, maxHp: 72, gold: 75, deck: [], relics: ['midnight-wheel'], totalScore: 0, bestHit: 0, battles: 0, bossKills: 0, elapsedMs: 0, battleScores: [], damageTaken: 0, log: [], hints: [], history: ['gm, I have not slept'], rng: (day.seed ^ 0x53515545) >>> 0, serial: 0, runMult: 0, minMult: 1, buildCount: 0, touchGrassUsed: false, mergeActs: [], removeCount: 0, hamsterfiUsed: false };
+  const s: RunState = { version: 1, scoreVersion: SCORE_VERSION, day: clone(day), map: clone(map), mode, phase: 'map', floor: 0, floorsCleared: 0, currentNode: -1, reachable: [0], hp: 72, maxHp: 72, gold: 75, deck: [], relics: ['midnight-wheel'], totalScore: 0, bestHit: 0, battles: 0, bossKills: 0, elapsedMs: 0, battleScores: [], damageTaken: 0, log: [], hints: [], history: ['gm, I have not slept'], rng: (day.seed ^ 0x53515545) >>> 0, serial: 0, runMult: 0, minMult: 1, buildCount: 0, touchGrassUsed: false, mergeActs: [], removeCount: 0, hamsterfiUsed: false };
   s.deck = STARTER_DECK.map(id => instance(s, id));
   return s;
 }
@@ -213,6 +213,7 @@ function findRelic(s: RunState): string | undefined {
   return pool.length ? pool[(Math.floor(random(s) * pool.length) + s.day.blockHeight + s.day.blockProgress + node(s).id) % pool.length] : undefined;
 }
 function completeNode(s: RunState) {
+  s.floorsCleared = s.floor;
   if (has(s, 'airdrop-farmer')) for (let i = 0; i < (node(s).kind === 'elite' ? 2 : 1); i++) s.deck.push(instance(s, pick(s, CARD_POOL.filter(id => CARDS[id]!.cost === 0))));
   delete s.reward; delete s.shop;
   if (node(s).id === 23 && s.mode !== 'endless') { s.phase = 'won'; say(s, 'Squeektoshi can finally sleep.'); }
@@ -224,7 +225,7 @@ function checkCombat(s: RunState) {
   const breakdown = battleScoreBreakdown(s, true);
   s.battleScores.push(breakdown);
   const earned = breakdown.score;
-  s.totalScore = bounded(s.totalScore + earned); s.battles++;
+  s.floorsCleared = s.floor; s.battles++;
   if (node(s).id % 8 === 7) s.bossKills++;
   say(s, `Battle won · ${formatNumber(earned)} Squeeks`);
   const elite = node(s).kind === 'elite' || node(s).kind === 'boss';
@@ -494,17 +495,19 @@ export function act(original: RunState, action: RunAction): RunState {
     && !s.battleScores.some(battle => battle.floor === s.floor)) {
     s.battleScores.push(battleScoreBreakdown(s, false));
   }
+  s.totalScore = runScoreSummary(s).totalScore;
   s.log.push(clone(action));
   return s;
 }
 function checksum(exported: Omit<RunExport, 'checksum'>) { return hashString(JSON.stringify(exported)).toString(16).padStart(8, '0'); }
 export function exportRun(s: RunState): RunExport {
-  const exported: Omit<RunExport, 'checksum'> = { version: 1, day: clone(s.day), mode: s.mode, actions: clone(s.log), claimedScore: s.totalScore, claimedBestHit: s.bestHit };
+  const exported: Omit<RunExport, 'checksum'> = { version: 1, scoreVersion: SCORE_VERSION, day: clone(s.day), mode: s.mode, actions: clone(s.log), claimedScore: s.totalScore, claimedBestHit: s.bestHit };
   return { ...exported, checksum: checksum(exported) };
 }
 /** A server must provide its authoritative archived day; standalone replay verifies self-contained exports. */
 export function replayRun(input: RunExport, authoritativeDay?: DayData): RunState {
   fail(input?.version === 1 && Array.isArray(input.actions) && input.actions.length <= 25_000, 'Invalid replay format');
+  fail(input.scoreVersion === SCORE_VERSION, 'Unsupported score version; start a new run');
   const { checksum: claimedChecksum, ...body } = input;
   fail(claimedChecksum === checksum(body), 'Replay checksum mismatch');
   const day = input.day;

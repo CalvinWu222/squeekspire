@@ -1,5 +1,6 @@
 import { exportRun, replayRun, type RunState, type RunExport } from './engine';
 import type { RunMode } from './types';
+import { SCORE_VERSION } from './score';
 
 const PREFIX = 'squeekspire:v1:';
 const memory = new Map<string, string>();
@@ -89,6 +90,7 @@ export interface BoardEntry {
   profile: string;
   day: string;
   mode: RunMode;
+  scoreVersion: number;
   score: number;
   bestHit: number;
   floor: number;
@@ -99,10 +101,10 @@ export interface BoardEntry {
 
 export function getBoard(mode: RunMode, day?: string): BoardEntry[] {
   const rows = array<BoardEntry>('board');
-  return rows.filter(row => row && row.mode === mode && (!day || row.day === day)
+  return rows.filter(row => row && row.scoreVersion === SCORE_VERSION && row.mode === mode && (!day || row.day === day)
     && Number.isFinite(row.score) && Number.isFinite(row.bestHit)
     && typeof row.profile === 'string' && (/^guest\d+$/.test(row.profile) || /^0x[0-9a-fA-F]{40}$/.test(row.profile)))
-    .sort((a, b) => (mode === 'endless' ? b.bestHit - a.bestHit : b.score - a.score))
+    .sort((a, b) => b.score - a.score)
     .slice(0, 50);
 }
 
@@ -110,10 +112,10 @@ export function getBoard(mode: RunMode, day?: string): BoardEntry[] {
 export function recordResult(run: RunState, profile: string): BoardEntry {
   const verified = replayRun(exportRun(run));
   if (!['won', 'lost'].includes(verified.phase)) throw new Error('Finish the run before recording it.');
-  const id = `${profile}:${verified.day.day}:${verified.mode}:${JSON.stringify(verified.log)}`;
-  const rows = array<BoardEntry>('board').filter(row => row && typeof row === 'object');
+  const id = `${profile}:${verified.day.day}:${verified.mode}:v${SCORE_VERSION}:${JSON.stringify(verified.log)}`;
+  const rows = array<BoardEntry>('board').filter(row => row && row.scoreVersion === SCORE_VERSION);
   const entry: BoardEntry = {
-    id, profile, day: verified.day.day, mode: verified.mode,
+    id, profile, day: verified.day.day, mode: verified.mode, scoreVersion: SCORE_VERSION,
     score: verified.totalScore, bestHit: verified.bestHit, floor: verified.floor,
     won: verified.phase === 'won', hibernation: verified.day.hibernation,
     streak: currentStreak(verified.day.day),

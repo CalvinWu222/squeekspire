@@ -10,7 +10,9 @@
     "dev": "node scripts/dev.mjs",
     "build": "tsc --noEmit && node scripts/build.mjs",
     "test": "node scripts/test.mjs",
+    "test:sim": "node --test scripts/sim/harness.test.mjs",
     "simulate:relics": "node scripts/simulate-relics.mjs",
+    "simulate:balance": "node scripts/sim/index.mjs",
     "preview": "node scripts/preview.mjs"
   },
   "devDependencies": {

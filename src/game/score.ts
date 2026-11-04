@@ -3,6 +3,15 @@ import type { RunState } from './engine.js';
 
 const bounded = (value: number) => Math.min(1e300, Math.max(0, Number.isFinite(value) ? value : 1e300));
 
+export const SCORE_VERSION = 2;
+export const FLOOR_POINTS = 200;
+export const ELITE_POINTS = 300;
+export const BOSS_POINTS = 1_000;
+export const CLEAR_BONUS = 20_000;
+export const NON_CLEAR_CEILING = CLEAR_BONUS - 1;
+export const BATTLE_CAPS = { normal: 1_500, elite: 2_100, boss: 3_000 } as const;
+export const BATTLE_TURN_LIMITS = { normal: 6, elite: 8, boss: 10 } as const;
+
 export interface ScoreMultipliers {
   additiveMult: number;
   triggerMult: number;
@@ -39,6 +48,11 @@ export interface BattleScoreBreakdown extends ScoreMultipliers {
   difficultyMult: number;
   hibernationMult: number;
   combatScore: number;
+  scoreCap: number;
+  softMultiplier: number;
+  scoringQuality: number;
+  turnLimit: number;
+  turnPenalty: number;
   score: number;
   damageTaken: number;
 }
@@ -52,19 +66,41 @@ export function battleScoreBreakdown(s: RunState, won: boolean): BattleScoreBrea
   const combatScore = Math.round(bounded(c.squeeks * factors.multiplier));
   const difficultyMult = s.day.difficulty;
   const hibernationMult = s.day.hibernation ? 1.2 : 1;
+  const kind = n.kind === 'boss' ? 'boss' : n.kind === 'elite' ? 'elite' : 'normal';
+  const scoreCap = BATTLE_CAPS[kind];
+  const turnLimit = BATTLE_TURN_LIMITS[kind];
+  // Combat keeps its spectacular raw numbers. Only the awarded points use
+  // square-root returns, a fixed room budget, and a declining late-turn budget.
+  const softMultiplier = Math.sqrt(bounded(factors.multiplier));
+  const scoringQuality = Math.min(1, Math.sqrt(bounded(c.squeeks) / 200) * softMultiplier / 10);
+  const turnPenalty = Math.max(0, Math.min(1, (2 * turnLimit - c.turn) / turnLimit));
+  const score = won ? Math.round(Math.min(scoreCap, scoreCap * scoringQuality * difficultyMult * hibernationMult) * turnPenalty) : 0;
   return {
     number: s.battleScores.length + 1, floor: s.floor, nodeId: n.id, act: n.act, hour: n.hour,
     enemyId: n.enemyId, enemyName: ENEMIES[n.enemyId]?.name ?? c.enemies[0]?.name ?? n.enemyId,
     won, turns: c.turn, baseSqueeks: c.squeeks, ...factors, difficultyMult, hibernationMult,
-    combatScore, score: won ? Math.round(bounded(combatScore * difficultyMult * hibernationMult)) : 0,
+    combatScore, scoreCap, softMultiplier, scoringQuality, turnLimit, turnPenalty, score,
     damageTaken: c.damageTaken,
   };
 }
 
-export function runScoreSummary(s: RunState): { baseSqueeks: number; totalScore: number; damageTaken: number; turns: number; battles: number } {
+/** The same total is used after every action, in the client and server replay. */
+export function runScoreSummary(s: RunState) {
+  const wins = s.battleScores.filter(battle => battle.won);
+  const eliteKills = wins.filter(battle => s.map[battle.nodeId]?.kind === 'elite').length;
+  const bossKills = wins.filter(battle => s.map[battle.nodeId]?.kind === 'boss').length;
+  const progressionScore = s.floorsCleared * FLOOR_POINTS + eliteKills * ELITE_POINTS + bossKills * BOSS_POINTS;
+  const clearBonus = s.phase === 'won' ? CLEAR_BONUS : 0;
+  const earnedCombatScore = wins.reduce((total, battle) => total + battle.score, 0);
+  // A run-wide non-clear budget makes completion outrank every unfinished run,
+  // independently of route, seed, difficulty, or future map room counts.
+  const combatScore = s.phase === 'won' ? earnedCombatScore : Math.min(earnedCombatScore, Math.max(0, NON_CLEAR_CEILING - progressionScore));
+  const countedProgression = s.phase === 'won' ? progressionScore : Math.min(progressionScore, NON_CLEAR_CEILING);
   return {
     baseSqueeks: bounded(s.battleScores.reduce((total, battle) => total + battle.baseSqueeks, 0)),
-    totalScore: s.totalScore,
+    floorsCleared: s.floorsCleared, eliteKills, bossKills,
+    progressionScore: countedProgression, clearBonus, combatScore,
+    totalScore: countedProgression + clearBonus + combatScore,
     damageTaken: s.damageTaken,
     turns: s.battleScores.reduce((total, battle) => total + battle.turns, 0),
     battles: s.battleScores.length,

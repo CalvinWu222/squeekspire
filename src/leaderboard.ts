@@ -1,6 +1,7 @@
 import { exportRun, type RunState } from './game/engine';
 import type { BoardEntry } from './game/storage';
 import type { RunMode } from './game/types';
+import { SCORE_VERSION } from './game/score';
 
 export interface GlobalEntry extends BoardEntry { seed: number; }
 
@@ -18,7 +19,7 @@ async function request(path: string, init?: RequestInit): Promise<unknown> {
 function isEntry(value: unknown): value is GlobalEntry {
   if (!value || typeof value !== 'object') return false;
   const row = value as GlobalEntry;
-  return typeof row.id === 'string' && typeof row.profile === 'string'
+  return row.scoreVersion === SCORE_VERSION && typeof row.id === 'string' && typeof row.profile === 'string'
     && (/^guest\d{4,8}$/.test(row.profile) || /^0x[0-9a-fA-F]{40}$/.test(row.profile))
     && /^\d{4}-\d{2}-\d{2}$/.test(row.day) && ['daily', 'practice', 'endless'].includes(row.mode)
     && [row.seed, row.score, row.bestHit, row.floor].every(n => Number.isFinite(n) && n >= 0)
@@ -29,8 +30,10 @@ export async function fetchLeaderboard(mode: RunMode, seed: number): Promise<Glo
   const params = new URLSearchParams({ mode: mode === 'endless' ? 'all' : 'daily', runMode: mode });
   if (mode !== 'endless') params.set('seed', String(seed));
   const data = await request(`/api/leaderboard?${params}`) as { entries?: unknown } | null;
-  if (!data || !Array.isArray(data.entries) || !data.entries.every(isEntry)) throw new Error('Invalid leaderboard response');
-  return data.entries.filter(row => row.mode === mode && (mode === 'endless' || row.seed === seed)).slice(0, 50);
+  if (!data || !Array.isArray(data.entries)) throw new Error('Invalid leaderboard response');
+  const entries = data.entries.filter(row => row && typeof row === 'object' && row.scoreVersion === SCORE_VERSION);
+  if (!entries.every(isEntry)) throw new Error('Invalid leaderboard response');
+  return entries.filter(row => row.mode === mode && (mode === 'endless' || row.seed === seed)).slice(0, 50);
 }
 
 export async function submitScore(run: RunState, profile: string): Promise<void> {

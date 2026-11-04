@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fallbackDay } from './game/data';
 import { generateMap } from './game/map';
 import { act, createRun, type CardInstance, type RunState } from './game/engine';
+import { battleScoreBreakdown, runScoreSummary, SCORE_VERSION } from './game/score';
 
 const card = (id: string, uid = id, level = 0, mergeLevel = 0): CardInstance => ({ id, uid, level, mergeLevel });
 function click(selector: string): void {
@@ -187,6 +188,28 @@ describe('playtest fixes at the decision surface', () => {
     expect(document.querySelector('.score-table tbody tr')).not.toBeNull();
     expect(document.querySelector('.score-breakdown')!.textContent).toContain('Damage taken4 HP');
     expect(document.querySelector('.score-breakdown')!.textContent).toContain('Base Squeeks30');
+    const summary = runScoreSummary(won);
+    const values = Array.from(document.querySelectorAll('.score-equation strong'), element => Number(element.textContent!.replaceAll(',', '')));
+    expect(values).toEqual([summary.progressionScore, summary.clearBonus, summary.combatScore, summary.totalScore]);
+    expect(values[0] + values[1] + values[2]).toBe(values[3]);
+    expect(document.querySelector('.score-table')!.textContent).toContain('Raw combo');
+    expect(document.querySelector('.battle-final-score')!.textContent).toBe(String(won.battleScores[0].score));
+    expect(document.querySelector('.score-breakdown')!.textContent).toContain('every clear beats every unfinished run');
+  });
+
+  it('keeps huge combos visible while showing the capped, late-turn combat award separately', async () => {
+    const s = fixture();
+    s.combat!.squeeks = 1e6; s.combat!.multiply = 1e6; s.combat!.turn = 9;
+    const expected = battleScoreBreakdown(s, true);
+    const storage = await boot(s);
+    expect(document.querySelector('.score-total span')!.textContent).toBe('COMBO');
+    expect(document.querySelector('.score-total strong')!.textContent).toBe('2T');
+    const note = document.querySelector('.battle-scoring-note')!;
+    expect(note.textContent).toContain(`IF WON NOW ${expected.score}`);
+    expect(note.textContent).toContain('50% pace award');
+    expect(note.textContent).toContain('0 at turn 12');
+    expect(expected.score).toBeLessThanOrEqual(expected.scoreCap);
+    expect(storage.saveActive).not.toHaveBeenCalled();
   });
 
   it('preserves tiny trigger factors and explains when the minimum multiplier wins', async () => {
@@ -201,5 +224,20 @@ describe('playtest fixes at the decision surface', () => {
     expect(row).toContain('triggers 5.00e-6');
     expect(row).toContain('floor 1');
     expect(row).toContain('×1');
+  });
+
+  it('uses final score for endless leaderboard values and the next-score gap', async () => {
+    const s = fixture(); s.mode = 'endless'; s.bestHit = 1e6;
+    const storage = await boot(s);
+    vi.spyOn(storage, 'getBoard').mockReturnValue([{
+      id: 'next', profile: 'guest1234', day: s.day.day, mode: 'endless', scoreVersion: SCORE_VERSION,
+      score: 1200, bestHit: 3, floor: 5, won: false, hibernation: false, streak: 0,
+    }]);
+    click('[data-action="more"]'); click('[data-action="abandon"]');
+    expect(document.querySelector('.near-miss')!.textContent).toContain('1,200 points from the next local legend');
+    click('[data-action="more"]'); click('[data-action="board"][data-mode="endless"]');
+    await vi.waitFor(() => expect(document.querySelector('.leaderboard h2')!.textContent).toBe('Offline - local scores'));
+    expect(document.querySelector('.board-caption')!.textContent).toContain('Ranked by total score');
+    expect(document.querySelector('.board-score')!.textContent).toBe('1,200');
   });
 });

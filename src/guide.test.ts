@@ -1,6 +1,7 @@
 // @vitest-environment happy-dom
 import { describe, expect, it } from 'vitest';
 import { GUIDE_PAGE_COUNT, guideMarkup, t, wheelArt, type MenuKey } from './guide';
+import { CLEAR_BONUS, NON_CLEAR_CEILING } from './game/score';
 
 function renderGuide(page: number): HTMLDivElement {
   const container = document.createElement('div');
@@ -78,7 +79,7 @@ describe('English visual tip guide', () => {
     expect(details.open).toBe(false);
     expect(details.closest('.guide-page')).toBeNull();
     expect(details.querySelector('summary')!.textContent).toBe('More details');
-    expect(details.querySelectorAll('h3')).toHaveLength(4);
+    expect(details.querySelectorAll('h3')).toHaveLength(5);
     expect(guideMarkup('en', 0)).toContain('click the card and then its target');
     expect(guideMarkup('en', 0)).toContain('block');
     expect(guideMarkup('en', 0)).toContain('×1.1 chain, capped at 20');
@@ -92,6 +93,20 @@ describe('English visual tip guide', () => {
     expect(guideMarkup('en', 3)).toContain('online global leaderboard');
     expect(guideMarkup('en', 3)).toContain('Offline - local scores');
     expect(guideMarkup('en', 3)).toContain('resets the attempt allowance, not the captured data snapshot');
+  });
+
+  it('explains progression, clear priority, room caps and the cost of stalling', () => {
+    const copy = renderGuide(0).querySelector('.guide-details')!.textContent!;
+    expect(copy).toContain('Final score = progression + clear bonus + combat points');
+    expect(copy).toContain('Completing a room earns 200');
+    expect(copy).toContain('Entering a room alone earns nothing');
+    expect(copy).toContain(`${CLEAR_BONUS.toLocaleString('en-US')}-point bonus`);
+    expect(copy).toContain('every clear beats every unfinished run');
+    expect(copy).toContain(NON_CLEAR_CEILING.toLocaleString('en-US'));
+    expect(copy).toContain('square-root returns on Squeeks and Mult');
+    expect(copy).toContain('1,500 normal, 2,100 elite, 3,000 boss');
+    expect(copy).toContain('6 / 8 / 10 turns');
+    expect(copy).toContain('zero at 12 / 16 / 20');
   });
 
   it('clamps invalid page indices and disables impossible previous/next navigation', () => {

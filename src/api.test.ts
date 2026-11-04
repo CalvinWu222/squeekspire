@@ -2,12 +2,14 @@ import { describe, expect, it, vi } from 'vitest';
 import { createApi, GET_RATE_LIMIT, MAX_BODY_BYTES, POST_RATE_LIMIT, sanitizeName, type ApiRequest, type ApiResponse } from '../server/api';
 import { createMemoryStore, createRedisStore, createStore, type ScoreEntry, type ScoreStore } from '../server/store';
 import { MAX_ACTIONS, verifySubmission } from '../server/replay';
-import { act, createRun, exportRun, type RunExport } from './game/engine';
+import { act, createRun, exportRun, replayRun, type RunAction, type RunExport } from './game/engine';
 import { fallbackDay, getGameDay } from './game/data';
 import { generateMap } from './game/map';
 import { CARDS } from './game/catalog';
 import { hashString } from './game/rng';
 import type { RunMode } from './game/types';
+import { SCORE_VERSION } from './game/score';
+import { cardPlayDisabledReason } from './game/cardValues';
 
 const day = fallbackDay('2026-11-04');
 function finished(mode: RunMode = 'daily', spinning = false, gameDay = day): RunExport {
@@ -47,9 +49,11 @@ describe('shared score API boundary', () => {
     const handler = api();
     const accepted = await call(handler, payload());
     expect(accepted.status).toBe(201);
-    expect(accepted.body.entry).toMatchObject({ profile: 'guest1234', score: validRun.claimedScore, bestHit: validRun.claimedBestHit, seed: day.seed, mode: 'daily' });
+    expect(accepted.body.entry).toMatchObject({ profile: 'guest1234', scoreVersion: SCORE_VERSION, score: validRun.claimedScore, bestHit: validRun.claimedBestHit, seed: day.seed, mode: 'daily' });
+    expect(accepted.body.scoreVersion).toBe(SCORE_VERSION);
     expect(accepted.body.entry.score).toBeGreaterThan(0);
     expect((await call(handler)).body.entries).toEqual([accepted.body.entry]);
+    expect((await call(handler)).body.scoreVersion).toBe(SCORE_VERSION);
     expect((await call(handler, undefined, { url: `/api/leaderboard?mode=daily&seed=${day.seed + 1}` })).body.entries).toEqual([]);
   });
   it.each([
@@ -163,6 +167,71 @@ describe('shared score API boundary', () => {
     expect(result.body).toMatchObject({ error: 'invalid_replay' });
     expect(result.body.message).toContain('Recomputed score');
   });
+  it.each([undefined, SCORE_VERSION - 1, SCORE_VERSION + 1])('rejects old or unknown score version %s before storing it', async scoreVersion => {
+    const handler = api();
+    const old = resign(validRun, { scoreVersion } as Partial<RunExport>);
+    const rejected = await call(handler, payload(old));
+    expect(rejected.status).toBe(400);
+    expect(rejected.body).toMatchObject({ error: 'invalid_replay' });
+    expect(rejected.body.message).toContain('score version');
+    expect((await call(handler)).body.entries).toEqual([]);
+  });
+  it.each(['daily', 'practice', 'endless'] as const)('shares the client score, best hit and finish state for %s replay', async mode => {
+    const exported = finished(mode, mode === 'practice');
+    const client = replayRun(exported);
+    const server = verifySubmission(exported, exported.day.seed);
+    expect(server).toMatchObject({ scoreVersion: SCORE_VERSION, score: client.totalScore,
+      bestHit: client.bestHit, floor: client.floor, won: client.phase === 'won' });
+    expect(server.score).toBe(exported.claimedScore);
+  });
+  it('accepts the client replay after buying the fifth shop offer', async () => {
+    // Use an unmodified canonical run, retain Gold in the first shop, and buy
+    // the second relic when a later shop becomes affordable.
+    const rules = fallbackDay('2026-01-01');
+    let client = createRun(rules, generateMap(rules), 'daily');
+    let purchased = false;
+    for (let step = 0; step < 400 && !['won', 'lost'].includes(client.phase); step++) {
+      let action: RunAction;
+      if (client.phase === 'map') action = { type: 'enter', nodeId: client.reachable[0]! };
+      else if (client.phase === 'combat') {
+        const available = client.combat!.hand.filter(card => !cardPlayDisabledReason(client, card));
+        const card = available.find(card => CARDS[card.id]!.type === 'attack') ?? available[0];
+        action = card ? { type: 'play', uid: card.uid } : { type: 'endTurn' };
+      } else if (client.phase === 'reward') action = { type: 'reward', cardId: null };
+      else if (client.phase === 'event') action = { type: 'event', option: 1 };
+      else if (client.phase === 'rest') action = { type: 'rest', option: 'heal' };
+      else {
+        const offer = client.shop!.offers[4];
+        if (offer && offer.price <= client.gold) {
+          expect(offer.kind).toBe('relic');
+          const bought = act(client, { type: 'buy', index: 4 });
+          expect(bought.relics).toContain(offer.id);
+          expect(bought.gold).toBe(client.gold - offer.price);
+          client = act(bought, { type: 'abandon' });
+          purchased = true;
+          break;
+        }
+        action = { type: 'leave' };
+      }
+      client = act(client, action);
+    }
+    expect(purchased).toBe(true);
+    const exported = exportRun(client);
+    expect(exported.actions.at(-2)).toEqual({ type: 'buy', index: 4 });
+    const accepted = await call(api(), payload(exported));
+    expect(accepted.status).toBe(201);
+    expect(accepted.body.entry).toMatchObject({ scoreVersion: SCORE_VERSION,
+      score: client.totalScore, bestHit: client.bestHit, floor: client.floor });
+  });
+  it('filters old-version rows at the API boundary even for a mixed backing store', async () => {
+    const store = createMemoryStore();
+    const old = { ...sampleEntry('old', 1e100), scoreVersion: SCORE_VERSION - 1 };
+    const current = sampleEntry('current');
+    store.list = async () => [old, current];
+    const result = await call(createApi({ store }));
+    expect(result.status).toBe(200);
+    expect(result.body.entries).toEqual([current]);
+  });
   it('rejects forged canonical rules, mismatched seed, and illegal action logs', async () => {
     const handler = api();
     const changed = resign(validRun, { day: { ...validRun.day, difficulty: 0.8 } });
@@ -222,6 +291,7 @@ describe('server replay limits', () => {
     expect(() => verifySubmission(afterEnter)).toThrow('finished');
     expect(() => verifySubmission(resign(validRun, { actions: Array.from({ length: MAX_ACTIONS + 1 }, () => ({ type: 'endTurn' as const })) }))).toThrow('log length');
     expect(() => verifySubmission(resign(validRun, { actions: [{ type: 'buy', index: 1.5 }] }))).toThrow('shop index');
+    expect(() => verifySubmission(resign(validRun, { actions: [{ type: 'buy', index: 5 }] }))).toThrow('shop index');
     expect(() => verifySubmission(resign(validRun, { actions: [{ type: 'abandon', extra: true } as never] }))).toThrow('Unknown action field');
   });
   it('rejects invalid dates, wheel flag types, and nonfinite score claims', () => {
@@ -231,7 +301,7 @@ describe('server replay limits', () => {
   });
 });
 
-const sampleEntry = (id: string, score = 100, bestHit = 20, mode: RunMode = 'daily'): ScoreEntry => ({ id, profile: 'guest1234', name: 'guest1234', guestId: 'guest1234', day: day.day, seed: day.seed, mode, score, bestHit, floor: 2, floors: 2, actions: 10, won: false, hibernation: false, spinning: false, streak: 0, createdAt: '2026-11-04T00:00:00Z' });
+const sampleEntry = (id: string, score = 100, bestHit = 20, mode: RunMode = 'daily'): ScoreEntry => ({ id, profile: 'guest1234', name: 'guest1234', guestId: 'guest1234', day: day.day, seed: day.seed, mode, scoreVersion: SCORE_VERSION, score, bestHit, floor: 2, floors: 2, actions: 10, won: false, hibernation: false, spinning: false, streak: 0, createdAt: '2026-11-04T00:00:00Z' });
 describe('leaderboard persistence contracts', () => {
   it.each([
     ['2026-11-04T00:00:00+08:00', '2026-11-03'],
@@ -252,15 +322,15 @@ describe('leaderboard persistence contracts', () => {
     expect(accepted.status).toBe(201);
     expect(accepted.body.entry).toMatchObject({ day: expectedDay, seed: expected.seed });
     const write = commands.find(command => command[0] === 'EVAL' && command[2] === 5)!;
-    expect(write.slice(6, 8)).toEqual([`squeekspire:v1:seed:${expected.seed}`, `squeekspire:v1:seed:${expected.seed}:daily`]);
+    expect(write.slice(6, 8)).toEqual([`squeekspire:score-v${SCORE_VERSION}:seed:${expected.seed}`, `squeekspire:score-v${SCORE_VERSION}:seed:${expected.seed}:daily`]);
     expect((await call(handler, undefined, { url: `/api/leaderboard?mode=daily&seed=${expected.seed}` })).status).toBe(200);
-    expect(commands.at(-1)).toEqual(['ZREVRANGE', `squeekspire:v1:seed:${expected.seed}:daily`, 0, 49]);
+    expect(commands.at(-1)).toEqual(['ZREVRANGE', `squeekspire:score-v${SCORE_VERSION}:seed:${expected.seed}:daily`, 0, 49]);
   });
-  it('sorts endless by best hit and daily/all by accumulated score', async () => {
+  it('sorts every mode by final score even when a lower score has a larger raw hit', async () => {
     const store = createMemoryStore();
     await store.add(sampleEntry('a', 500, 2, 'endless'));
     await store.add(sampleEntry('b', 100, 50, 'endless'));
-    expect((await store.list({ mode: 'all', runMode: 'endless' })).map(row => row.id)).toEqual(['b', 'a']);
+    expect((await store.list({ mode: 'all', runMode: 'endless' })).map(row => row.id)).toEqual(['a', 'b']);
     expect((await store.list({ mode: 'all' })).map(row => row.id)).toEqual(['a', 'b']);
   });
   it('loads persisted local rows and serializes concurrent writes', async () => {
@@ -270,6 +340,16 @@ describe('leaderboard persistence contracts', () => {
     await Promise.all([store.add(sampleEntry('new-a')), store.add(sampleEntry('new-b'))]);
     expect(await createMemoryStore(file).list({ mode: 'all' })).toHaveLength(3);
   });
+  it('hides unversioned and previous-version local rows and only persists current scores', async () => {
+    const { scoreVersion: _oldVersion, ...unversioned } = sampleEntry('legacy', 1e100);
+    let saved: unknown[] = [unversioned, { ...sampleEntry('old', 1e99), scoreVersion: SCORE_VERSION - 1 }, sampleEntry('current')];
+    const file = { async read() { return saved; }, async write(rows: unknown[]) { saved = structuredClone(rows); } };
+    const store = createMemoryStore(file);
+    expect((await store.list({ mode: 'all' })).map(row => row.id)).toEqual(['current']);
+    await expect(store.add({ ...sampleEntry('rejected'), scoreVersion: SCORE_VERSION - 1 })).rejects.toThrow('score version');
+    await store.add(sampleEntry('new'));
+    expect(saved.map(row => (row as ScoreEntry).id).sort()).toEqual(['current', 'new']);
+  });
   it('supports both server credential pairs and rejects partial configuration', () => {
     expect(createStore({ UPSTASH_REDIS_REST_URL: 'https://redis.example', UPSTASH_REDIS_REST_TOKEN: 'secret' }).kind).toBe('redis');
     expect(createStore({ KV_REST_API_URL: 'https://redis.example', KV_REST_API_TOKEN: 'secret' }).kind).toBe('redis');
@@ -277,7 +357,7 @@ describe('leaderboard persistence contracts', () => {
     expect(() => createStore({ UPSTASH_REDIS_REST_URL: 'https://redis.example', KV_REST_API_TOKEN: 'secret' })).toThrow('incomplete');
     expect(() => createRedisStore('http://redis.example', 'secret')).toThrow('HTTPS');
   });
-  it('uses atomic Redis writes, separate daily/endless sort values, and atomic expiring rate counters', async () => {
+  it('uses atomic Redis writes, final score for every mode, and atomic expiring rate counters', async () => {
     const commands: unknown[][] = [];
     const fetcher = vi.fn(async (_url: unknown, init?: RequestInit) => {
       const command = JSON.parse(init!.body as string) as unknown[]; commands.push(command);
@@ -288,8 +368,8 @@ describe('leaderboard persistence contracts', () => {
     const daily = sampleEntry('daily', 500, 2), endless = sampleEntry('endless', 10, 80, 'endless');
     expect(await store.add(daily)).toEqual(daily);
     expect(await store.add(endless)).toEqual(endless);
-    expect(commands[0]!.slice(-3, -1)).toEqual([500, 500]);
-    expect(commands[1]!.slice(-3, -1)).toEqual([10, 80]);
+    expect(commands[0]!.at(-2)).toBe(500);
+    expect(commands[1]!.at(-2)).toBe(10);
     expect(commands[0]![1]).toContain('ZREMRANGEBYRANK');
     expect(await store.rateLimit('ip', POST_RATE_LIMIT, 60_000, 0)).toEqual({ allowed: false, retryAfter: 30 });
     expect(commands[2]![1]).toContain('PEXPIRE');
@@ -304,9 +384,26 @@ describe('leaderboard persistence contracts', () => {
     });
     const store = createRedisStore('https://redis.example', 'secret', fetcher as typeof fetch);
     expect(await store.list({ mode: 'daily', seed: day.seed, runMode: 'daily' })).toEqual([entry]);
-    expect(commands[0]).toEqual(['ZREVRANGE', `squeekspire:v1:seed:${day.seed}:daily`, 0, 49]);
-    expect(commands[1]).toEqual(['MGET', 'squeekspire:v1:entry:one', 'squeekspire:v1:entry:missing']);
+    expect(commands[0]).toEqual(['ZREVRANGE', `squeekspire:score-v${SCORE_VERSION}:seed:${day.seed}:daily`, 0, 49]);
+    expect(commands[1]).toEqual(['MGET', `squeekspire:score-v${SCORE_VERSION}:entry:one`, `squeekspire:score-v${SCORE_VERSION}:entry:missing`]);
     const failing = createRedisStore('https://redis.example', 'secret', (async () => new Response('', { status: 503 })) as typeof fetch);
     await expect(failing.list({ mode: 'all' })).rejects.toThrow('unavailable');
+  });
+  it('defensively hides stale Redis entry versions and refuses to index old scores', async () => {
+    const current = sampleEntry('current');
+    const { scoreVersion: _version, ...unversioned } = sampleEntry('legacy', 1e100);
+    const entries = [unversioned, { ...sampleEntry('old'), scoreVersion: SCORE_VERSION - 1 },
+      { ...sampleEntry('future'), scoreVersion: SCORE_VERSION + 1 }, current];
+    const commands: unknown[][] = [];
+    const fetcher = vi.fn(async (_url: unknown, init?: RequestInit) => {
+      const command = JSON.parse(init!.body as string) as unknown[]; commands.push(command);
+      return new Response(JSON.stringify({ result: command[0] === 'MGET'
+        ? entries.map(entry => JSON.stringify(entry)) : entries.map(entry => entry.id) }));
+    });
+    const store = createRedisStore('https://redis.example', 'secret', fetcher as typeof fetch);
+    expect(await store.list({ mode: 'all' })).toEqual([current]);
+    expect(commands[0]).toEqual(['ZREVRANGE', `squeekspire:score-v${SCORE_VERSION}:all`, 0, 49]);
+    await expect(store.add({ ...current, scoreVersion: SCORE_VERSION - 1 })).rejects.toThrow('score version');
+    expect(fetcher).toHaveBeenCalledTimes(2);
   });
 });

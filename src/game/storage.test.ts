@@ -3,6 +3,7 @@ import { act, createRun } from './engine';
 import { fallbackDay } from './data';
 import { generateMap } from './map';
 import type { RunMode } from './types';
+import { SCORE_VERSION } from './score';
 
 const PREFIX = 'squeekspire:v1:';
 let saved: Map<string, string>;
@@ -133,6 +134,18 @@ describe('saved action replays', () => {
     saved.set(`${PREFIX}active:daily`, '{broken-json');
     expect(storage.loadActive('daily')).toBeNull();
   });
+  it('rejects saves from the previous score model and preserves the daily attempt claim', async () => {
+    let storage = await import('./storage');
+    storage.claimDaily('2026-11-04');
+    storage.saveActive(act(newRun(), { type: 'enter', nodeId: 0 }));
+    const payload = JSON.parse(saved.get(`${PREFIX}active:daily`)!);
+    payload.scoreVersion = SCORE_VERSION - 1;
+    saved.set(`${PREFIX}active:daily`, JSON.stringify(payload));
+    vi.resetModules();
+    storage = await import('./storage');
+    expect(storage.loadActive('daily')).toBeNull();
+    expect(storage.dailyUsed('2026-11-04')).toBe(true);
+  });
 
   it('preserves an endless wall clock across reload and caps elapsed time at five minutes', async () => {
     vi.useFakeTimers();
@@ -158,6 +171,36 @@ describe('saved action replays', () => {
 });
 
 describe('local replay-verified leaderboards', () => {
+  it('hides old scores and replaces them without changing profiles or attempt claims', async () => {
+    let storage = await import('./storage');
+    const profile = storage.getProfile();
+    storage.claimDaily('2026-11-04');
+    const current = storage.recordResult(act(newRun(), { type: 'abandon' }), profile);
+    const { scoreVersion: _version, ...unversioned } = current;
+    saved.set(`${PREFIX}board`, JSON.stringify([
+      { ...unversioned, score: 1e100 },
+      { ...current, id: 'old', scoreVersion: SCORE_VERSION - 1, score: 1e99 },
+    ]));
+    vi.resetModules();
+    storage = await import('./storage');
+    expect(storage.getBoard('daily')).toEqual([]);
+    expect(storage.getProfile()).toBe(profile);
+    expect(storage.dailyUsed('2026-11-04')).toBe(true);
+    const replacement = storage.recordResult(act(newRun(), { type: 'abandon' }), profile);
+    expect(replacement.scoreVersion).toBe(SCORE_VERSION);
+    expect(storage.getBoard('daily')).toEqual([replacement]);
+    expect(JSON.parse(saved.get(`${PREFIX}board`)!)).toEqual([replacement]);
+  });
+  it('ranks endless final score above a larger raw hit', async () => {
+    const storage = await import('./storage');
+    const entry = storage.recordResult(act(newRun('endless'), { type: 'abandon' }), 'guest4821');
+    saved.set(`${PREFIX}board`, JSON.stringify([
+      { ...entry, id: 'farm', score: 10, bestHit: 1e100 },
+      { ...entry, id: 'progress', score: 1_000, bestHit: 1 },
+    ]));
+    vi.resetModules();
+    expect((await import('./storage')).getBoard('endless').map(row => row.id)).toEqual(['progress', 'farm']);
+  });
   it('preserves full wallet identities alongside guest results after reload', async () => {
     const address = '0x1234567890aBcDEF1234567890abcdef1234ABcD';
     let storage = await import('./storage');

@@ -3,7 +3,7 @@ import { CARDS } from './catalog';
 import { fallbackDay } from './data';
 import { act, createRun, effectiveMult, exportRun, replayRun, scoreBattle, type RunState } from './engine';
 import { generateMap } from './map';
-import { battleScoreBreakdown, runScoreSummary, scoreMultipliers } from './score';
+import { battleScoreBreakdown, runScoreSummary, scoreMultipliers, CLEAR_BONUS, NON_CLEAR_CEILING, SCORE_VERSION } from './score';
 
 function firstCombat(): RunState {
   const day = fallbackDay('2026-11-04');
@@ -45,11 +45,11 @@ describe('score explanations and combat accounting', () => {
     expect(state.battleScores).toHaveLength(1);
     const row = state.battleScores[0]!;
     expect(row.won).toBe(true);
-    expect(row.score).toBe(state.totalScore);
-    expect(row.score).toBe(Math.round(row.combatScore * row.difficultyMult * row.hibernationMult));
+    expect(row.score + 200).toBe(state.totalScore);
+    expect(row.score).toBe(Math.round(Math.min(row.scoreCap, row.scoreCap * row.scoringQuality * row.difficultyMult * row.hibernationMult) * row.turnPenalty));
     expect(row.baseSqueeks).toBe(state.combat!.squeeks);
     expect(row.damageTaken).toBe(state.damageTaken);
-    expect(runScoreSummary(state)).toMatchObject({ baseSqueeks: row.baseSqueeks, totalScore: row.score, damageTaken: row.damageTaken, turns: row.turns, battles: 1 });
+    expect(runScoreSummary(state)).toMatchObject({ baseSqueeks: row.baseSqueeks, totalScore: row.score + 200, combatScore: row.score, progressionScore: 200, clearBonus: 0, floorsCleared: 1, damageTaken: row.damageTaken, turns: row.turns, battles: 1 });
     expect(replayRun(exportRun(state))).toEqual(state);
     const retired = act(state, { type: 'abandon' });
     expect(retired.battleScores).toEqual(state.battleScores);
@@ -99,5 +99,96 @@ describe('score explanations and combat accounting', () => {
     expect(state.damageTaken).toBe(before + 2);
     expect(state.combat!.damageTaken).toBe(battleDamage);
     expect(state.battleScores).toHaveLength(1);
+  });
+});
+
+describe('progression-weighted scoring v2', () => {
+  it('does not award progression for entering or abandoning an undefeated room', () => {
+    const state = firstCombat();
+    expect(state.floor).toBe(1);
+    expect(state.floorsCleared).toBe(0);
+    expect(act(state, { type: 'abandon' }).totalScore).toBe(0);
+    let won = finishFirstBattle();
+    expect(won.floorsCleared).toBe(1);
+    won = act(won, { type: 'reward', cardId: null });
+    expect(won.floorsCleared).toBe(1); // Claiming loot never pays twice.
+  });
+
+  it.each(['battle', 'elite', 'boss'] as const)('caps %s rewards after all day modifiers and penalizes late turns', kind => {
+    const state = firstCombat(), c = state.combat!;
+    state.map[0]!.kind = kind; state.day.difficulty = 1.3; state.day.hibernation = true;
+    c.squeeks = 1e300; c.multiply = 1e300;
+    const full = battleScoreBreakdown(state, true);
+    expect(full.score).toBe(full.scoreCap);
+    expect(Number.isFinite(full.combatScore)).toBe(true);
+    c.turn = full.turnLimit;
+    expect(battleScoreBreakdown(state, true).score).toBe(full.scoreCap);
+    c.turn = full.turnLimit + 1;
+    expect(battleScoreBreakdown(state, true).score).toBeLessThan(full.scoreCap);
+    c.turn = full.turnLimit * 2;
+    expect(battleScoreBreakdown(state, true).score).toBe(0);
+    c.turn = 10_000;
+    expect(battleScoreBreakdown(state, true).score).toBe(0);
+    expect(battleScoreBreakdown(state, false).score).toBe(0);
+  });
+
+  it('keeps raw visual combo growth while applying square-root diminishing returns', () => {
+    const state = firstCombat(), c = state.combat!;
+    state.map[0]!.jackpot = false; state.day.difficulty = 1; state.day.hibernation = false;
+    c.squeeks = 200; c.addMult = 1; c.turnMult = 0; c.chain = 0;
+    c.multiply = 4;
+    const low = battleScoreBreakdown(state, true);
+    c.multiply = 16;
+    const high = battleScoreBreakdown(state, true);
+    expect(high.combatScore).toBe(low.combatScore * 4);
+    expect(high.score).toBe(low.score * 2);
+    expect(high.softMultiplier).toBe(4);
+    c.multiply = 1e300;
+    expect(scoreBattle(state)).toBeGreaterThan(1e100);
+    expect(battleScoreBreakdown(state, true).score).toBe(1_500);
+  });
+
+  it('makes every clear outrank even an adversarial maximum-depth non-clear', () => {
+    const farmer = firstCombat(), c = farmer.combat!;
+    c.squeeks = 1e300; c.multiply = 1e300;
+    farmer.floorsCleared = 24;
+    // Stress the run budget beyond canonical map possibilities as a future-map guard.
+    farmer.battleScores = Array.from({ length: 100 }, () => battleScoreBreakdown(farmer, true));
+    farmer.phase = 'lost';
+    const nonclear = runScoreSummary(farmer);
+    expect(nonclear.totalScore).toBe(NON_CLEAR_CEILING);
+    expect(nonclear.totalScore).toBe(nonclear.progressionScore + nonclear.combatScore);
+    const clear = createRun(farmer.day, farmer.map, 'daily');
+    clear.phase = 'won';
+    expect(runScoreSummary(clear).totalScore).toBe(CLEAR_BONUS);
+    expect(runScoreSummary(clear).totalScore).toBeGreaterThan(nonclear.totalScore);
+  });
+
+  it('gives skillful Mult clears a meaningful bounded premium on the same full route', () => {
+    const state = firstCombat(), c = state.combat!;
+    state.day.difficulty = 1; state.day.hibernation = false;
+    state.floorsCleared = 24; state.phase = 'won';
+    const simulate = (mult: number) => {
+      state.battleScores = [];
+      for (const n of state.map.filter(n => ['battle', 'elite', 'boss'].includes(n.kind))) {
+        state.currentNode = n.id; n.jackpot = false;
+        c.squeeks = 200; c.addMult = 1; c.turnMult = 0; c.chain = 0; c.multiply = mult;
+        state.battleScores.push(battleScoreBreakdown(state, true));
+      }
+      return runScoreSummary(state).totalScore;
+    };
+    const standard = simulate(1), skillful = simulate(100), extreme = simulate(1e300);
+    expect(skillful / standard).toBeGreaterThanOrEqual(1.5);
+    expect(extreme / standard).toBeLessThanOrEqual(3);
+    expect(extreme).toBe(skillful);
+  });
+
+  it('exports and verifies the score version and rejects old replays before replaying', () => {
+    const state = finishFirstBattle(), payload = exportRun(state);
+    expect(payload.scoreVersion).toBe(SCORE_VERSION);
+    expect(replayRun(payload).totalScore).toBe(state.totalScore);
+    expect(() => replayRun({ ...payload, scoreVersion: SCORE_VERSION - 1 })).toThrow(/score version/);
+    const { scoreVersion: _version, ...legacy } = payload;
+    expect(() => replayRun(legacy as typeof payload)).toThrow(/score version/);
   });
 });

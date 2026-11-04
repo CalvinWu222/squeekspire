@@ -1,5 +1,6 @@
 import { replayRun, type RunExport } from '../src/game/engine.js';
 import { fallbackDay, getGameDay } from '../src/game/data.js';
+import { SCORE_VERSION } from '../src/game/score.js';
 
 export const MAX_ACTIONS = 4_000;
 const object = (value: unknown): value is Record<string, unknown> => !!value && typeof value === 'object' && !Array.isArray(value);
@@ -20,7 +21,7 @@ function validateAction(value: unknown) {
       requireValue(value.mergePair === undefined || (Array.isArray(value.mergePair) && value.mergePair.length === 2 && value.mergePair.every(uid)), 'Invalid merge pair');
       requireValue(value.prediction === undefined || ['attack', 'skill', 'power', 'curse'].includes(value.prediction as string), 'Invalid prediction'); break;
     case 'reward': requireValue(value.cardId === null || (typeof value.cardId === 'string' && /^[a-z0-9-]{1,60}$/.test(value.cardId)), 'Invalid reward'); break;
-    case 'buy': requireValue(integer(value.index, 0, 3), 'Invalid shop index'); break;
+    case 'buy': requireValue(integer(value.index, 0, 4), 'Invalid shop index'); break;
     case 'remove': requireValue(uid(value.uid), 'Invalid card identifier'); break;
     case 'rest': requireValue((value.option === 'heal' || value.option === 'upgrade') && (value.uid === undefined || uid(value.uid)), 'Invalid rest choice'); break;
     case 'event': requireValue(value.option === 0 || value.option === 1, 'Invalid event choice'); break;
@@ -31,6 +32,7 @@ function validateAction(value: unknown) {
 /** Validate shape and bounded work before running the authoritative deterministic replay. */
 export function verifySubmission(input: unknown, seed?: number) {
   requireValue(object(input) && input.version === 1 && object(input.day), 'Invalid replay format');
+  requireValue(input.scoreVersion === SCORE_VERSION, 'Unsupported score version; start a new run');
   requireValue(typeof input.day.day === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(input.day.day), 'Invalid game day');
   const date = new Date(`${input.day.day}T00:00:00Z`);
   requireValue(Number.isFinite(date.getTime()) && getGameDay(date) === input.day.day, 'Invalid game day');
@@ -50,5 +52,5 @@ export function verifySubmission(input: unknown, seed?: number) {
   // Every gameplay-relevant daily/endless rule must match the immutable fixture.
   const state = replayRun(payload, canonical);
   if (state.phase !== 'won' && state.phase !== 'lost') throw new Error('Only finished runs can be submitted');
-  return { day: canonical.day, seed: canonical.seed, mode: state.mode, score: state.totalScore, bestHit: state.bestHit, floor: state.floor, floors: state.floor, actions: state.log.length, won: state.phase === 'won', hibernation: canonical.hibernation, spinning: state.mode === 'practice' && state.day.spinning };
+  return { day: canonical.day, seed: canonical.seed, mode: state.mode, scoreVersion: SCORE_VERSION, score: state.totalScore, bestHit: state.bestHit, floor: state.floor, floors: state.floor, actions: state.log.length, won: state.phase === 'won', hibernation: canonical.hibernation, spinning: state.mode === 'practice' && state.day.spinning };
 }

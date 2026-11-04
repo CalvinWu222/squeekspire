@@ -55,7 +55,7 @@ served as a static file. That is deliberately not represented as an implemented 
   `11182, 10891, 10587, 13297, 12561, 8505, 8984`; their median is `10891`.
   Their captured API boundary is 12:00 UTC, distinct from the game's 00:00 UTC reset.
 - Hibernation means total work below 25% of the historical median. The engine applies
-  the design's x1.2 score bonus and the UI shows fog.
+  a x1.2 combat score bonus within the battle cap, and the UI shows fog.
 - Historical RPM uses the deterministic proxy `max(hourly work) / 60`, approximately
   45.08 for the bundled snapshot. It is clearly described as an estimate, not a sensor peak.
 - Price inflation is the saved 24h minted amount divided by the seven-period median
@@ -67,3 +67,29 @@ served as a static file. That is deliberately not represented as an implemented 
   the required gates.
 
 The raw `24h`, `7d`, `30d`, and trimmed status snapshots are bundled for inspection.
+
+## Game score API and scoring reset
+
+`POST /api/score` accepts `{ seed, run, identity }`, where `run` is a finished
+action replay exported by the game. Replay format `version: 1` and scoring
+`scoreVersion: 2` are separate: the scoring version is required and included in the
+export checksum. The API rejects missing, previous, or future scoring versions with
+HTTP 400 `invalid_replay`. It replays every legal action through the same engine
+and score module used by the client, checks the canonical daily snapshot, and
+compares both final score and best hit. Client-provided scores are never trusted.
+
+The HTTP 201 response contains `{ entry, scoreVersion: 2, storage }`. Every entry
+includes `scoreVersion: 2`. `GET /api/leaderboard` returns
+`{ entries, scoreVersion: 2, mode, storage }` with optional `seed` and `runMode`
+matching the query. Daily queries require `mode=daily&seed=<uint32>`; `runMode`
+separates daily, practice, and endless results. Bare GET returns the all-time board.
+Every mode ranks by the progression-weighted final score. The raw best hit remains
+available for display and replay verification, and never determines rank.
+
+Scores from the previous formula are deliberately hidden rather than converted:
+the old total cannot establish the progression and combat contributions needed by
+the new model. Redis uses a fresh `squeekspire:score-v2:` namespace for entries,
+indices, and deduplication. Local server files, browser boards, and the client API
+reader filter out missing or different score versions. New writes drop old local
+score rows. Old browser action saves cannot resume under changed scoring rules;
+profiles, official daily attempt claims, and streak history remain intact.

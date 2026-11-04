@@ -1,9 +1,10 @@
 import type { RunMode } from '../src/game/types.js';
+import { SCORE_VERSION } from '../src/game/score.js';
 import { localFile } from './local-file.mjs';
 
 export interface ScoreEntry {
   id: string; profile: string; name: string; walletAddress?: string; guestId?: string;
-  day: string; seed: number; mode: RunMode; score: number; bestHit: number;
+  day: string; seed: number; mode: RunMode; scoreVersion: number; score: number; bestHit: number;
   floor: number; floors: number; actions: number; won: boolean; hibernation: boolean;
   spinning: boolean; streak: number; createdAt: string;
 }
@@ -15,9 +16,10 @@ export interface ScoreStore {
   rateLimit(key: string, limit: number, windowMs: number, now: number): Promise<{ allowed: boolean; retryAfter: number }>;
 }
 export type Environment = Record<string, string | undefined>;
-const PREFIX = 'squeekspire:v1:';
+// Separate indices and entries make the scoring reset atomic: an old high score
+// can never occupy a current-version rank or deduplicate a new submission.
+const PREFIX = `squeekspire:score-v${SCORE_VERSION}:`;
 const EXPIRY = 90 * 24 * 60 * 60;
-const metric = (entry: ScoreEntry, mode?: RunMode) => mode === 'endless' ? entry.bestHit : entry.score;
 
 export function createMemoryStore(file?: ReturnType<typeof localFile>): ScoreStore {
   const entries = new Map<string, ScoreEntry>();
@@ -29,12 +31,13 @@ export function createMemoryStore(file?: ReturnType<typeof localFile>): ScoreSto
       if (!file) return;
       const rows = await file.read();
       if (!Array.isArray(rows)) throw new Error('Invalid local leaderboard store');
-      for (const row of rows.slice(-5_000)) if (row && typeof row.id === 'string' && Number.isFinite(row.score)) entries.set(row.id, row as ScoreEntry);
+      for (const row of rows.slice(-5_000)) if (row && row.scoreVersion === SCORE_VERSION && typeof row.id === 'string' && Number.isFinite(row.score)) entries.set(row.id, row as ScoreEntry);
     })();
   }
   return {
     kind: 'local',
     async add(entry) {
+      if (entry.scoreVersion !== SCORE_VERSION) throw new Error('Unsupported score version');
       await load();
       const previous = entries.get(entry.id);
       if (previous) return previous;
@@ -50,8 +53,8 @@ export function createMemoryStore(file?: ReturnType<typeof localFile>): ScoreSto
     async list(query) {
       await load();
       return [...entries.values()]
-        .filter(entry => (query.mode !== 'daily' || entry.seed === query.seed) && (!query.runMode || entry.mode === query.runMode))
-        .sort((a, b) => metric(b, query.runMode) - metric(a, query.runMode) || a.createdAt.localeCompare(b.createdAt) || a.id.localeCompare(b.id))
+        .filter(entry => entry.scoreVersion === SCORE_VERSION && (query.mode !== 'daily' || entry.seed === query.seed) && (!query.runMode || entry.mode === query.runMode))
+        .sort((a, b) => b.score - a.score || a.createdAt.localeCompare(b.createdAt) || a.id.localeCompare(b.id))
         .slice(0, 50).map(entry => structuredClone(entry));
     },
     async rateLimit(key, limit, windowMs, now) {
@@ -70,11 +73,9 @@ local previous = redis.call('GET', KEYS[1])
 if previous then return previous end
 redis.call('SET', KEYS[1], ARGV[1])
 for i = 2, #KEYS do
-  local score = ARGV[3]
-  if i == 3 or i == 5 then score = ARGV[4] end
-  redis.call('ZADD', KEYS[i], score, ARGV[2])
+  redis.call('ZADD', KEYS[i], ARGV[3], ARGV[2])
   redis.call('ZREMRANGEBYRANK', KEYS[i], 0, -501)
-  if i >= 4 then redis.call('EXPIRE', KEYS[i], ARGV[5]) end
+  if i >= 4 then redis.call('EXPIRE', KEYS[i], ARGV[4]) end
 end
 return ARGV[1]`;
 const RATE_SCRIPT = `
@@ -101,8 +102,9 @@ export function createRedisStore(url: string, token: string, fetcher: typeof fet
   return {
     kind: 'redis',
     async add(entry) {
+      if (entry.scoreVersion !== SCORE_VERSION) throw new Error('Unsupported score version');
       const keys = [PREFIX + `entry:${entry.id}`, PREFIX + 'all', PREFIX + `all:${entry.mode}`, PREFIX + `seed:${entry.seed}`, PREFIX + `seed:${entry.seed}:${entry.mode}`];
-      const saved = await request(['EVAL', ADD_SCRIPT, keys.length, ...keys, JSON.stringify(entry), entry.id, entry.score, metric(entry, entry.mode), EXPIRY]);
+      const saved = await request(['EVAL', ADD_SCRIPT, keys.length, ...keys, JSON.stringify(entry), entry.id, entry.score, EXPIRY]);
       if (typeof saved !== 'string') throw new Error('Invalid stored score');
       return JSON.parse(saved) as ScoreEntry;
     },
@@ -113,7 +115,8 @@ export function createRedisStore(url: string, token: string, fetcher: typeof fet
       // Entry metadata has no expiry. Fetch the top fifty in one Redis command.
       const values = await request(['MGET', ...ids.map(id => PREFIX + `entry:${id}`)]);
       if (!Array.isArray(values)) throw new Error('Invalid leaderboard entries');
-      return values.filter(value => typeof value === 'string').map(value => JSON.parse(value as string) as ScoreEntry).slice(0, 50);
+      return values.filter(value => typeof value === 'string').map(value => JSON.parse(value as string) as ScoreEntry)
+        .filter(entry => entry?.scoreVersion === SCORE_VERSION).slice(0, 50);
     },
     async rateLimit(key, limit, windowMs) {
       const result = await request(['EVAL', RATE_SCRIPT, 1, PREFIX + `rate:${key}`, windowMs]);
