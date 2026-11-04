@@ -6,7 +6,7 @@ export interface ScoreEntry {
   id: string; profile: string; name: string; walletAddress?: string; guestId?: string;
   day: string; seed: number; mode: RunMode; scoreVersion: number; score: number; bestHit: number;
   floor: number; floors: number; actions: number; won: boolean; hibernation: boolean;
-  spinning: boolean; streak: number; createdAt: string;
+  spinning: boolean; streak: number; createdAt: string; deckTheme?: string;
 }
 export interface BoardQuery { mode: 'daily' | 'all'; seed?: number; runMode?: RunMode; }
 export interface ScoreStore {

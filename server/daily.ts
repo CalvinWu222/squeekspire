@@ -5,6 +5,17 @@ import { createDailyFiles, type DailyFiles } from './daily-files.mjs';
 export type DayResolver = (day: string, seed: number) => DayData;
 const published = createDailyFiles();
 
+/** Same dated / latest / bundled fallback order used by the read-only client. */
+export function resolveLeaderboardDay(day: string, files: DailyFiles = published): DayData {
+  for (const name of [`${day}.json`, 'latest.json']) {
+    const snapshot = files.read(name);
+    if (validateDailySnapshot(snapshot) && (name === 'latest.json' ? snapshot.day <= day : snapshot.day === day)) {
+      return snapshotDay(day, snapshot, name === 'latest.json' ? 'cached' : 'live');
+    }
+  }
+  return fallbackDay(day);
+}
+
 /**
  * Match only rules built from our published immutable data or the bundled fallback.
  * A client can have used an older latest.json during an outage, then submit after

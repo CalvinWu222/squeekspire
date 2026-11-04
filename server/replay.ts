@@ -2,6 +2,7 @@ import { replayRun, type RunExport } from '../src/game/engine.js';
 import { getGameDay } from '../src/game/data.js';
 import { SCORE_VERSION } from '../src/game/score.js';
 import { resolveSnapshotDay, type DayResolver } from './daily.js';
+import { deckTheme } from '../src/game/deckTheme.js';
 
 export const MAX_ACTIONS = 4_000;
 const object = (value: unknown): value is Record<string, unknown> => !!value && typeof value === 'object' && !Array.isArray(value);
@@ -53,5 +54,5 @@ export function verifySubmission(input: unknown, seed?: number, resolveDay: DayR
   // Every gameplay-relevant daily/endless rule must match published immutable data.
   const state = replayRun(payload, canonical);
   if (state.phase !== 'won' && state.phase !== 'lost') throw new Error('Only finished runs can be submitted');
-  return { day: canonical.day, seed: canonical.seed, mode: state.mode, scoreVersion: SCORE_VERSION, score: state.totalScore, bestHit: state.bestHit, floor: state.floor, floors: state.floor, actions: state.log.length, won: state.phase === 'won', hibernation: canonical.hibernation, spinning: state.mode === 'practice' && state.day.spinning };
+  return { day: canonical.day, seed: canonical.seed, mode: state.mode, scoreVersion: SCORE_VERSION, score: state.totalScore, bestHit: state.bestHit, floor: state.floor, floors: state.floor, actions: state.log.length, won: state.phase === 'won', hibernation: canonical.hibernation, spinning: state.mode === 'practice' && state.day.spinning, deckTheme: deckTheme(state.deck) };
 }

@@ -1,0 +1,236 @@
+{
+  "url": "http://127.0.0.1:5174/",
+  "startedAt": "2026-11-04T15:15:07.330Z",
+  "browser": "Playwright bundled Chromium",
+  "fixtureDisclosure": "Replay-verified sample runs submitted only to the isolated local .tmp/leaderboard-bgm.json development store; screenshots have a LOCAL QA label.",
+  "checks": [
+    {
+      "label": "Real overview endpoint loaded",
+      "passed": true,
+      "storage": "local",
+      "day": "2026-11-04",
+      "seed": 1390448569
+    },
+    {
+      "label": "No audio autoplay on direct leaderboard load",
+      "passed": true,
+      "contexts": 0,
+      "starts": 0,
+      "resumes": 0,
+      "gestures": 0,
+      "contextsBeforeGesture": 0,
+      "startsBeforeGesture": 0
+    },
+    {
+      "label": "Empty API response rendered honestly without fabricated rankings",
+      "passed": true
+    },
+    {
+      "label": "Replay-verified local samples visible in real API",
+      "passed": true,
+      "today": 5,
+      "champions": 2
+    },
+    {
+      "label": "desktop route and responsive layout",
+      "passed": true,
+      "width": 1440,
+      "pageWidth": 1440
+    },
+    {
+      "label": "desktop direct route reload",
+      "passed": true
+    },
+    {
+      "label": "mobile route and responsive layout",
+      "passed": true,
+      "width": 390,
+      "pageWidth": 390
+    },
+    {
+      "label": "mobile direct route reload",
+      "passed": true
+    },
+    {
+      "label": "narrow-mobile route and responsive layout",
+      "passed": true,
+      "width": 320,
+      "pageWidth": 320
+    },
+    {
+      "label": "narrow-mobile direct route reload",
+      "passed": true
+    },
+    {
+      "label": "Trusted interaction starts low-volume menu BGM",
+      "passed": true,
+      "contexts": 1,
+      "starts": 10,
+      "resumes": 0,
+      "gestures": 2,
+      "contextsBeforeGesture": 0,
+      "startsBeforeGesture": 0,
+      "scene": "menu",
+      "muted": false,
+      "volumePercent": 35,
+      "effectiveMasterGain": 0.049,
+      "started": true
+    },
+    {
+      "label": "Mute persisted across reload and unmute restarted BGM",
+      "passed": true
+    },
+    {
+      "label": "Main menu leaderboard link works",
+      "passed": true
+    },
+    {
+      "label": "Main menu controls remain usable and starting combat switches BGM",
+      "passed": true,
+      "scene": "combat",
+      "started": true,
+      "overlap": 0
+    },
+    {
+      "label": "Desktop settings dialog opens and closes without music-control overlap",
+      "passed": true
+    },
+    {
+      "label": "Mobile combat music control remains usable without covering End Turn",
+      "passed": true,
+      "scene": "combat",
+      "started": true,
+      "overlap": 0,
+      "toggleInViewport": true
+    },
+    {
+      "label": "Mobile settings dialog opens and closes without music-control overlap",
+      "passed": true
+    },
+    {
+      "label": "API error state rendered and refresh remains usable",
+      "passed": true
+    },
+    {
+      "label": "Refresh recovered after API failure",
+      "passed": true
+    }
+  ],
+  "samples": [
+    {
+      "profile": "guest9201",
+      "day": "2026-11-04",
+      "seed": 1390448569,
+      "score": 259,
+      "floor": 1,
+      "actions": 7,
+      "status": "existing replay-verified local sample"
+    },
+    {
+      "profile": "guest9202",
+      "day": "2026-11-04",
+      "seed": 1390448569,
+      "score": 521,
+      "floor": 2,
+      "actions": 15,
+      "status": "existing replay-verified local sample"
+    },
+    {
+      "profile": "guest9203",
+      "day": "2026-11-04",
+      "seed": 1390448569,
+      "score": 2243,
+      "floor": 8,
+      "actions": 41,
+      "status": "existing replay-verified local sample"
+    },
+    {
+      "profile": "guest9204",
+      "day": "2026-11-04",
+      "seed": 1390448569,
+      "score": 2556,
+      "floor": 9,
+      "actions": 52,
+      "status": "existing replay-verified local sample"
+    },
+    {
+      "profile": "0x7B30C6a91DF205E48b6203d97aF15cE80D429a31",
+      "day": "2026-11-04",
+      "seed": 1390448569,
+      "score": 3220,
+      "floor": 11,
+      "actions": 71,
+      "status": "existing replay-verified local sample"
+    },
+    {
+      "profile": "guest9211",
+      "day": "2026-11-03",
+      "seed": 1554055570,
+      "score": 1123,
+      "floor": 5,
+      "actions": 24,
+      "status": "existing replay-verified local sample"
+    },
+    {
+      "profile": "guest9221",
+      "day": "2026-11-02",
+      "seed": 3064321807,
+      "score": 1230,
+      "floor": 5,
+      "actions": 34,
+      "status": "existing replay-verified local sample"
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "empty.png",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "fullPage": true,
+      "fixtureLabel": "LOCAL QA · SIMULATED EMPTY API RESPONSE"
+    },
+    {
+      "file": "desktop.png",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "fullPage": true,
+      "fixtureLabel": "LOCAL QA · REPLAY-VERIFIED SAMPLE RUNS · LOCAL STORE ONLY"
+    },
+    {
+      "file": "mobile.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "fullPage": true,
+      "fixtureLabel": "LOCAL QA · REPLAY-VERIFIED SAMPLE RUNS · LOCAL STORE ONLY"
+    },
+    {
+      "file": "error.png",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "fullPage": true,
+      "fixtureLabel": "LOCAL QA · SIMULATED API NETWORK FAILURE"
+    }
+  ],
+  "errors": [],
+  "externalRequestsBlocked": [
+    "https://api.squeekchain.com/v1/status",
+    "https://api.squeekchain.com/v1/status",
+    "https://api.squeekchain.com/v1/status",
+    "https://api.squeekchain.com/v1/status",
+    "https://api.squeekchain.com/v1/status",
+    "https://api.squeekchain.com/v1/status",
+    "https://api.squeekchain.com/v1/status",
+    "https://api.squeekchain.com/v1/status",
+    "https://api.squeekchain.com/v1/status",
+    "https://api.squeekchain.com/v1/status"
+  ],
+  "finishedAt": "2026-11-04T15:15:10.597Z"
+}

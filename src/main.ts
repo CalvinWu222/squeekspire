@@ -18,6 +18,7 @@ import { loadPreferences, savePreferences, motionDuration, type Preferences } fr
 import { GUIDE_PAGE_COUNT, guideMarkup, t, wheelArt } from './guide';
 import { WalletController, SEPOLIA_CHAIN_ID, isWalletAddress, shortenAddress, type Eip1193Provider } from './wallet';
 import { fetchLeaderboard, submitScore, type GlobalEntry } from './leaderboard';
+import { mountMusicControls, music, musicSceneForRun } from './music';
 
 const root = document.querySelector<HTMLDivElement>('#app')!;
 let day: DayData;
@@ -39,6 +40,8 @@ let pendingPlay: { uid: string; target: number; choice?: number; mergePair?: [st
 let inspectedRelic = '';
 let restUpgradeUid = '';
 let settings = loadPreferences();
+music.setVolume(settings.volume);
+mountMusicControls();
 let guidePage = 0;
 let guideDetailsOpen = false;
 let guideGesture: { pointerId: number; x: number; y: number; page: number } | null = null;
@@ -129,7 +132,7 @@ function walletMarkup(location: 'menu' | 'board'): string {
 
 function camp(): string {
   const saved = run && !done();
-  return `<main class="title-screen"><div class="title-stars" aria-hidden="true"></div><div class="title-wheel" aria-hidden="true">${wheelArt()}</div><div class="title-content"><span class="eyebrow">A VERY SMALL HERO. A VERY TALL SPIRE.</span><h1 class="hero-title">SQUEEK<span>SPIRE</span><i>✦</i></h1><p class="title-tagline">One more card. One more floor. One less hour of sleep.</p><div class="menu-buttons"><button class="menu-button primary" data-action="start">${text('start')}<span>→</span></button>${saved ? `<button class="menu-button" data-action="resume">${text('continue')}<small>${titleCase(run!.mode)} · ${run!.phase === 'combat' ? 'Battle' : 'Hour ' + Math.max(1, run!.floor)}</small></button>` : ''}<button class="menu-button" data-action="collection">${text('codex')}</button><button class="menu-button" data-action="help">${text('help')}</button><button class="menu-button" data-action="settings">${text('settings')}</button></div>${walletMarkup('menu')}<footer class="site-footer">Unofficial fan-made game, not affiliated with Squeekchain.</footer></div><div class="title-corner"><span class="daily-label">Daily · ${esc(day.day)} UTC</span><span>Resets 00:00 UTC · <span data-daily-countdown>${dailyCountdown()}</span></span><span>TODAY’S SEED <code>${day.seed.toString(16).padStart(8, '0').toUpperCase()}</code></span><span><i class="live-dot ${day.spinning ? 'spinning' : ''}"></i>${day.spinning ? 'HAMSTER: SPINNING' : 'HAMSTER: RESTING'} ${day.hibernation ? ' · Hibernation ×1.2' : ''}</span></div><button class="ghost-button menu-more" data-action="more">${text('more')} <span>•••</span></button><span class="title-version">THE MIDNIGHT WHEEL / v0.2</span></main>`;
+  return `<main class="title-screen"><div class="title-stars" aria-hidden="true"></div><div class="title-wheel" aria-hidden="true">${wheelArt()}</div><div class="title-content"><span class="eyebrow">A VERY SMALL HERO. A VERY TALL SPIRE.</span><h1 class="hero-title">SQUEEK<span>SPIRE</span><i>✦</i></h1><p class="title-tagline">One more card. One more floor. One less hour of sleep.</p><div class="menu-buttons"><button class="menu-button primary" data-action="start">${text('start')}<span>→</span></button>${saved ? `<button class="menu-button" data-action="resume">${text('continue')}<small>${titleCase(run!.mode)} · ${run!.phase === 'combat' ? 'Battle' : 'Hour ' + Math.max(1, run!.floor)}</small></button>` : ''}<a class="menu-button leaderboard-menu-link" href="/leaderboard">Leaderboard</a><button class="menu-button" data-action="collection">${text('codex')}</button><button class="menu-button" data-action="help">${text('help')}</button><button class="menu-button" data-action="settings">${text('settings')}</button></div>${walletMarkup('menu')}<footer class="site-footer">Unofficial fan-made game, not affiliated with Squeekchain.</footer></div><div class="title-corner"><span class="daily-label">Daily · ${esc(day.day)} UTC</span><span>Resets 00:00 UTC · <span data-daily-countdown>${dailyCountdown()}</span></span><span>TODAY’S SEED <code>${day.seed.toString(16).padStart(8, '0').toUpperCase()}</code></span><span><i class="live-dot ${day.spinning ? 'spinning' : ''}"></i>${day.spinning ? 'HAMSTER: SPINNING' : 'HAMSTER: RESTING'} ${day.hibernation ? ' · Hibernation ×1.2' : ''}</span></div><button class="ghost-button menu-more" data-action="more">${text('more')} <span>•••</span></button><span class="title-version">THE MIDNIGHT WHEEL / v0.2</span></main>`;
 }
 
 function modeSelect(): string {
@@ -346,7 +349,7 @@ function runScreen(): string {
 }
 
 function settingsMarkup(): string {
-  return `<span class="eyebrow">MAKE YOURSELF AT HOME</span><h1>${text('settings')}</h1><p class="muted">A little comfort for the climb. Changes save automatically.</p><div class="settings-grid"><label class="settings-row"><span><strong>${text('volume')}</strong><small>Soft synthesized squeeks</small></span><input data-setting="volume" aria-label="${text('volume')}" type="range" min="0" max="100" value="${settings.volume}"/><output id="volume-value">${settings.volume}%</output></label><label class="settings-row"><span><strong>${text('speed')}</strong><small>Set the pace of action animations</small></span><select data-setting="animationSpeed" aria-label="${text('speed')}">${(['slow', 'normal', 'fast'] as const).map(speed => `<option value="${speed}" ${settings.animationSpeed === speed ? 'selected' : ''}>${titleCase(speed)}</option>`).join('')}</select></label><label class="settings-row"><span><strong>${text('reduceEffects')}</strong><small>Pause ambient motion, flashes, and action effects</small></span><input data-setting="reduceEffects" type="checkbox" ${settings.reduceEffects ? 'checked' : ''}/></label></div><p class="muted settings-note">Your system’s reduced-motion preference is always respected.</p>`;
+  return `<span class="eyebrow">MAKE YOURSELF AT HOME</span><h1>${text('settings')}</h1><p class="muted">A little comfort for the climb. Changes save automatically.</p><div class="settings-grid"><label class="settings-row"><span><strong>${text('volume')}</strong><small>Music and soft synthesized squeeks</small></span><input data-setting="volume" aria-label="${text('volume')}" type="range" min="0" max="100" value="${settings.volume}"/><output id="volume-value">${settings.volume}%</output></label><label class="settings-row"><span><strong>${text('speed')}</strong><small>Set the pace of action animations</small></span><select data-setting="animationSpeed" aria-label="${text('speed')}">${(['slow', 'normal', 'fast'] as const).map(speed => `<option value="${speed}" ${settings.animationSpeed === speed ? 'selected' : ''}>${titleCase(speed)}</option>`).join('')}</select></label><label class="settings-row"><span><strong>${text('reduceEffects')}</strong><small>Pause ambient motion, flashes, and action effects</small></span><input data-setting="reduceEffects" type="checkbox" ${settings.reduceEffects ? 'checked' : ''}/></label></div><p class="muted settings-note">Your system’s reduced-motion preference is always respected.</p>`;
 }
 
 function playDialogMarkup(): string {
@@ -396,6 +399,7 @@ function modalMarkup(): string {
 }
 
 function applyPreferences(): void {
+  music.setVolume(settings.volume);
   const html = document.documentElement;
   html.lang = 'en';
   html.dataset.effects = settings.reduceEffects ? 'reduced' : 'full';
@@ -404,6 +408,7 @@ function applyPreferences(): void {
 }
 
 function render(): void {
+  music.setScene(musicSceneForRun(screen, run));
   const active = document.activeElement instanceof HTMLElement ? document.activeElement : null;
   const focusId = active?.id;
   const focusData = active ? { ...active.dataset } : {};
@@ -418,6 +423,7 @@ function render(): void {
   const burst = Date.now() < burstUntil && motionDuration(settings, 1) > 0;
   const content = screen === 'run' && run ? runScreen() : screen === 'modes' ? modeSelect() : screen === 'characters' ? characterSelect() : camp();
   root.innerHTML = `<div class="app-shell ${burst ? 'squeek-shake' : ''}" data-screen="${screen}">${header()}${content}${burst ? `<div class="squeek-burst" aria-hidden="true"><span>SQUEEK!</span><strong>${fmt(burstScore)}</strong><small>THAT’S ONE VERY AWAKE HAMSTER.</small></div>` : ''}${playEffect && Date.now() < playEffect.until ? `<div class="card-play-effect" aria-hidden="true" inert>${playEffect.markup}</div>` : ''}${toast ? `<div class="toast" role="status">${esc(toast)}</div>` : ''}${modalMarkup()}</div>`;
+  mountMusicControls(screen === 'run' && !modal ? root.querySelector<HTMLElement>('.topnav') ?? undefined : undefined);
   const guideDetails = root.querySelector<HTMLDetailsElement>('.guide-details');
   if (pendingDay) {
     root.querySelectorAll<HTMLButtonElement>('[data-action="begin"], [data-action="again"]').forEach(button => { button.disabled = true; });

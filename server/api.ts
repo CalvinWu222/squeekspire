@@ -1,8 +1,9 @@
 import { verifySubmission } from './replay.js';
 import { createStore, type BoardQuery, type Environment, type ScoreEntry, type ScoreStore } from './store.js';
-import type { RunMode } from '../src/game/types.js';
+import type { DayData, RunMode } from '../src/game/types.js';
 import { SCORE_VERSION } from '../src/game/score.js';
-import type { DayResolver } from './daily.js';
+import { resolveLeaderboardDay, type DayResolver } from './daily.js';
+import { getGameDay } from '../src/game/data.js';
 
 export const MAX_BODY_BYTES = 256 * 1024;
 export const POST_RATE_LIMIT = 12;
@@ -80,7 +81,7 @@ function queryFrom(url: URL): BoardQuery {
 }
 
 /** Vercel and local Vite middleware use this same handler. */
-export function createApi(options: { store?: ScoreStore; env?: Environment; now?: () => number; resolveDay?: DayResolver } = {}) {
+export function createApi(options: { store?: ScoreStore; env?: Environment; now?: () => number; resolveDay?: DayResolver; resolveBoardDay?: (day: string) => DayData } = {}) {
   let store = options.store;
   const now = options.now ?? Date.now;
   return async function handler(request: ApiRequest, response: ApiResponse) {
@@ -106,6 +107,26 @@ export function createApi(options: { store?: ScoreStore; env?: Environment; now?
       const allowed = await store.rateLimit(`${isScore ? 'score' : 'board'}:${ipHash}`, isScore ? POST_RATE_LIMIT : GET_RATE_LIMIT, 60_000, now());
       if (!allowed.allowed) { response.setHeader('Retry-After', String(allowed.retryAfter)); throw new ApiError(429, 'rate_limited', 'Too many requests; try again shortly'); }
       if (!isScore) {
+        const view = url.searchParams.get('view');
+        if (view !== null && view !== 'overview') throw new ApiError(400, 'invalid_query', 'Unknown leaderboard view');
+        if (view === 'overview') {
+          const instant = now();
+          const resolveDay = options.resolveBoardDay ?? resolveLeaderboardDay;
+          const days = Array.from({ length: 8 }, (_, offset) => resolveDay(getGameDay(new Date(instant - offset * 86_400_000))));
+          // Query each seed index directly: an old champion may be far below the
+          // all-time top fifty. Daily indexes expire after 90 days; this bounded
+          // seven-day archive honestly returns null when no retained result exists.
+          const [boards, allTime] = await Promise.all([
+            Promise.all(days.map(async day => (await store!.list({ mode: 'daily', runMode: 'daily', seed: day.seed }))
+              .filter(entry => entry.scoreVersion === SCORE_VERSION && entry.mode === 'daily' && entry.seed === day.seed && entry.day === day.day))),
+            store.list({ mode: 'all' }).then(entries => entries.filter(entry => entry.scoreVersion === SCORE_VERSION)),
+          ]);
+          send(200, {
+            today: { day: days[0]!.day, seed: days[0]!.seed, entries: boards[0] },
+            champions: days.slice(1).map((day, index) => ({ day: day.day, seed: day.seed, entry: boards[index + 1]![0] ?? null })),
+            allTime, scoreVersion: SCORE_VERSION, storage: store.kind,
+          }); return;
+        }
         const query = queryFrom(url);
         const entries = (await store.list(query)).filter(entry => entry.scoreVersion === SCORE_VERSION);
         send(200, { entries, scoreVersion: SCORE_VERSION, ...query, storage: store.kind }); return;

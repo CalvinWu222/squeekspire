@@ -71,6 +71,7 @@ small { font-size:.75em; font-weight:400; }
 .menu-button:hover { border-color:var(--gold); color:#fff0cf; background:#586047aa; transform:translateY(-2px); box-shadow:0 6px 0 #05101966,0 0 25px #efc37b0c; }
 .menu-button > span { position:absolute; right:24px; color:#cdb27a; font-size:20px; top:13px; }
 .menu-button > small { display:block; color:#a3b4a9; font-size:9px; margin-top:4px; letter-spacing:.6px; }
+.leaderboard-menu-link { display:block; text-align:center; text-decoration:none; }
 .title-corner { position:absolute; left:30px; bottom:24px; display:flex; flex-direction:column; gap:6px; color:#8fa8a8; font:9px/1.6 var(--pixel); letter-spacing:.6px; }
 .title-corner code { color:#d1c89d; margin-left:6px; font-family:inherit; }
 .menu-more { position:absolute; right:29px; bottom:25px; color:#a1b9b6; font-size:12px; }

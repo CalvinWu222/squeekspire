@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fallbackDay } from './game/data';
 import { act, createRun } from './game/engine';
 import { generateMap } from './game/map';
-import { fetchLeaderboard, submitScore } from './leaderboard';
+import { fetchLeaderboard, fetchLeaderboardOverview, submitScore } from './leaderboard';
 import { SCORE_VERSION } from './game/score';
 
 const day = fallbackDay('2026-11-04');
@@ -39,6 +39,21 @@ describe('shared leaderboard client', () => {
     vi.mocked(fetch).mockResolvedValue(response({ entry }) as Response);
     await submitScore(finished, 'guest4321');
     expect(JSON.parse(String(vi.mocked(fetch).mock.calls[0][1]!.body)).identity).toEqual({ guestId: 'guest4321' });
+  });
+
+  it('loads the read-only overview with optional legacy deck metadata and validates daily partitions', async () => {
+    const overview = { today: { day: day.day, seed: day.seed, entries: [entry] },
+      champions: Array.from({ length: 7 }, (_, index) => {
+        const past = fallbackDay(new Date(Date.parse(`${day.day}T00:00:00Z`) - (index + 1) * 86_400_000).toISOString().slice(0, 10));
+        return { day: past.day, seed: past.seed, entry: null };
+      }), allTime: [{ ...entry, deckTheme: 'Burrow Guard' }], storage: 'redis', scoreVersion: SCORE_VERSION };
+    vi.mocked(fetch).mockResolvedValue(response(overview) as Response);
+    expect(await fetchLeaderboardOverview()).toEqual(overview);
+    expect(vi.mocked(fetch).mock.calls[0][0]).toBe('/api/leaderboard?view=overview');
+    vi.mocked(fetch).mockResolvedValue(response({ ...overview, today: { ...overview.today, entries: [{ ...entry, mode: 'practice' }] } }) as Response);
+    await expect(fetchLeaderboardOverview()).rejects.toThrow('Invalid leaderboard');
+    vi.mocked(fetch).mockResolvedValue(response({ ...overview, champions: [null] }) as Response);
+    await expect(fetchLeaderboardOverview()).rejects.toThrow('Invalid leaderboard');
   });
 
   it('rejects an unavailable or malformed API so the UI can fall back locally', async () => {

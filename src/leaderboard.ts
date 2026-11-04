@@ -3,7 +3,14 @@ import type { BoardEntry } from './game/storage';
 import type { RunMode } from './game/types';
 import { SCORE_VERSION } from './game/score';
 
-export interface GlobalEntry extends BoardEntry { seed: number; }
+export interface GlobalEntry extends BoardEntry { seed: number; name?: string; deckTheme?: string; }
+export interface LeaderboardOverview {
+  today: { day: string; seed: number; entries: GlobalEntry[] };
+  champions: { day: string; seed: number; entry: GlobalEntry | null }[];
+  allTime: GlobalEntry[];
+  storage: 'local' | 'redis';
+  scoreVersion: number;
+}
 
 /** Same-origin only: credentials and the Redis URL never enter the client bundle. */
 async function request(path: string, init?: RequestInit): Promise<unknown> {
@@ -23,7 +30,27 @@ function isEntry(value: unknown): value is GlobalEntry {
     && (/^guest\d{4,8}$/.test(row.profile) || /^0x[0-9a-fA-F]{40}$/.test(row.profile))
     && /^\d{4}-\d{2}-\d{2}$/.test(row.day) && ['daily', 'practice', 'endless'].includes(row.mode)
     && [row.seed, row.score, row.bestHit, row.floor].every(n => Number.isFinite(n) && n >= 0)
-    && typeof row.won === 'boolean' && typeof row.hibernation === 'boolean';
+    && typeof row.won === 'boolean' && typeof row.hibernation === 'boolean'
+    && (row.name === undefined || (typeof row.name === 'string' && row.name.length <= 80))
+    && (row.deckTheme === undefined || (typeof row.deckTheme === 'string' && row.deckTheme.length <= 40));
+}
+
+export async function fetchLeaderboardOverview(): Promise<LeaderboardOverview> {
+  const data = await request('/api/leaderboard?view=overview') as LeaderboardOverview | null;
+  const validDay = (value: unknown): value is { day: string; seed: number } => !!value && typeof value === 'object'
+    && /^\d{4}-\d{2}-\d{2}$/.test((value as { day: string }).day)
+    && Number.isInteger((value as { seed: number }).seed) && (value as { seed: number }).seed >= 0 && (value as { seed: number }).seed <= 0xffff_ffff;
+  const dailyEntry = (entry: GlobalEntry, day: { day: string; seed: number }) => isEntry(entry)
+    && entry.mode === 'daily' && entry.day === day.day && entry.seed === day.seed;
+  if (!data || data.scoreVersion !== SCORE_VERSION || !['local', 'redis'].includes(data.storage)
+    || !validDay(data.today) || !Array.isArray(data.today.entries) || data.today.entries.length > 50
+    || !data.today.entries.every(entry => dailyEntry(entry, data.today))
+    || !Array.isArray(data.champions) || data.champions.length !== 7
+    || !data.champions.every(day => validDay(day) && (day.entry === null || dailyEntry(day.entry, day)))
+    || !Array.isArray(data.allTime) || data.allTime.length > 50 || !data.allTime.every(isEntry)) {
+    throw new Error('Invalid leaderboard response');
+  }
+  return data;
 }
 
 export async function fetchLeaderboard(mode: RunMode, seed: number): Promise<GlobalEntry[]> {

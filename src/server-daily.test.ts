@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import settlementsFixture from '../fixtures/settlements.json';
 import { createApi, type ApiResponse } from '../server/api';
 import { createDailyFiles, type DailyFiles } from '../server/daily-files.mjs';
-import { resolveSnapshotDay } from '../server/daily';
+import { resolveLeaderboardDay, resolveSnapshotDay } from '../server/daily';
 import { verifySubmission } from '../server/replay';
 import { createMemoryStore } from '../server/store';
 import { fallbackDay, loadDay, settlementSeed, snapshotDay, validateDailySnapshot, type DailySnapshot } from './game/data';
@@ -41,6 +41,15 @@ function resign(run: RunExport, updates: Partial<RunExport>): RunExport {
 }
 
 describe('published daily replay sources', () => {
+  it('resolves overview seeds with the same dated, latest and fallback priority as the client', () => {
+    const current = snapshot();
+    const previous = snapshot('2026-11-03', '18');
+    expect(resolveLeaderboardDay(current.day, files({ '2026-11-04.json': current, 'latest.json': previous })).seed).toBe(snapshotDay(current.day, current).seed);
+    expect(resolveLeaderboardDay(current.day, files({ 'latest.json': previous })).seed).toBe(snapshotDay(current.day, previous).seed);
+    expect(resolveLeaderboardDay(previous.day, files({ 'latest.json': current })).seed).toBe(fallbackDay(previous.day).seed);
+    expect(resolveLeaderboardDay(current.day, files({ '2026-11-04.json': previous })).seed).toBe(fallbackDay(current.day).seed);
+  });
+
   it('shares the dated client seed, map and server rules', async () => {
     const published = snapshot();
     expect(validateDailySnapshot(published)).toBe(true);

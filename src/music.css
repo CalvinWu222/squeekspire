@@ -1,0 +1,26 @@
+.music-toggle {
+  position:fixed; z-index:180; right:16px; bottom:max(14px, env(safe-area-inset-bottom));
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  min-height:42px; min-width:110px; padding:9px 12px; border:1px solid #9a76c2;
+  border-radius:3px; color:#e1caff; background:#21162ff0;
+  box-shadow:0 3px 0 #0c0716, inset 0 0 13px #b473ef10;
+  font:9px/1.4 "Lucida Console","Courier New",monospace; letter-spacing:.7px;
+  cursor:pointer; touch-action:manipulation;
+}
+.music-toggle:hover { background:#392449; border-color:#d7b5fc; }
+.music-toggle:focus-visible { outline:2px solid #f5d482; outline-offset:4px; }
+.music-toggle[aria-pressed="true"] { color:#b8a5ca; border-color:#695477; }
+.music-pixel { color:#d6b3ff; font-size:18px; width:17px; line-height:1; }
+body:has(.app-shell[data-screen="camp"], .app-shell[data-screen="modes"], .app-shell[data-screen="characters"]) .music-toggle {
+  top:max(18px, env(safe-area-inset-top)); bottom:auto;
+}
+body:has(.app-shell[data-screen="run"]) .music-toggle:not(.music-toggle-inline) {
+  top:max(14px, env(safe-area-inset-top)); bottom:auto;
+}
+.music-toggle.music-toggle-inline {
+  position:static; flex-shrink:0; min-width:94px; min-height:34px; padding:6px 9px; font-size:8px;
+}
+@media (max-width:600px) {
+  .music-toggle { right:10px; bottom:max(10px, env(safe-area-inset-bottom)); min-width:98px; min-height:42px; font-size:8px; padding:8px 10px; }
+  .music-toggle.music-toggle-inline { min-width:88px; min-height:34px; padding:5px 8px; font-size:7px; }
+}
