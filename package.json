@@ -10,6 +10,7 @@
     "dev": "node scripts/dev.mjs",
     "build": "tsc --noEmit && node scripts/build.mjs",
     "test": "node scripts/test.mjs",
+    "simulate:relics": "node scripts/simulate-relics.mjs",
     "preview": "node scripts/preview.mjs"
   },
   "devDependencies": {

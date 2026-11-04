@@ -33,7 +33,7 @@ export interface MapNode {
   id: number;
   act: number;
   hour: number;
-  kind: 'battle' | 'elite' | 'boss' | 'rest' | 'shop' | 'event';
+  kind: 'battle' | 'elite' | 'boss' | 'rest' | 'shop' | 'event' | 'treasure';
   work: number;
   tier: number;
   jackpot: boolean;

@@ -25,7 +25,7 @@ export function generateMap(day: DayData): MapNode[] {
     .slice(0, jackpotCount)
     .map((hour) => hour.hour));
 
-  const map = day.hours.map((hour, id) => {
+  const map: MapNode[] = day.hours.map((hour, id) => {
     const act = Math.floor(id / 8) + 1;
     const gate = id % 8 === 7;
     const jackpot = jackpotHours.has(hour.hour);
@@ -51,7 +51,9 @@ export function generateMap(day: DayData): MapNode[] {
       .filter(shop => Math.abs(rest - shop) >= 2 && !map[offset + rest]!.jackpot && !map[offset + shop]!.jackpot)
       .map(shop => ({ rest, shop, weight: map[offset + rest]!.work + map[offset + shop]!.work
         - map[offset + rest - 1]!.work * 0.6 + random() * peak * 0.1 })));
-    const placement = pairs.sort((a, b) => a.weight - b.weight || a.rest - b.rest || a.shop - b.shop)[0]!;
+    const ordered = pairs.sort((a, b) => a.weight - b.weight || a.rest - b.rest || a.shop - b.shop);
+    const placement = ordered.find(({ rest, shop }) => shopSlots.some(local => ![rest, shop, rest - 1].includes(local)
+      && !map[offset + local]!.jackpot)) ?? ordered[0]!;
     const risk = offset + placement.rest - 1;
     for (let local = 0; local < 7; local++) {
       const n = map[offset + local]!;
@@ -62,6 +64,15 @@ export function generateMap(day: DayData): MapNode[] {
       if (local === 0 || n.jackpot) n.kind = 'battle';
     }
     map[risk]!.kind = map[risk]!.work > 0 ? 'elite' : 'battle';
+    // One visible, peaceful relic room in every act. Preserve recovery, the
+    // optional elite, act openings and actual-work jackpot combat rooms.
+    const treasure = shopSlots.filter(local => ![placement.rest, placement.shop, placement.rest - 1].includes(local)
+      && !map[offset + local]!.jackpot)
+      .sort((a, b) => map[offset + a]!.work - map[offset + b]!.work || a - b)[0]
+      // Three jackpots can occupy every spare room in one act. In that case
+      // treasure replaces the optional pre-rest fight, never required rooms.
+      ?? placement.rest - 1;
+    map[offset + treasure]!.kind = 'treasure';
     // The fork offers an optional relic/gold fight versus immediate recovery.
     // A late optional elite can also skip its rest and challenge the act gate;
     // therefore at most two elites can be consecutive on any legal route.

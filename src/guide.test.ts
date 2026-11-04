@@ -89,7 +89,8 @@ describe('English visual tip guide', () => {
     expect(guideMarkup('en', 3)).not.toMatch(/Beijing|Shanghai|UTC\+8/);
     expect(guideMarkup('en', 3)).toContain('Starting the run uses your attempt, even if you abandon it');
     expect(guideMarkup('en', 3)).toContain('five-minute');
-    expect(guideMarkup('en', 3)).toContain('Local leaderboard (this device)');
+    expect(guideMarkup('en', 3)).toContain('online global leaderboard');
+    expect(guideMarkup('en', 3)).toContain('Offline - local scores');
     expect(guideMarkup('en', 3)).toContain('resets the attempt allowance, not the captured data snapshot');
   });
 

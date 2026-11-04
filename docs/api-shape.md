@@ -1,7 +1,12 @@
 # Public API inspection and deterministic daily snapshots
 
-Inspected with Node's `fetch` before implementation. The public endpoints are read-only;
-this game contains no wallet, signing, transaction, or private-key integration.
+Inspected with Node's `fetch` before implementation. The public data endpoints are read-only.
+The game now supports optional, read-only Sepolia wallet connection through an injected
+`window.ethereum` provider: `eth_requestAccounts` selects an account and `eth_chainId`
+reads its network. The explicit **Switch to Sepolia** button requests
+`wallet_switchEthereumChain` (`0xaa36a7`). No signatures, transactions, token approvals,
+or private keys are requested. Wallet addresses are self-reported player labels and
+do not establish ownership or identity. Guest play remains available.
 
 ## Observed JSON
 

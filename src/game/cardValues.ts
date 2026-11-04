@@ -69,13 +69,13 @@ export function getCardPresentation(state: RunState | null, card: CardInstance, 
     case 'wheel-kick': words('+'); number(current.rawDamage, baseline.rawDamage); words(' Squeeks.'); break;
     case '3am-dash': words('Apply '); number(current.vulnerable, baseline.vulnerable); words(' Vulnerable.'); break;
     case 'tail-whip': words('Apply 1 Weak.'); break;
-    case 'double-lap': words('+1 Chain.'); break;
-    case 'seed-snack': words('Draw '); number(current.draw, baseline.draw); words('. +1 Chain.'); break;
+    case 'double-lap': words('After the normal card-type match or reset, gain +1 extra Chain (max 20).'); break;
+    case 'seed-snack': words('Draw '); number(current.draw, baseline.draw); words('. After the normal card-type match or reset, gain +1 extra Chain (max 20).'); break;
     case 'sniff': words('Draw 2, then discard the oldest card.'); break;
     case 'sunflower-stash': words('Next turn: +1 Seed.'); break;
     case 'water-bottle': words('Heal '); number(live ? Math.min(current.heal, live.maxHp - live.hp) : current.heal, baseline.heal); words(' HP. Exhaust.'); break;
     case 'squeek': words('+0.5 Mult this turn.'); break;
-    case 'wheel-brake': words('Preserve your Chain.'); break;
+    case 'wheel-brake': words('Keep your Chain count and matched card type when playing this. End turn still resets them.'); break;
     case 'cage-climb': words('Draw 1.'); break;
     case 'night-owl': words('Every turn: +'); number(current.nightSqueeks, baseline.nightSqueeks); words(' base Squeeks.'); break;
     case 'fluff-up': words('Reduce each enemy attack hit this turn by '); number(current.reduction, baseline.reduction); words('.'); break;

@@ -191,7 +191,7 @@ describe('deterministic score and action replay', () => {
       else if (state.phase === 'shop') {
         const offer = state.shop!.offers.findIndex(o => !o.sold && o.price <= state.gold && o.kind === 'card');
         state = act(state, offer >= 0 ? { type: 'buy', index: offer } : { type: 'leave' });
-      } else if (state.phase === 'reward') state = act(state, { type: 'reward', cardId: state.reward!.cards[0]! });
+      } else if (state.phase === 'reward') state = act(state, { type: 'reward', cardId: state.reward!.cards[0] ?? null });
       else {
         const card = state.combat!.hand.find(k => {
           const definition = CARDS[k.id]!;

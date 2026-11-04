@@ -40,6 +40,7 @@ describe('playable single-page flow without opening a browser', () => {
 
   it('keeps the title focused and claims the daily attempt only when the selected character begins', async () => {
     await boot();
+    expect(document.querySelector('footer.site-footer')?.textContent).toContain('Unofficial fan-made game, not affiliated with Squeekchain');
     expect(document.querySelector('.map-node, .leaderboard-row, [data-action="export"]')).toBeNull();
     expect(document.querySelector('[data-action="resume"]')).toBeNull();
     for (const action of ['start', 'collection', 'help', 'settings']) {
@@ -102,8 +103,14 @@ describe('playable single-page flow without opening a browser', () => {
     click('[data-action="collection"]');
     expect(document.querySelector('[role="dialog"]')).not.toBeNull();
     expect(document.querySelectorAll('.catalog-grid .card').length).toBeGreaterThan(30);
+    click('[data-action="collection-tab"][data-tab="relics"]');
+    expect(document.querySelectorAll('.collection-entry .relic-source')).toHaveLength(15);
+    expect(document.querySelector('.relic-source')?.textContent).toContain('Starting relic');
+    expect(document.body.textContent).toContain('Treasure room');
     click('[data-action="close"]');
     begin('practice');
+    click('.chain-help summary');
+    expect(document.querySelector('.chain-help[open] .chain-rules')?.textContent).toContain('Taking enemy damage does not break Chain');
     expect(localStorage.getItem('squeekspire:v1:official-days')).toBeNull();
     click('[data-action="more"]');
     click('[data-action="abandon"]');

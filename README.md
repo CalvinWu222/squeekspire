@@ -1,5 +1,7 @@
 # Squeekspire
 
+Unofficial fan-made game, not affiliated with Squeekchain.
+
 A captured real hamster run snapshot shapes your dungeon (daily refresh coming
 soon). A Vite + TypeScript roguelike deckbuilder with a replay-validated shared
 leaderboard, featuring **Zoomie
@@ -49,8 +51,15 @@ to play. A static-only host or an unavailable API displays **Offline - local sco
   its head. End the turn to draw again.
 - Win battles to pick one of three cards. Shop, remove cards, heal, or upgrade at safe
   hours. Inspect cards and relics in the collection.
-- Consecutive cards of the same type build the Zoomie Chain, ×1.1 per link, capped at
-  20. Changing types or turns resets it; Freeze for Mint preserves a multiplier floor.
+- The first card sets the Zoomie Chain type at 0; another of that type adds 1, capped
+  at 20. A different type resets it to 0; End Turn resets the count and type. Enemy
+  damage does not break it. Wheel Brake preserves the count/type only while played;
+  Freeze for Mint saves pre-play scoring floors for the battle, while the live Chain
+  can still reset. See [all Chain rules and card exceptions](docs/zoomer_chain_rules.md).
+- Elites and bosses guarantee an unowned relic, each act has a Treasure room, and
+  shops offer two distinct unowned relics (one when only one remains). The Codex
+  lists how to get every relic. See [sources, odds, and the 200-run before/after
+  acquisition survey](docs/relic_sources.md).
 - Each won battle scores **Squeeks × Mult**. Additive bonuses apply before
   multiplicative bonuses. Score multipliers never increase combat damage. Top-work
   hours are gold jackpots: each multiplicative trigger, including chain links, is

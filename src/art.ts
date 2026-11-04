@@ -237,6 +237,7 @@ export function nodeIcon(kind: string): string {
     rest: g(2, 0, 0.9, moon(0, 0, 1)),
     shop: p('M3 4h18v5h2v4h-2v9H3v-9H1V9h2Z', C.oat) + r(1, 8, 22, 5, C.rose) + r(10, 15, 5, 7, C.ink) + r(4, 15, 4, 3, C.ink),
     event: p('M5 2h14v3h3v8h-4v3h-4v3h-4v-7h6V6H8v3H3V5h2Z', C.pale) + r(10, 21, 4, 3, C.pale),
+    treasure: r(3, 8, 18, 13, C.gold) + r(3, 7, 18, 4, C.amber) + r(10, 10, 4, 5, C.ink) + p('M5 7V4h14v3H5Z', C.oat),
   };
   return svg(24, 24, icons[kind] ?? star(2, 2, 2));
 }

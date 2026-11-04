@@ -135,6 +135,23 @@ export function previewIntents(state: RunState, turns = 2): { uid: string; name:
   }
   return result;
 }
+/** Revealed absolute turns stay visible until their enemy actions have resolved. */
+export function revealedIntents(state: RunState): { uid: string; name: string; intents: { turn: number; intent: EnemyIntent }[] }[] {
+  if (!state.combat) return [];
+  const c = state.combat, camera = has(state, 'live-camera');
+  const from = c.powers['sleep-cam-from'] ?? Infinity;
+  const until = c.powers['sleep-cam-until'] ?? 0;
+  const future = camera || until > c.turn ? previewIntents(state, 2) : [];
+  return living(state).map(enemy => {
+    const intents: { turn: number; intent: EnemyIntent }[] = [];
+    if (from <= c.turn && c.turn <= until) intents.push({ turn: c.turn, intent: clone(enemy.intent) });
+    for (const [index, intent] of (future.find(item => item.uid === enemy.uid)?.intents ?? []).entries()) {
+      const turn = c.turn + index + 1;
+      if (camera || from <= turn && turn <= until) intents.push({ turn, intent });
+    }
+    return { uid: enemy.uid, name: enemy.name, intents };
+  }).filter(enemy => enemy.intents.length);
+}
 function startTurn(s: RunState, first = false) {
   const c = s.combat!;
   if (!first) c.turn++;
@@ -189,6 +206,12 @@ function addRelic(s: RunState, id: string) {
   if (id === 'genesis') s.deck.push(instance(s, pick(s, CARD_POOL.filter(key => CARDS[key]!.rarity === 'rare'))));
   if (id === 'name-tag' || id === 'probably-nothing') { const cards = s.deck.filter(c => isCardUpgradable(c) && (id === 'name-tag' || CARDS[c.id]!.rarity === 'common')); if (cards.length) pick(s, cards).level = 1; }
 }
+/** Every unowned relic has equal weight; rarity affects price, never drops. */
+function findRelic(s: RunState): string | undefined {
+  const pool = Object.keys(RELICS).filter(id => !has(s, id));
+  // Settled block metadata directly changes placement without changing odds.
+  return pool.length ? pool[(Math.floor(random(s) * pool.length) + s.day.blockHeight + s.day.blockProgress + node(s).id) % pool.length] : undefined;
+}
 function completeNode(s: RunState) {
   if (has(s, 'airdrop-farmer')) for (let i = 0; i < (node(s).kind === 'elite' ? 2 : 1); i++) s.deck.push(instance(s, pick(s, CARD_POOL.filter(id => CARDS[id]!.cost === 0))));
   delete s.reward; delete s.shop;
@@ -204,14 +227,13 @@ function checkCombat(s: RunState) {
   s.totalScore = bounded(s.totalScore + earned); s.battles++;
   if (node(s).id % 8 === 7) s.bossKills++;
   say(s, `Battle won · ${formatNumber(earned)} Squeeks`);
-  if (node(s).id === 23 && s.mode !== 'endless') { completeNode(s); return; }
   const elite = node(s).kind === 'elite' || node(s).kind === 'boss';
   s.gold += elite ? 25 + Math.floor(random(s) * 11) : 10 + Math.floor(random(s) * 11);
   const cards: string[] = []; while (cards.length < 3) { const id = randomCard(s, elite); if (!cards.includes(id)) cards.push(id); }
-  const pool = Object.keys(RELICS).filter(id => !has(s, id));
-  // Settled block metadata directly changes relic placement, in addition to seeding the route.
-  const relic = elite && pool.length ? pool[(Math.floor(random(s) * pool.length) + s.day.blockHeight + s.day.blockProgress + node(s).id) % pool.length] : undefined;
+  const relic = elite ? findRelic(s) : undefined;
   if (relic) addRelic(s, relic);
+  // The final boss must award its relic before the run changes to won.
+  if (node(s).id === 23 && s.mode !== 'endless') { completeNode(s); return; }
   s.reward = { cards, relic }; s.phase = 'reward';
 }
 function endTurn(s: RunState) {
@@ -371,7 +393,14 @@ function play(s: RunState, action: Extract<RunAction, { type: 'play' }>) {
     case 'gsqueek': if (c.turn === 1) { draw(s, 1); c.turnMult += 0.5; } break;
     case 'hammy-gang': c.addMult += s.deck.filter(k => /hammy|squeek/i.test(CARDS[k.id]!.name)).length * 0.3; break;
     case 'gud-tek': { const chosen = c.hand[action.choice!]!; if (chosen.level) c.squeeks = bounded(c.squeeks * 1.5); else chosen.level = 1; break; }
-    case 'sleep-cam': c.powers['sleep-cam'] = 1; if (s.day.hibernation) draw(s, 1); break;
+    case 'sleep-cam': {
+      const active = (c.powers['sleep-cam-until'] ?? 0) >= c.turn;
+      c.powers['sleep-cam-from'] = active ? Math.min(c.powers['sleep-cam-from'] ?? c.turn, c.turn + 1) : c.turn + 1;
+      c.powers['sleep-cam-until'] = Math.max(c.powers['sleep-cam-until'] ?? 0, c.turn + 2);
+      c.powers['sleep-cam'] = 1;
+      if (s.day.hibernation) draw(s, 1);
+      break;
+    }
     case 'nyn-sob': c.squeeks += 10; break;
     case 'firmware-upgrade':
       for (const pile of [s.deck, c.hand, c.draw, c.discard, c.exhaust]) for (const k of pile) if (/WHEELY/i.test(CARDS[k.id]!.name) && isCardUpgradable(k)) k.level = 1;
@@ -403,7 +432,10 @@ function shop(s: RunState) {
   const ranges = { common: [45, 55], uncommon: [70, 80], rare: [135, 165] };
   const offers: ShopOffer[] = cards.map((id, i) => { const [lo, hi] = ranges[CARDS[id]!.rarity]; return { kind: 'card', id, price: Math.round((lo! + random(s) * (hi! - lo!)) * discount * (i === sale ? 0.5 : 1)), sold: false }; });
   const relicPool = Object.keys(RELICS).filter(id => !has(s, id));
-  if (relicPool.length) { const id = pick(s, relicPool); offers.push({ kind: 'relic', id, price: Math.round(({ common: 145, uncommon: 240, rare: 300 }[RELICS[id]!.rarity]) * discount), sold: false }); }
+  for (let i = 0; i < 2 && relicPool.length; i++) {
+    const id = pick(s, relicPool); relicPool.splice(relicPool.indexOf(id), 1);
+    offers.push({ kind: 'relic', id, price: Math.round(({ common: 145, uncommon: 240, rare: 300 }[RELICS[id]!.rarity]) * discount), sold: false });
+  }
   s.shop = { offers, removePrice: Math.round((50 + s.removeCount * 25) * discount) }; s.phase = 'shop';
 }
 /** Pure reducer. Rejected actions throw and leave the caller's state untouched. */
@@ -422,6 +454,12 @@ export function act(original: RunState, action: RunAction): RunState {
     s.currentNode = action.nodeId; s.floor++;
     if (['battle', 'elite', 'boss'].includes(node(s).kind)) beginCombat(s);
     else if (node(s).kind === 'shop') shop(s);
+    else if (node(s).kind === 'treasure') {
+      const relic = findRelic(s);
+      if (relic) addRelic(s, relic);
+      s.reward = { cards: [], relic }; s.phase = 'reward';
+      say(s, relic ? 'Treasure opened. The relic is yours.' : 'Treasure opened. You already own every relic.');
+    }
     else s.phase = node(s).kind as 'rest' | 'event';
   } else if (action.type === 'play') { fail(s.phase === 'combat', 'Not in combat'); play(s, action); }
   else if (action.type === 'endTurn') { fail(s.phase === 'combat', 'Not in combat'); endTurn(s); }

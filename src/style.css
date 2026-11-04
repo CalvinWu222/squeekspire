@@ -49,7 +49,7 @@ small { font-size:.75em; font-weight:400; }
 .ghost-button .muted { margin-left:5px; font-size:10px; }
 
 /* A title, a wheel, and an invitation into the cage. */
-.title-screen { position:relative; isolation:isolate; display:grid; align-items:center; min-height:100svh; overflow:hidden; padding:64px max(7vw,28px) 90px; background:radial-gradient(ellipse at 74% 42%,#31534c52,transparent 52%),linear-gradient(110deg,#0c1b23 15%,#0d2027 55%,#14292e); }
+.title-screen { position:relative; isolation:isolate; display:grid; align-items:center; min-height:100svh; overflow:hidden; padding:64px max(7vw,28px) 130px; background:radial-gradient(ellipse at 74% 42%,#31534c52,transparent 52%),linear-gradient(110deg,#0c1b23 15%,#0d2027 55%,#14292e); }
 .title-screen::before { content:""; position:absolute; z-index:-1; inset:0; pointer-events:none; background:repeating-linear-gradient(90deg,transparent 0 110px,#020c1244 111px 115px,#8aaba208 116px 118px,transparent 119px 123px),linear-gradient(0deg,#050e13d9,transparent 33%); mask-image:linear-gradient(90deg,transparent 30%,#000 100%); }
 .title-screen::after { content:""; position:absolute; z-index:-1; inset:75% -10% -25%; background:repeating-linear-gradient(164deg,#9d80511b 0 8px,transparent 8px 43px,#68847718 43px 52px,transparent 52px 83px),radial-gradient(ellipse,#67715d44,#102027 70%); transform:rotate(-3deg); border-top:1px solid #67807522; }
 .title-stars { position:absolute; z-index:-1; inset:0; background:radial-gradient(#e3d2a02e 1px,transparent 1px); background-size:93px 79px; opacity:.5; }
@@ -76,6 +76,7 @@ small { font-size:.75em; font-weight:400; }
 .menu-more { position:absolute; right:29px; bottom:25px; color:#a1b9b6; font-size:12px; }
 .menu-more span { margin-left:10px; color:#d5bd82; }
 .title-version { position:absolute; right:32px; top:25px; color:#728d8d; font:7px var(--pixel); letter-spacing:1.4px; }
+.site-footer { max-width:390px; margin-top:20px; color:#a1b9b6; font-size:11px; line-height:1.6; }
 
 .wallet-panel { padding:15px; border:1px solid #77877b66; border-radius:6px; background:#0c1b2380; }
 .wallet-menu { width:min(315px,100%); margin:18px auto 0; }
@@ -174,6 +175,12 @@ small { font-size:.75em; font-weight:400; }
 .chain-meter { display:grid; grid-template-columns:1fr auto; align-items:center; gap:7px 10px; flex:0 0 230px; padding:2px 0 2px 28px; border-left:1px solid #5f786044; }
 .chain-meter .eyebrow { font-size:7px; letter-spacing:.8px; white-space:nowrap; }.chain-pips { display:flex; grid-row:2; grid-column:1/-1; gap:3px; }
 .chain-pip { flex:1; height:5px; background:#38514f; border-top:1px solid #4b6460; }.chain-pip.active { background:var(--gold); border-color:#ffe4ad; box-shadow:0 0 6px #efc37b22; }
+.chain-meter { position:relative; }
+.chain-help summary { cursor:help; list-style:none; padding:4px 0; }
+.chain-help summary::-webkit-details-marker { display:none; }
+.chain-help summary:focus-visible { outline:2px solid var(--gold); outline-offset:4px; }
+.chain-rules { position:absolute; z-index:20; top:100%; right:0; width:min(360px,calc(100vw - 52px)); max-height:55vh; overflow:auto; padding:16px; color:#e1e7cc; background:#14282f; border:1px solid #9a8b5c; border-radius:6px; box-shadow:0 10px 24px #0009; font-size:12px; line-height:1.6; }
+.chain-rules p + p { margin-top:10px; }
 .chain-meter > strong { color:var(--gold); font:10px var(--pixel); }.chain-meter > strong small { color:#829d91; font-size:7px; }.chain-meter .muted { grid-row:3; grid-column:1/-1; font-size:8px; }
 .score-pop { position:absolute; z-index:9; right:20px; top:10px; color:var(--gold); font:bold 30px var(--pixel); text-shadow:3px 3px #12212c; pointer-events:none; animation:score-float calc(1s * var(--motion-factor)) ease-out both; }.score-pop small { display:block; margin-top:4px; color:#fff0bc; font-size:10px; letter-spacing:2px; text-align:right; }
 .combat-arena { position:relative; isolation:isolate; min-height:350px; background:radial-gradient(ellipse at 50% 10%,#4c69652c,transparent 70%),linear-gradient(#19313b,#17323b 74%,#35463c 74%,#273c35); }
@@ -477,7 +484,7 @@ svg.ui-icon { display:inline-block; width:18px; height:18px; flex:0 0 18px; vert
 }
 @media (min-width:761px) and (max-height:850px) {
  .run-layout { padding-top:12px; }.combat-header { padding-block:12px; }.combat-header h2 { font-size:18px; }.battle-scoreboard { min-height:72px; padding-block:9px; }.score-cell strong,.score-total strong { font-size:23px; }.combat-arena { min-height:270px; }.combatants { min-height:265px; padding-top:27px; padding-bottom:30px; }.player-combatant { flex-basis:145px; }.player-sprite { width:137px; }.enemy-sprite { width:115px; }.arena-wheel { width:300px; top:-25px; }.battle-controls { min-height:248px; padding-top:8px; }.hand { min-height:227px; }.hand .card { min-height:223px; max-height:244px; flex-basis:140px; width:140px; }.hand .card-art { max-height:85px; }.hand .card-name { font-size:11px; min-height:27px; }.hand .card-description { font-size:8px; min-height:40px; }.hand .card-top { min-height:16px; }.pile { min-height:72px; }.piles { top:20px; }.energy-display { bottom:28px; }.end-turn { bottom:28px; }.arena-caption { top:12px; }
- .selection-screen { padding-top:62px; padding-bottom:28px; }.selection-heading { margin-bottom:27px; }.character-choice { min-height:435px; }.character-art { min-height:185px; padding-top:32px; }.character-art svg { width:150px; }.character-choice.locked .character-art { min-height:230px; }.character-info { padding-block:16px; }.character-begin { margin-top:23px; }.selection-note { margin-top:20px; }.title-screen { padding-top:40px; padding-bottom:74px; }.title-content .hero-title { font-size:clamp(64px,7.7vw,108px); }.title-content > .eyebrow { margin-bottom:17px; }.title-tagline { margin-block:20px; }.menu-buttons { margin-top:24px; gap:9px; }.menu-button { min-height:46px; padding-block:11px; font-size:16px; }
+ .selection-screen { padding-top:62px; padding-bottom:28px; }.selection-heading { margin-bottom:27px; }.character-choice { min-height:435px; }.character-art { min-height:185px; padding-top:32px; }.character-art svg { width:150px; }.character-choice.locked .character-art { min-height:230px; }.character-info { padding-block:16px; }.character-begin { margin-top:23px; }.selection-note { margin-top:20px; }.title-screen { padding-top:40px; padding-bottom:120px; }.title-content .hero-title { font-size:clamp(64px,7.7vw,108px); }.title-content > .eyebrow { margin-bottom:17px; }.title-tagline { margin-block:20px; }.menu-buttons { margin-top:24px; gap:9px; }.menu-button { min-height:46px; padding-block:11px; font-size:16px; }
 }
 @media (max-width:760px) {
  .card .card-description,.catalog-grid .card-description,.modal .catalog-grid .card-description,.shop-grid .card-description,.reward-grid .card-description { font-size:11px; line-height:1.5; }
@@ -596,4 +603,14 @@ html[data-effects="reduced"] .falling-seeds,html[data-effects="reduced"] .power-
 }
 @media (prefers-reduced-motion:reduce) {
  *,*::before,*::after { animation:none !important; transition-duration:.01ms !important; scroll-behavior:auto !important; }.falling-seeds,.power-aura { display:none; }.squeek-burst { background:none; }.card-play-effect { opacity:.85; top:25%; }.score-pop { top:10px; }
+}
+
+/* Keep the Chain rules reachable by touch on small battle layouts. */
+@media (max-width:760px) {
+ .battle-scoreboard { flex-wrap:wrap; }
+ .chain-meter { display:grid; flex:1 1 100%; grid-template-columns:auto 1fr auto; gap:5px 10px; padding:0; border:0; }
+ .chain-meter .chain-pips { grid-row:1; grid-column:2; }
+ .chain-meter > strong { grid-row:1; grid-column:3; }
+ .chain-meter .muted { grid-row:2; }
+ .chain-rules { right:0; }
 }

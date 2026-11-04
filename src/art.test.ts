@@ -22,7 +22,7 @@ describe('the original illustrated collection', () => {
       ...Object.keys(CARDS).map(cardArt),
       ...['zoomie-gremlin', ...Object.keys(ENEMIES)].map(spriteArt),
       ...(['camp', 'shop', 'rest', 'results', 'event'] as const).map(sceneArt),
-      ...['battle', 'elite', 'boss', 'shop', 'rest', 'event'].map(nodeIcon),
+      ...['battle', 'elite', 'boss', 'shop', 'rest', 'event', 'treasure'].map(nodeIcon),
     ];
     for (const picture of pictures) {
       const document = parser.parseFromString(picture, 'image/svg+xml');
