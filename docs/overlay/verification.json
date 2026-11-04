@@ -1,0 +1,1400 @@
+{
+  "url": "http://127.0.0.1:5175/",
+  "startedAt": "2026-11-04T18:30:31.050Z",
+  "browser": "Playwright bundled Chromium",
+  "fixtureDisclosure": "Screenshot filenames containing sample use explicitly intercepted browser-only leaderboard and status fixtures. Real filenames use the real same-origin leaderboard and public status endpoints. No data was seeded or submitted.",
+  "checks": [
+    {
+      "label": "Real overview and shared daily seed, boss, UTC day and transparent HTML/body",
+      "passed": true,
+      "daily": {
+        "day": "2026-11-04",
+        "seed": 1390448569,
+        "difficulty": 0.8,
+        "source": "live",
+        "boss": "Sleepless Squeektoshi",
+        "mapSize": 24
+      },
+      "alpha": {
+        "html": "rgba(0, 0, 0, 0)",
+        "body": "rgba(0, 0, 0, 0)"
+      },
+      "realEntryCount": 0
+    },
+    {
+      "label": "Overlay opens without wallet access, music, storage writes or game boot",
+      "passed": true,
+      "probe": {
+        "providerReads": 0,
+        "providerCalls": 0,
+        "audioContexts": 0,
+        "mediaPlays": 0,
+        "storageWrites": []
+      }
+    },
+    {
+      "label": "bar layout renders live SPINNING status and top 3 rows",
+      "passed": true
+    },
+    {
+      "label": "card layout renders live SPINNING status and top 5 rows",
+      "passed": true
+    },
+    {
+      "label": "URL show, scale and dark background parameters",
+      "passed": true,
+      "scaled": {
+        "transform": "matrix(1.5, 0, 0, 1.5, 0, 0)",
+        "zoom": "1"
+      },
+      "dark": [
+        "rgb(16, 12, 27)",
+        "rgb(16, 12, 27)"
+      ]
+    },
+    {
+      "label": "Configured overlay remains read-only without wallet, audio or saved-data writes",
+      "passed": true,
+      "probe": {
+        "providerReads": 0,
+        "providerCalls": 0,
+        "audioContexts": 0,
+        "mediaPlays": 0,
+        "storageWrites": []
+      }
+    },
+    {
+      "label": "Invalid URL parameters fall back to a complete visible transparent overlay",
+      "passed": true
+    },
+    {
+      "label": "Both sources automatically refresh around 15 seconds and API errors degrade visibly",
+      "passed": true,
+      "statusRequests": 2,
+      "boardRequests": 2
+    },
+    {
+      "label": "Automatic refresh recovers after an outage and displays idle with zero RPM",
+      "passed": true
+    },
+    {
+      "label": "Polling and recovery introduce no wallet, audio or storage side effects",
+      "passed": true,
+      "probe": {
+        "providerReads": 0,
+        "providerCalls": 0,
+        "audioContexts": 0,
+        "mediaPlays": 0,
+        "storageWrites": []
+      }
+    },
+    {
+      "label": "UTC midnight polling updates both the daily map and matching leaderboard seed",
+      "passed": true,
+      "before": {
+        "day": "2026-11-04",
+        "seed": 1390448569,
+        "entries": []
+      },
+      "after": {
+        "day": "2026-11-05",
+        "seed": 3787319464
+      }
+    },
+    {
+      "label": "setup-desktop.png copyable same-origin URL, live iframe preview and responsive page",
+      "passed": true,
+      "viewport": 1440,
+      "document": 1440
+    },
+    {
+      "label": "Setup copies the exact URL and configuration updates the live preview and OBS source dimensions",
+      "passed": true
+    },
+    {
+      "label": "setup-desktop.png setup introduces no wallet, audio or storage side effects",
+      "passed": true,
+      "probe": {
+        "providerReads": 0,
+        "providerCalls": 0,
+        "audioContexts": 0,
+        "mediaPlays": 0,
+        "storageWrites": []
+      }
+    },
+    {
+      "label": "setup-mobile.png copyable same-origin URL, live iframe preview and responsive page",
+      "passed": true,
+      "viewport": 390,
+      "document": 390
+    },
+    {
+      "label": "setup-mobile.png setup introduces no wallet, audio or storage side effects",
+      "passed": true,
+      "probe": {
+        "providerReads": 0,
+        "providerCalls": 0,
+        "audioContexts": 0,
+        "mediaPlays": 0,
+        "storageWrites": []
+      }
+    },
+    {
+      "label": "Leaderboard footer links to the directly reloadable OBS setup route",
+      "passed": true
+    },
+    {
+      "label": "All observed HTTP requests are read-only",
+      "passed": true,
+      "requestCount": 287
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "source-transparent.png",
+      "url": "http://127.0.0.1:5175/overlay",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fullPage": true,
+      "data": "Real same-origin leaderboard and public status."
+    },
+    {
+      "file": "bar-real.png",
+      "url": "http://127.0.0.1:5175/__overlay-composition__",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "fullPage": true,
+      "data": "Real same-origin leaderboard and public hamster status; no fixture interception."
+    },
+    {
+      "file": "card-real.png",
+      "url": "http://127.0.0.1:5175/__overlay-composition__",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "fullPage": true,
+      "data": "Real same-origin leaderboard and public hamster status; no fixture interception."
+    },
+    {
+      "file": "bar-sample.png",
+      "url": "http://127.0.0.1:5175/__overlay-composition__",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "fullPage": true,
+      "data": "Explicit browser-only sample leaderboard/status fixtures, visibly labelled in composition."
+    },
+    {
+      "file": "card-sample.png",
+      "url": "http://127.0.0.1:5175/__overlay-composition__",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "fullPage": true,
+      "data": "Explicit browser-only sample leaderboard/status fixtures, visibly labelled in composition."
+    },
+    {
+      "file": "error-simulated.png",
+      "url": "http://127.0.0.1:5175/overlay?layout=card",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fullPage": true,
+      "data": "Explicit browser-only HTTP 503 status and overview responses after successful fixture load."
+    },
+    {
+      "file": "setup-desktop.png",
+      "url": "http://127.0.0.1:5175/overlay/setup",
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      },
+      "fullPage": true,
+      "data": "Setup uses real same-origin leaderboard. Hamster status is a browser-only SPINNING fixture for stable preview."
+    },
+    {
+      "file": "setup-mobile.png",
+      "url": "http://127.0.0.1:5175/overlay/setup",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "fullPage": true,
+      "data": "Setup uses real same-origin leaderboard. Hamster status is a browser-only SPINNING fixture for stable preview."
+    }
+  ],
+  "errors": [],
+  "requests": [
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/overlay"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/@vite/client"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/entry.ts?t=1793817010757"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/node_modules/vite/dist/client/env.mjs"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay.ts?t=1793816905914"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/art.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/catalog.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/data.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/map.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/leaderboard.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay-data.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/engine.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/score.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/rng.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/fixtures/settlements.json?import"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/fixtures/history-30d.json?import"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/cardValues.ts"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.squeekchain.com/v1/status"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/data/daily/2026-11-04.json"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/api/leaderboard?view=overview"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/data/daily/2026-11-04.json"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.squeekchain.com/v1/status"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/overlay?layout=bar&scale=1&show=status,boss,board&bg=transparent"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/@vite/client"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/entry.ts?t=1793817010757"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/node_modules/vite/dist/client/env.mjs"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay.ts?t=1793816905914"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/art.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/catalog.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/data.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/map.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/leaderboard.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay-data.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/engine.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/score.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/fixtures/settlements.json?import"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/fixtures/history-30d.json?import"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/rng.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/cardValues.ts"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.squeekchain.com/v1/status"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/data/daily/2026-11-04.json"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/api/leaderboard?view=overview"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/overlay?layout=card&scale=1&show=status,boss,board&bg=transparent"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/@vite/client"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/entry.ts?t=1793817010757"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/node_modules/vite/dist/client/env.mjs"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay.ts?t=1793816905914"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/art.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/catalog.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/data.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/map.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/leaderboard.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay-data.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/rng.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/engine.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/score.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/fixtures/settlements.json?import"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/fixtures/history-30d.json?import"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/cardValues.ts"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.squeekchain.com/v1/status"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/data/daily/2026-11-04.json"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/api/leaderboard?view=overview"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/overlay?layout=card&scale=1.5&show=status&bg=dark"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/@vite/client"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/entry.ts?t=1793817010757"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/node_modules/vite/dist/client/env.mjs"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay.ts?t=1793816905914"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/art.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/catalog.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/data.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/map.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/leaderboard.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay-data.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/rng.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/engine.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/score.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/fixtures/settlements.json?import"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/fixtures/history-30d.json?import"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/cardValues.ts"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.squeekchain.com/v1/status"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/overlay?layout=unknown&scale=invalid&show=wallet&bg=unknown"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/@vite/client"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/entry.ts?t=1793817010757"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/node_modules/vite/dist/client/env.mjs"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay.ts?t=1793816905914"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/art.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/catalog.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/data.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/map.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/leaderboard.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay-data.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/rng.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/fixtures/settlements.json?import"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/fixtures/history-30d.json?import"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/engine.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/score.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/cardValues.ts"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.squeekchain.com/v1/status"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/data/daily/2026-11-04.json"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/api/leaderboard?view=overview"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/overlay?layout=card"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/@vite/client"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/entry.ts?t=1793817010757"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/node_modules/vite/dist/client/env.mjs"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay.ts?t=1793816905914"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/art.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/catalog.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/data.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/map.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/leaderboard.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay-data.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/rng.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/engine.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/score.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/fixtures/settlements.json?import"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/fixtures/history-30d.json?import"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/cardValues.ts"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.squeekchain.com/v1/status"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/data/daily/2026-11-04.json"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/api/leaderboard?view=overview"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.squeekchain.com/v1/status"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/api/leaderboard?view=overview"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.squeekchain.com/v1/status"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/api/leaderboard?view=overview"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/overlay?layout=card&show=boss,board"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/@vite/client"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/entry.ts?t=1793817010757"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/node_modules/vite/dist/client/env.mjs"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay.ts?t=1793816905914"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/art.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/catalog.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/data.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/map.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/leaderboard.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay-data.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/engine.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/score.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/rng.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/fixtures/settlements.json?import"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/fixtures/history-30d.json?import"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/cardValues.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/data/daily/2026-11-04.json"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/api/leaderboard?view=overview"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/data/daily/2026-11-05.json"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/data/daily/latest.json"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/data/daily/2026-11-05.json"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/api/leaderboard?view=overview"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/data/daily/latest.json"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/overlay/setup"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/@vite/client"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/entry.ts?t=1793817010757"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/node_modules/vite/dist/client/env.mjs"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay-setup.ts?t=1793817010757"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay-setup.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/overlay?layout=bar&scale=1&show=status%2Cboss%2Cboard&bg=transparent"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/@vite/client"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/entry.ts?t=1793817010757"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/node_modules/vite/dist/client/env.mjs"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay.ts?t=1793816905914"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/art.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/catalog.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/data.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/map.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/leaderboard.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay-data.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/engine.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/score.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/rng.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/fixtures/settlements.json?import"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/fixtures/history-30d.json?import"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/cardValues.ts"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.squeekchain.com/v1/status"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/data/daily/2026-11-04.json"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/api/leaderboard?view=overview"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/overlay?layout=card&scale=1&show=status%2Cboss%2Cboard&bg=transparent"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/@vite/client"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/entry.ts?t=1793817010757"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/overlay?layout=card&scale=1.5&show=status%2Cboss%2Cboard&bg=transparent"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/node_modules/vite/dist/client/env.mjs"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/@vite/client"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/entry.ts?t=1793817010757"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/node_modules/vite/dist/client/env.mjs"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay.ts?t=1793816905914"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/art.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/catalog.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/data.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/map.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/leaderboard.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay-data.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/fixtures/settlements.json?import"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/fixtures/history-30d.json?import"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/rng.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/engine.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/score.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/cardValues.ts"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.squeekchain.com/v1/status"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/data/daily/2026-11-04.json"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/api/leaderboard?view=overview"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/overlay?layout=card&scale=1.5&show=status%2Cboss&bg=transparent"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/@vite/client"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/entry.ts?t=1793817010757"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/node_modules/vite/dist/client/env.mjs"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay.ts?t=1793816905914"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/art.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/catalog.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/data.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/map.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/leaderboard.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay-data.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/fixtures/settlements.json?import"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/fixtures/history-30d.json?import"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/rng.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/engine.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/score.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/cardValues.ts"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.squeekchain.com/v1/status"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/data/daily/2026-11-04.json"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/overlay?layout=card&scale=1.5&show=status%2Cboss&bg=dark"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/@vite/client"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/entry.ts?t=1793817010757"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/overlay/setup"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/@vite/client"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/entry.ts?t=1793817010757"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/node_modules/vite/dist/client/env.mjs"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay-setup.ts?t=1793817010757"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay-setup.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/overlay?layout=bar&scale=1&show=status%2Cboss%2Cboard&bg=transparent"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/@vite/client"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/entry.ts?t=1793817010757"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/node_modules/vite/dist/client/env.mjs"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay.ts?t=1793816905914"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/art.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/catalog.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/data.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/map.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/leaderboard.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay-data.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/rng.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/engine.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/score.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/fixtures/settlements.json?import"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/fixtures/history-30d.json?import"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/cardValues.ts"
+    },
+    {
+      "method": "GET",
+      "url": "https://api.squeekchain.com/v1/status"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/data/daily/2026-11-04.json"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/api/leaderboard?view=overview"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/leaderboard"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/@vite/client"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/entry.ts?t=1793817010757"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/node_modules/vite/dist/client/env.mjs"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/leaderboard-page.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/style.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/leaderboard-page.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/art.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/leaderboard.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/preferences.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/music.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/engine.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/score.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/music.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/catalog.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/rng.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/map.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/game/cardValues.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/api/leaderboard?view=overview"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/overlay/setup"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/@vite/client"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/entry.ts?t=1793817010757"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/node_modules/vite/dist/client/env.mjs"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay-setup.ts?t=1793817010757"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay-setup.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/overlay?layout=bar&scale=1&show=status%2Cboss%2Cboard&bg=transparent"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/@vite/client"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/entry.ts?t=1793817010757"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/node_modules/vite/dist/client/env.mjs"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5175/src/overlay.ts?t=1793816905914"
+    }
+  ],
+  "realOverview": {
+    "day": "2026-11-04",
+    "seed": 1390448569,
+    "entries": 0,
+    "storage": "local"
+  },
+  "daily": {
+    "day": "2026-11-04",
+    "seed": 1390448569,
+    "difficulty": 0.8,
+    "source": "live",
+    "boss": "Sleepless Squeektoshi",
+    "mapSize": 24
+  },
+  "finishedAt": "2026-11-04T18:30:35.572Z"
+}

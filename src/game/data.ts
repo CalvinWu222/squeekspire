@@ -229,7 +229,7 @@ async function fetchJson(url: string): Promise<unknown> {
   return response.json() as Promise<unknown>;
 }
 
-async function publishedDay(day: string): Promise<DayData> {
+export async function loadPublishedDay(day: string): Promise<DayData> {
   for (const [filename, source] of [[`${day}.json`, 'live'], ['latest.json', 'cached']] as const) {
     try {
       const snapshot = await fetchJson(`/data/daily/${filename}`);
@@ -256,7 +256,7 @@ function liveStatus(value: unknown): { accepted: boolean; spinning: boolean } {
  */
 export async function loadDay(now = new Date()): Promise<DayData> {
   const [day, status] = await Promise.all([
-    publishedDay(getGameDay(now)),
+    loadPublishedDay(getGameDay(now)),
     fetchJson(`${API}/status`).then(liveStatus, () => ({ accepted: false, spinning: false })),
   ]);
   day.spinning = status.spinning;

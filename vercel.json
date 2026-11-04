@@ -4,6 +4,10 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "rewrites": [
+    { "source": "/overlay", "destination": "/index.html" },
+    { "source": "/overlay/", "destination": "/index.html" },
+    { "source": "/overlay/setup", "destination": "/index.html" },
+    { "source": "/overlay/setup/", "destination": "/index.html" },
     { "source": "/leaderboard", "destination": "/index.html" },
     { "source": "/leaderboard/", "destination": "/index.html" }
   ],
