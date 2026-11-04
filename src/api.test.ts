@@ -3,15 +3,15 @@ import { createApi, GET_RATE_LIMIT, MAX_BODY_BYTES, POST_RATE_LIMIT, sanitizeNam
 import { createMemoryStore, createRedisStore, createStore, type ScoreEntry, type ScoreStore } from '../server/store';
 import { MAX_ACTIONS, verifySubmission } from '../server/replay';
 import { act, createRun, exportRun, type RunExport } from './game/engine';
-import { fallbackDay } from './game/data';
+import { fallbackDay, getGameDay } from './game/data';
 import { generateMap } from './game/map';
 import { CARDS } from './game/catalog';
 import { hashString } from './game/rng';
 import type { RunMode } from './game/types';
 
 const day = fallbackDay('2026-11-04');
-function finished(mode: RunMode = 'daily', spinning = false): RunExport {
-  const rules = { ...day, spinning };
+function finished(mode: RunMode = 'daily', spinning = false, gameDay = day): RunExport {
+  const rules = { ...gameDay, spinning };
   let run = createRun(rules, generateMap(rules), mode);
   for (let i = 0; i < 24 && run.phase !== 'combat'; i++) {
     run = act(run, { type: 'enter', nodeId: run.reachable[0]! });
@@ -52,6 +52,37 @@ describe('shared score API boundary', () => {
     expect((await call(handler)).body.entries).toEqual([accepted.body.entry]);
     expect((await call(handler, undefined, { url: `/api/leaderboard?mode=daily&seed=${day.seed + 1}` })).body.entries).toEqual([]);
   });
+  it.each([
+    ['2026-11-04T00:00:00+08:00', '2026-11-03'],
+    ['2026-11-03T23:59:59.999Z', '2026-11-03'],
+    ['2026-11-04T00:00:00.000Z', '2026-11-04'],
+    ['2026-11-04T03:59:59.999Z', '2026-11-04'],
+    ['2026-11-04T04:00:00.000Z', '2026-11-04'],
+  ])('uses the UTC run day and seed in the API at %s', async (instant, expectedDay) => {
+    const now = new Date(instant);
+    const expected = fallbackDay(expectedDay);
+    const run = finished('daily', false, fallbackDay(getGameDay(now)));
+    const handler = createApi({ store: createMemoryStore(), now: () => now.getTime() });
+    const accepted = await call(handler, payload(run));
+    expect(accepted.status).toBe(201);
+    expect(accepted.body.entry).toMatchObject({ day: expectedDay, seed: expected.seed, createdAt: now.toISOString() });
+    const board = await call(handler, undefined, { url: `/api/leaderboard?mode=daily&seed=${expected.seed}` });
+    expect(board.body.entries).toEqual([accepted.body.entry]);
+    const otherDay = fallbackDay(expectedDay === '2026-11-03' ? '2026-11-04' : '2026-11-03');
+    expect((await call(handler, undefined, { url: `/api/leaderboard?mode=daily&seed=${otherDay.seed}` })).body.entries).toEqual([]);
+  });
+  it('keeps equivalent UTC instants on the same daily board and accepts a run after UTC rollover', async () => {
+    const instants = ['2026-11-04T01:00:00Z', '2026-11-04T09:00:00+08:00', '2026-11-03T18:00:00-07:00'];
+    const rules = instants.map(instant => fallbackDay(getGameDay(new Date(instant))));
+    expect(rules.every(rule => rule.day === '2026-11-04' && rule.seed === day.seed)).toBe(true);
+    const handler = createApi({ store: createMemoryStore(), now: () => Date.parse('2026-11-05T00:00:01Z') });
+    const accepted = await call(handler, payload(finished('daily', false, rules[0]!)));
+    expect(accepted.status).toBe(201);
+    expect(accepted.body.entry).toMatchObject({ day: '2026-11-04', seed: day.seed });
+    expect((await call(handler)).body.entries).toEqual([accepted.body.entry]);
+    const nextDay = fallbackDay('2026-11-05');
+    expect((await call(handler, undefined, { url: `/api/leaderboard?mode=daily&seed=${nextDay.seed}` })).body.entries).toEqual([]);
+  });
   it('deduplicates retries and derives wallet display identity from the address', async () => {
     const handler = api();
     const submission = { ...payload(), identity: { walletAddress: '0x' + 'Ab'.repeat(20) }, name: '<script>fake</script>' };
@@ -69,6 +100,33 @@ describe('shared score API boundary', () => {
     expect(second.status).toBe(201);
     expect(second.body.entry.id).toBe(first.body.entry.id);
     expect((await call(handler)).body.entries).toHaveLength(1);
+  });
+  it.each(['daily', 'practice', 'endless'] as const)('accepts signed pre-UTC hour labels for archived %s runs', async mode => {
+    const legacyDay = { ...day, hours: day.hours.map(hour => ({
+      ...hour, label: `${String((parseInt(hour.label, 10) + 8) % 24).padStart(2, '0')}:00`,
+    })) };
+    const legacyRun = finished(mode, mode === 'practice', legacyDay);
+    const handler = api();
+    const accepted = await call(handler, payload(legacyRun));
+    expect(accepted.status).toBe(201);
+    expect(accepted.body.entry).toMatchObject({ day: day.day, seed: day.seed, mode, score: legacyRun.claimedScore });
+    const canonical = await call(handler, payload(finished(mode, mode === 'practice')));
+    expect(canonical.status).toBe(201);
+    expect(canonical.body.entry).toEqual(accepted.body.entry);
+  });
+  it.each(['hour', 'work', 'settlements', 'activeRounds', 'blocks'] as const)('still rejects changed hourly %s with valid checksums', async field => {
+    const hours = day.hours.map(hour => ({ ...hour }));
+    hours[0]![field]++;
+    const changed = resign(validRun, { day: { ...day, hours } });
+    const rejected = await call(api(), payload(changed));
+    expect(rejected.status).toBe(400);
+    expect(rejected.body.message).toContain('authoritative daily snapshot');
+  });
+  it('still checks the original checksum before accepting display label changes', async () => {
+    const changed = { ...validRun, day: { ...day, hours: day.hours.map(hour => ({ ...hour, label: 'changed' })) } };
+    const rejected = await call(api(), payload(changed));
+    expect(rejected.status).toBe(400);
+    expect(rejected.body.message).toContain('checksum');
   });
   it('sanitizes guest names and rejects malformed explicit wallet addresses', async () => {
     expect(sanitizeName('<b>guest1234</b>\u202e\n')).toBe('guest1234');
@@ -175,6 +233,29 @@ describe('server replay limits', () => {
 
 const sampleEntry = (id: string, score = 100, bestHit = 20, mode: RunMode = 'daily'): ScoreEntry => ({ id, profile: 'guest1234', name: 'guest1234', guestId: 'guest1234', day: day.day, seed: day.seed, mode, score, bestHit, floor: 2, floors: 2, actions: 10, won: false, hibernation: false, spinning: false, streak: 0, createdAt: '2026-11-04T00:00:00Z' });
 describe('leaderboard persistence contracts', () => {
+  it.each([
+    ['2026-11-04T00:00:00+08:00', '2026-11-03'],
+    ['2026-11-04T00:00:00Z', '2026-11-04'],
+  ])('writes and reads the same UTC daily Redis key at %s', async (instant, expectedDay) => {
+    const commands: unknown[][] = [];
+    const fetcher = vi.fn(async (_url: unknown, init?: RequestInit) => {
+      const command = JSON.parse(init!.body as string) as unknown[];
+      commands.push(command);
+      const result = command[0] === 'ZREVRANGE' ? []
+        : (command[1] as string).includes("redis.call('INCR'") ? [1, 60_000] : command[8];
+      return new Response(JSON.stringify({ result }));
+    });
+    const now = new Date(instant);
+    const expected = fallbackDay(expectedDay);
+    const handler = createApi({ store: createRedisStore('https://redis.example', 'secret', fetcher as typeof fetch), now: () => now.getTime() });
+    const accepted = await call(handler, payload(finished('daily', false, fallbackDay(getGameDay(now)))));
+    expect(accepted.status).toBe(201);
+    expect(accepted.body.entry).toMatchObject({ day: expectedDay, seed: expected.seed });
+    const write = commands.find(command => command[0] === 'EVAL' && command[2] === 5)!;
+    expect(write.slice(6, 8)).toEqual([`squeekspire:v1:seed:${expected.seed}`, `squeekspire:v1:seed:${expected.seed}:daily`]);
+    expect((await call(handler, undefined, { url: `/api/leaderboard?mode=daily&seed=${expected.seed}` })).status).toBe(200);
+    expect(commands.at(-1)).toEqual(['ZREVRANGE', `squeekspire:v1:seed:${expected.seed}:daily`, 0, 49]);
+  });
   it('sorts endless by best hit and daily/all by accumulated score', async () => {
     const store = createMemoryStore();
     await store.add(sampleEntry('a', 500, 2, 'endless'));

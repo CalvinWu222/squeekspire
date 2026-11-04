@@ -428,7 +428,11 @@ export function replayRun(input: RunExport, authoritativeDay?: DayData): RunStat
   fail(claimedChecksum === checksum(body), 'Replay checksum mismatch');
   const day = input.day;
   if (authoritativeDay) {
-    const stableRules = ({ source: _source, notice: _notice, spinning: _spinning, ...rules }: DayData) => rules;
+    // Display labels can change between releases without invalidating an archived
+    // run. Every hourly gameplay value still belongs to the authoritative rules.
+    const stableRules = ({ source: _source, notice: _notice, spinning: _spinning, hours, ...rules }: DayData) => ({
+      ...rules, hours: hours.map(({ label: _label, ...hour }) => hour),
+    });
     fail(JSON.stringify(stableRules(input.day)) === JSON.stringify(stableRules(authoritativeDay)), 'Replay does not match the authoritative daily snapshot');
   }
   let state = createRun(day, generateMap(day), input.mode);

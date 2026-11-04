@@ -1,5 +1,5 @@
 import { replayRun, type RunExport } from '../src/game/engine.js';
-import { fallbackDay } from '../src/game/data.js';
+import { fallbackDay, getGameDay } from '../src/game/data.js';
 
 export const MAX_ACTIONS = 4_000;
 const object = (value: unknown): value is Record<string, unknown> => !!value && typeof value === 'object' && !Array.isArray(value);
@@ -32,8 +32,8 @@ function validateAction(value: unknown) {
 export function verifySubmission(input: unknown, seed?: number) {
   requireValue(object(input) && input.version === 1 && object(input.day), 'Invalid replay format');
   requireValue(typeof input.day.day === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(input.day.day), 'Invalid game day');
-  const date = new Date(`${input.day.day}T12:00:00Z`);
-  requireValue(Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === input.day.day, 'Invalid game day');
+  const date = new Date(`${input.day.day}T00:00:00Z`);
+  requireValue(Number.isFinite(date.getTime()) && getGameDay(date) === input.day.day, 'Invalid game day');
   requireValue(integer(input.day.seed, 0, 0xffff_ffff) && (seed === undefined || input.day.seed === seed), 'Seed mismatch');
   requireValue(typeof input.day.spinning === 'boolean', 'Invalid wheel flag');
   requireValue(['daily', 'practice', 'endless'].includes(input.mode as string), 'Invalid run mode');
@@ -43,10 +43,12 @@ export function verifySubmission(input: unknown, seed?: number) {
   requireValue(typeof input.claimedBestHit === 'number' && Number.isFinite(input.claimedBestHit) && input.claimedBestHit >= 0 && input.claimedBestHit <= 1e300, 'Invalid best hit claim');
   requireValue(typeof input.checksum === 'string' && /^[a-f0-9]{8}$/.test(input.checksum), 'Invalid checksum');
   const payload = input as unknown as RunExport;
-  const canonical = fallbackDay(payload.day.day);
+  // The exported day is a UTC calendar date. Keep historical runs on their original
+  // UTC seed, even if the server receives them after the next UTC midnight.
+  const canonical = fallbackDay(getGameDay(date));
   // Only practice uses the declared live spinning bonus; it has a separate board.
   // Every gameplay-relevant daily/endless rule must match the immutable fixture.
   const state = replayRun(payload, canonical);
   if (state.phase !== 'won' && state.phase !== 'lost') throw new Error('Only finished runs can be submitted');
-  return { day: state.day.day, seed: canonical.seed, mode: state.mode, score: state.totalScore, bestHit: state.bestHit, floor: state.floor, floors: state.floor, actions: state.log.length, won: state.phase === 'won', hibernation: canonical.hibernation, spinning: state.mode === 'practice' && state.day.spinning };
+  return { day: canonical.day, seed: canonical.seed, mode: state.mode, score: state.totalScore, bestHit: state.bestHit, floor: state.floor, floors: state.floor, actions: state.log.length, won: state.phase === 'won', hibernation: canonical.hibernation, spinning: state.mode === 'practice' && state.day.spinning };
 }

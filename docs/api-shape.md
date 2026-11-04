@@ -31,16 +31,16 @@ The API exposes rolling ranges, and requests adding `startAt`, `endAt`, or `end`
 were rejected with HTTP 400 `{"error":"invalid_query"}`. A rolling window or a
 first-visitor localStorage snapshot would give players different official maps on the
 same date. Without a historical window API or a published immutable daily manifest,
-a static client cannot independently establish a globally identical noon snapshot.
+a static client cannot independently establish a globally identical 00:00 UTC snapshot.
 
 The MVP therefore uses the same published settled fixture for **all official rules**,
-with the Asia/Shanghai noon game date included in its seed. It always announces this
+with the UTC game date included in its seed. It always announces this
 fallback; online/offline status never changes the daily map or scoring inputs.
 It still fetches both required public endpoints at startup. Only the accepted, online
 `SPINNING` flag affects practice energy. Fetch failure or oracle rejection leaves the
 canonical fallback playable. Refreshing or clearing browser storage cannot reroll it.
 
-A production daily publisher can replace the fixtures with a versioned noon manifest
+A production daily publisher can replace the fixtures with a versioned 00:00 UTC manifest
 served as a static file. That is deliberately not represented as an implemented backend.
 
 ## Explicit MVP approximations
@@ -48,7 +48,7 @@ served as a static file. That is deliberately not represented as an implemented 
 - Difficulty is `clamp(totalWork / sevenPeriodMedian, 0.8, 1.3)`.
   The seven complete API daily buckets before the saved map window have work totals
   `11182, 10891, 10587, 13297, 12561, 8505, 8984`; their median is `10891`.
-  Their API boundary is UTC12 (20:00 Shanghai), rather than the intended noon boundary.
+  Their captured API boundary is 12:00 UTC, distinct from the game's 00:00 UTC reset.
 - Hibernation means total work below 25% of the historical median. The engine applies
   the design's x1.2 score bonus and the UI shows fog.
 - Historical RPM uses the deterministic proxy `max(hourly work) / 60`, approximately

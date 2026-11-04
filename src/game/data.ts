@@ -46,9 +46,14 @@ export function median(values: number[]): number {
   return ordered.length % 2 ? ordered[middle] : (ordered[middle - 1] + ordered[middle]) / 2;
 }
 
-/** A game day begins at 12:00 Asia/Shanghai, which is 04:00 UTC year-round. */
+/** Daily challenges use the UTC calendar date in every client timezone. */
 export function getGameDay(now = new Date()): string {
-  return new Date(now.getTime() - 4 * HOUR).toISOString().slice(0, 10);
+  return now.toISOString().slice(0, 10);
+}
+
+/** Epoch milliseconds of the next 00:00 UTC reset, independent of local time or DST. */
+export function getDailyResetTime(now = new Date()): number {
+  return Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1);
 }
 
 /** Public fixture data + date only. Arrival times, status and browser storage never enter this hash. */
@@ -73,7 +78,7 @@ export function buildDayData(day: string, snapshot: SettlementSnapshot, history:
   const ordered = [...snapshot.buckets].sort((a, b) => a.startAt.localeCompare(b.startAt));
   const hours: HourData[] = ordered.map((bucket, hour) => ({
     hour,
-    label: `${String((new Date(bucket.startAt).getUTCHours() + 8) % 24).padStart(2, '0')}:00`,
+    label: `${String(new Date(bucket.startAt).getUTCHours()).padStart(2, '0')}:00 UTC`,
     work: numeric(bucket.workAdded),
     settlements: numeric(bucket.settlementCount),
     activeRounds: numeric(bucket.activeRoundCount),
@@ -81,7 +86,7 @@ export function buildDayData(day: string, snapshot: SettlementSnapshot, history:
   }));
 
   // The 30d endpoint supplies daily buckets. Use seven complete periods BEFORE the map window.
-  // Their UTC12 alignment is disclosed: the API has no historical noon-China window selector.
+  // These captured historical periods do not define the daily challenge's UTC reset.
   const previousNights = [...history.buckets]
     .filter((bucket) => new Date(bucket.endAt).getTime() <= new Date(snapshot.window.startAt).getTime()
       && new Date(bucket.endAt).getTime() - new Date(bucket.startAt).getTime() === 24 * HOUR)
@@ -103,7 +108,7 @@ export function buildDayData(day: string, snapshot: SettlementSnapshot, history:
     day,
     seed: settlementSeed(day, snapshot),
     source: 'fallback',
-    notice: 'Captured real hamster run snapshot (daily refresh coming soon). Public API has rolling windows, not a historical noon lock. Same day, same map for every profile.',
+    notice: 'Captured real hamster run snapshot (daily refresh coming soon). Public API has rolling windows, not a frozen historical UTC day. Same UTC day, same map for every profile.',
     hours,
     totalWork,
     medianWork,

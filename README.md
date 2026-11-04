@@ -55,9 +55,10 @@ to play. A static-only host or an unavailable API displays **Offline - local sco
   multiplicative bonuses. Score multipliers never increase combat damage. Top-work
   hours are gold jackpots: each multiplicative trigger, including chain links, is
   doubled. Hibernation applies fog and a ×1.2 final score bonus.
-- Daily consumes one attempt **when started**, per browser profile per noon-Beijing
-  game day. Reload resumes the logged run. Abandonment uses the attempt. Practice is
-  unlimited; accepted live `SPINNING` status gives practice +1 energy per turn.
+- Daily consumes one attempt **when started**, per browser profile per UTC
+  game day, resetting at 00:00 UTC. Reload resumes the logged run. Abandonment uses
+  the attempt. Practice is unlimited; accepted live `SPINNING` status gives practice
+  +1 energy per turn.
 - Endless has a persistent five-minute wall clock, including reload time, and ×1.15
   enemy scaling per entered room. Its separate board ranks the largest scored hit.
 - Settings persist volume, animation speed, and reduced effects. The UI and five
@@ -89,12 +90,12 @@ The real API was fetched and inspected before coding:
 - Historical baseline inspection also used `range=7d` and `range=30d`.
 
 The API exposes **rolling** ranges and rejects historical start/end parameters. It
-cannot supply a globally frozen noon snapshot to a static client. A first-player
+cannot supply a globally frozen 00:00 UTC snapshot to a static client. A first-player
 localStorage snapshot would give different players different daily maps.
 
 This MVP therefore deliberately uses a **captured real hamster run snapshot** for
 official gameplay; **daily refresh is coming soon**. A snapshot notice remains
-visible even when the API is online. The noon-Beijing game date is salted into the public settlement
+visible even when the API is online. The UTC game date is salted into the public settlement
 hash/round seed, producing the same map for everyone on that date. Both requested
 endpoints are still fetched at startup with a four-second timeout; availability and
 the practice energy flag are the only live effects. Offline play uses the identical
@@ -102,12 +103,12 @@ canonical daily rules. This snapshot does not automatically update each night.
 
 The snapshot contains 8,725 work and 853 blocks. Difficulty is
 `clamp(8725 / 10891, 0.8, 1.3)`. The median is calculated from seven complete historical
-daily buckets. Their API boundary is 20:00 Beijing, rather than noon. Historical peak
-RPM is unavailable; boss cadence uses the disclosed estimate
+daily buckets. Their captured API boundary is 12:00 UTC, distinct from the game's
+00:00 UTC reset. Historical peak RPM is unavailable; boss cadence uses the disclosed estimate
 `max(hourly work) / 60`, rather than current sensor RPM. Price inflation is clamped to
 ±20% using historical minted-volume ratios. See [API shape and evidence](docs/api-shape.md).
 
-A future static daily publisher can archive a versioned noon manifest; clients and
+A future static daily publisher can archive a versioned 00:00 UTC manifest; clients and
 the verifier should then use that identical published manifest. No daily publisher
 is included. The shared score API verifies against that same
 captured fixture; enabling Redis does not refresh the gameplay snapshot.
@@ -190,7 +191,7 @@ instances, so Redis is required for the durable global board.
 | `src/main.ts`, `src/style.css` | Responsive camp, map, combat, encounters, collection, and results |
 | `src/game/catalog.ts` | Exact starter, 30 core reward cards, meme cards, 15 relics, enemies and gates |
 | `src/game/engine.ts` | Pure deterministic rules, scores, action log, export and replay |
-| `src/game/data.ts`, `src/game/map.ts`, `src/game/rng.ts` | API handling, fixture baseline, noon seed, 24-node routes |
+| `src/game/data.ts`, `src/game/map.ts`, `src/game/rng.ts` | API handling, fixture baseline, UTC daily seed, 24-node routes |
 | `src/game/storage.ts` | Guest/wallet score profiles, daily claim, resumed runs, local leaderboards |
 | `src/wallet.ts` | Optional injected-provider account connection and Sepolia switching |
 | `fixtures/` | Real 24h/7d/30d API captures and trimmed status |

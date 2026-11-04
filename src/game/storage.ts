@@ -56,7 +56,7 @@ export function claimDaily(day: string): boolean {
 export function currentStreak(day: string): number {
   const days = new Set(array<string>('official-days'));
   let count = 0;
-  let cursor = new Date(`${day}T12:00:00Z`);
+  const cursor = new Date(`${day}T00:00:00Z`);
   if (!days.has(day)) cursor.setUTCDate(cursor.getUTCDate() - 1);
   for (let i = 0; i < 3660; i++) {
     if (!days.has(cursor.toISOString().slice(0, 10))) break;

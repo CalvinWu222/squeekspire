@@ -1,5 +1,5 @@
 import './style.css';
-import { loadDay, getGameDay } from './game/data';
+import { fallbackDay, loadDay, getGameDay, getDailyResetTime } from './game/data';
 import { generateMap } from './game/map';
 import { act, createRun, effectiveMult, exportRun, formatNumber, replayRun, scoreBattle, previewIntents,
   type RunAction, type RunState, type CardInstance } from './game/engine';
@@ -123,7 +123,7 @@ function walletMarkup(location: 'menu' | 'board'): string {
 
 function camp(): string {
   const saved = run && !done();
-  return `<main class="title-screen"><div class="title-stars" aria-hidden="true"></div><div class="title-wheel" aria-hidden="true">${wheelArt()}</div><div class="title-content"><span class="eyebrow">A VERY SMALL HERO. A VERY TALL SPIRE.</span><h1 class="hero-title">SQUEEK<span>SPIRE</span><i>✦</i></h1><p class="title-tagline">One more card. One more floor. One less hour of sleep.</p><div class="menu-buttons"><button class="menu-button primary" data-action="start">${text('start')}<span>→</span></button>${saved ? `<button class="menu-button" data-action="resume">${text('continue')}<small>${titleCase(run!.mode)} · ${run!.phase === 'combat' ? 'Battle' : 'Hour ' + Math.max(1, run!.floor)}</small></button>` : ''}<button class="menu-button" data-action="collection">${text('codex')}</button><button class="menu-button" data-action="help">${text('help')}</button><button class="menu-button" data-action="settings">${text('settings')}</button></div>${walletMarkup('menu')}</div><div class="title-corner"><span>TODAY’S SEED <code>${day.seed.toString(16).padStart(8, '0').toUpperCase()}</code></span><span><i class="live-dot ${day.spinning ? 'spinning' : ''}"></i>${day.spinning ? 'HAMSTER: SPINNING' : 'HAMSTER: RESTING'} ${day.hibernation ? ' · Hibernation ×1.2' : ''}</span></div><button class="ghost-button menu-more" data-action="more">${text('more')} <span>•••</span></button><span class="title-version">THE MIDNIGHT WHEEL / v0.2</span></main>`;
+  return `<main class="title-screen"><div class="title-stars" aria-hidden="true"></div><div class="title-wheel" aria-hidden="true">${wheelArt()}</div><div class="title-content"><span class="eyebrow">A VERY SMALL HERO. A VERY TALL SPIRE.</span><h1 class="hero-title">SQUEEK<span>SPIRE</span><i>✦</i></h1><p class="title-tagline">One more card. One more floor. One less hour of sleep.</p><div class="menu-buttons"><button class="menu-button primary" data-action="start">${text('start')}<span>→</span></button>${saved ? `<button class="menu-button" data-action="resume">${text('continue')}<small>${titleCase(run!.mode)} · ${run!.phase === 'combat' ? 'Battle' : 'Hour ' + Math.max(1, run!.floor)}</small></button>` : ''}<button class="menu-button" data-action="collection">${text('codex')}</button><button class="menu-button" data-action="help">${text('help')}</button><button class="menu-button" data-action="settings">${text('settings')}</button></div>${walletMarkup('menu')}</div><div class="title-corner"><span class="daily-label">Daily · ${esc(day.day)} UTC</span><span>Resets 00:00 UTC · <span data-daily-countdown>${dailyCountdown()}</span></span><span>TODAY’S SEED <code>${day.seed.toString(16).padStart(8, '0').toUpperCase()}</code></span><span><i class="live-dot ${day.spinning ? 'spinning' : ''}"></i>${day.spinning ? 'HAMSTER: SPINNING' : 'HAMSTER: RESTING'} ${day.hibernation ? ' · Hibernation ×1.2' : ''}</span></div><button class="ghost-button menu-more" data-action="more">${text('more')} <span>•••</span></button><span class="title-version">THE MIDNIGHT WHEEL / v0.2</span></main>`;
 }
 
 function modeSelect(): string {
@@ -131,12 +131,12 @@ function modeSelect(): string {
   return `<main class="selection-screen"><button class="ghost-button selection-back" data-action="home">← ${text('back')}</button><div class="selection-heading"><span class="eyebrow">01 / YOUR KIND OF NIGHT</span><h1>${text('chooseMode')}</h1><p class="muted">Every great climb starts with a little courage.</p></div><div class="mode-grid">${(['daily', 'practice', 'endless'] as RunMode[]).map((m, i) => {
     const saved = loadActive(m); const resumable = saved && saved.day.day === day.day && !['won', 'lost'].includes(saved.phase);
     const used = m === 'daily' && dailyUsed(day.day) && !resumable;
-    return `<button class="mode-choice ${used ? 'locked' : ''}" data-action="mode" data-mode="${m}" ${used ? 'disabled' : ''}><span class="mode-index">0${i + 1}</span><span class="mode-art" aria-hidden="true">${nodeIcon(m === 'daily' ? 'boss' : m === 'practice' ? 'rest' : 'elite')}</span><h2>${text(m)}</h2><p>${descriptions[i]}</p><span class="mode-detail">${used ? 'Daily attempt used' : m === 'daily' ? 'RESETS 12:00 BEIJING' : m === 'practice' ? 'NO DAILY ATTEMPT USED' : '5:00 · ×1.15 PER ROOM'}</span><span class="mode-arrow">→</span></button>`;
-  }).join('')}</div><p class="selection-note">${esc(day.day)} · ${day.hibernation ? 'Hibernation · ×1.2' : 'The midnight wheel'}</p></main>`;
+    return `<button class="mode-choice ${used ? 'locked' : ''}" data-action="mode" data-mode="${m}" ${used ? 'disabled' : ''}><span class="mode-index">0${i + 1}</span><span class="mode-art" aria-hidden="true">${nodeIcon(m === 'daily' ? 'boss' : m === 'practice' ? 'rest' : 'elite')}</span><h2>${text(m)}</h2><p>${descriptions[i]}</p><span class="mode-detail">${m === 'daily' ? `${used ? 'Daily attempt used · ' : ''}RESETS 00:00 UTC · <span data-daily-countdown>${dailyCountdown()}</span>` : m === 'practice' ? 'NO DAILY ATTEMPT USED' : '5:00 · ×1.15 PER ROOM'}</span><span class="mode-arrow">→</span></button>`;
+  }).join('')}</div><p class="selection-note">Daily · ${esc(day.day)} UTC · ${day.hibernation ? 'Hibernation · ×1.2' : 'The midnight wheel'}</p></main>`;
 }
 
 function characterSelect(): string {
-  return `<main class="selection-screen character-screen"><button class="ghost-button selection-back" data-action="start">← ${text('back')}</button><div class="selection-heading"><span class="eyebrow">02 / ${text(mode).toUpperCase()}</span><h1>${text('chooseCharacter')}</h1><p class="muted">Meet the night crew. Sleep is somebody else’s problem.</p></div><div class="character-grid"><article class="character-choice selected"><span class="chip">SELECTED</span><div class="character-art" aria-hidden="true">${spriteArt('zoomie-gremlin')}</div><div class="character-info"><span class="eyebrow">THE ONE WITH THE ZOOMIES</span><h2>Zoomie Gremlin</h2><p>“gm, I have not slept”</p><div class="character-stats"><span>72 <small>HP</small></span><span>3 <small>${text('seeds')}</small></span><span>10 <small>CARDS</small></span></div><p class="muted">Chain the same card type. Build your multiplier. Make the numbers squeek.</p><div class="starter-relic">${nodeIcon('rest')}<div><strong>Midnight Wheel</strong><p>First turn: +1 Mult.</p></div></div></div></article>${['Seed Hoarder', 'Professional Napper'].map((name, i) => `<button class="character-choice locked" disabled aria-label="${name}, locked"><span class="chip">LOCKED</span><div class="character-art silhouette silhouette-${i}" aria-hidden="true">${spriteArt('zoomie-gremlin')}</div><div class="character-info"><span class="lock-mark">◇</span><h2>${name}</h2><p class="muted">Still dreaming. Coming in a future chapter.</p></div></button>`).join('')}</div><button class="start-button character-begin" data-action="begin">${text('begin')} <span>→</span></button><p class="selection-note">${mode === 'daily' ? 'Beginning uses today’s official attempt, including abandonment.' : 'Your daily attempt stays available.'}</p></main>`;
+  return `<main class="selection-screen character-screen"><button class="ghost-button selection-back" data-action="start">← ${text('back')}</button><div class="selection-heading"><span class="eyebrow">02 / ${text(mode).toUpperCase()}</span><h1>${text('chooseCharacter')}</h1><p class="muted">Meet the night crew. Sleep is somebody else’s problem.</p></div><div class="character-grid"><article class="character-choice selected"><span class="chip">SELECTED</span><div class="character-art" aria-hidden="true">${spriteArt('zoomie-gremlin')}</div><div class="character-info"><span class="eyebrow">THE ONE WITH THE ZOOMIES</span><h2>Zoomie Gremlin</h2><p>“gm, I have not slept”</p><div class="character-stats"><span>72 <small>HP</small></span><span>3 <small>${text('seeds')}</small></span><span>10 <small>CARDS</small></span></div><p class="muted">Chain the same card type. Build your multiplier. Make the numbers squeek.</p><div class="starter-relic">${nodeIcon('rest')}<div><strong>Midnight Wheel</strong><p>First turn: +1 Mult.</p></div></div></div></article>${['Seed Hoarder', 'Professional Napper'].map((name, i) => `<button class="character-choice locked" disabled aria-label="${name}, locked"><span class="chip">LOCKED</span><div class="character-art silhouette silhouette-${i}" aria-hidden="true">${spriteArt('zoomie-gremlin')}</div><div class="character-info"><span class="lock-mark">◇</span><h2>${name}</h2><p class="muted">Still dreaming. Coming in a future chapter.</p></div></button>`).join('')}</div><button class="start-button character-begin" data-action="begin">${text('begin')} <span>→</span></button><p class="selection-note">${mode === 'daily' ? `Daily · ${esc(day.day)} UTC · Beginning uses today’s official attempt, including abandonment.` : 'Your daily attempt stays available.'}</p></main>`;
 }
 
 function mapMarkup(): string {
@@ -189,7 +189,7 @@ function finishRun(finished: RunState): void {
 
 function leaderboard(): string {
   const rows = boardStatus === 'online' ? globalRows : getBoard(boardMode, boardMode === 'endless' ? undefined : day.day);
-  return `<section class="panel leaderboard"><div class="panel-heading"><div><span class="eyebrow">THE SQUEEK SHEET</span><h2>${boardStatus === 'online' ? 'Global leaderboard' : boardStatus === 'offline' ? 'Offline - local scores' : 'Leaderboard'}</h2></div><span class="chip">${currentStreak(day.day)} DAY STREAK</span></div>${walletMarkup('board')}<div class="board-tabs">${(['daily', 'practice', 'endless'] as RunMode[]).map(m => `<button class="mode-tab ${boardMode === m ? 'active' : ''}" data-action="board" data-mode="${m}">${titleCase(m)}</button>`).join('')}</div><p class="muted board-caption">${boardMode === 'endless' ? 'All days · Ranked by biggest scored hit' : `${esc(day.day)} · Ranked by total score`}</p>${rows.length ? rows.slice(0, 8).map((r, i) => `<div class="leaderboard-row ${r.profile.toLowerCase() === profile.toLowerCase() ? 'you' : ''}"><span class="board-rank">${String(i + 1).padStart(2, '0')}</span><div class="board-id">${esc(playerName(r.profile))}${r.profile.toLowerCase() === profile.toLowerCase() ? '<small> YOU</small>' : ''}<span>${r.won ? 'Cleared' : 'Hour ' + r.floor}${r.hibernation ? ' · ☾' : ''}${r.streak ? ' · ' + r.streak + 'd' : ''}</span></div><strong class="board-score">${fmt(boardMode === 'endless' ? r.bestHit : r.score)}</strong></div>`).join('') : '<div class="board-empty"><span>♜</span><strong>A quiet spire.</strong><p>Your first finished run<br/>starts the story.</p></div>'}<div class="board-connection"><p class="board-footnote" role="status">${boardStatus === 'online' ? 'Shared scores. Server replay verified. Wallet names are unverified labels.' : boardStatus === 'offline' ? 'API unavailable. Showing scores saved on this device.' : 'Connecting to the shared leaderboard...'}</p><button class="ghost-button" data-action="board-refresh" ${boardStatus === 'loading' ? 'disabled' : ''}>Refresh</button></div></section>`;
+  return `<section class="panel leaderboard"><div class="panel-heading"><div><span class="eyebrow">THE SQUEEK SHEET</span><h2>${boardStatus === 'online' ? 'Global leaderboard' : boardStatus === 'offline' ? 'Offline - local scores' : 'Leaderboard'}</h2></div><span class="chip">${currentStreak(day.day)} DAY STREAK</span></div>${walletMarkup('board')}<div class="board-tabs">${(['daily', 'practice', 'endless'] as RunMode[]).map(m => `<button class="mode-tab ${boardMode === m ? 'active' : ''}" data-action="board" data-mode="${m}">${titleCase(m)}</button>`).join('')}</div><p class="muted board-caption">${boardMode === 'endless' ? 'All days · Ranked by biggest scored hit' : `${titleCase(boardMode)} · ${esc(day.day)} UTC · Ranked by total score`}</p>${rows.length ? rows.slice(0, 8).map((r, i) => `<div class="leaderboard-row ${r.profile.toLowerCase() === profile.toLowerCase() ? 'you' : ''}"><span class="board-rank">${String(i + 1).padStart(2, '0')}</span><div class="board-id">${esc(playerName(r.profile))}${r.profile.toLowerCase() === profile.toLowerCase() ? '<small> YOU</small>' : ''}<span>${r.won ? 'Cleared' : 'Hour ' + r.floor}${r.hibernation ? ' · ☾' : ''}${r.streak ? ' · ' + r.streak + 'd' : ''}</span></div><strong class="board-score">${fmt(boardMode === 'endless' ? r.bestHit : r.score)}</strong></div>`).join('') : '<div class="board-empty"><span>♜</span><strong>A quiet spire.</strong><p>Your first finished run<br/>starts the story.</p></div>'}<div class="board-connection"><p class="board-footnote" role="status">${boardStatus === 'online' ? 'Shared scores. Server replay verified. Wallet names are unverified labels.' : boardStatus === 'offline' ? 'API unavailable. Showing scores saved on this device.' : 'Connecting to the shared leaderboard...'}</p><button class="ghost-button" data-action="board-refresh" ${boardStatus === 'loading' ? 'disabled' : ''}>Refresh</button></div></section>`;
 }
 
 function cardMarkup(id: string, instance?: CardInstance, action = 'play', index?: number): string {
@@ -314,7 +314,7 @@ function runScreen(): string {
   else if (run.phase === 'rest') content = rest();
   else if (run.phase === 'event') content = event();
   else content = result();
-  return `<div class="layout run-layout ${run.phase === 'combat' || pendingBattle ? 'in-battle' : ''}"><main class="main-panel">${content}</main></div>`;
+  return `<div class="layout run-layout ${run.phase === 'combat' || pendingBattle ? 'in-battle' : ''}"><main class="main-panel"><p class="muted run-day">${titleCase(run.mode)} · ${esc(run.day.day)} UTC</p>${content}</main></div>`;
 }
 
 function settingsMarkup(): string {
@@ -469,13 +469,20 @@ function dispatch(action: RunAction): void {
   } catch (error) { notify(error instanceof Error ? error.message : 'That move is not available.'); }
 }
 
+function resumeRun(saved: RunState): void {
+  syncGameDay();
+  clearPresentation();
+  runViewVersion++; run = saved; mode = saved.mode; screen = 'run';
+  if (saved.mode === 'endless') dispatch({ type: 'elapsed', ms: Math.max(saved.elapsedMs, endlessElapsed()) });
+  else render();
+}
+
 function startRun(selected: RunMode, fresh = false): void {
-  if (getGameDay() !== day.day) { notify('A new daily challenge seed is ready. Reload to use it with the captured hamster run snapshot; daily data refresh coming soon.'); return; }
+  syncGameDay();
   clearPresentation();
   const saved = !fresh ? loadActive(selected) : null;
   if (saved && !['won', 'lost'].includes(saved.phase) && saved.day.day === day.day) {
-    runViewVersion++; run = saved; mode = selected; screen = 'run';
-    if (selected === 'endless') dispatch({ type: 'elapsed', ms: Math.max(run.elapsedMs, endlessElapsed()) }); else render();
+    resumeRun(saved);
     return;
   }
   if (selected === 'daily' && !claimDaily(day.day)) { notify('Today’s official attempt is used. Practice and endless are open.'); return; }
@@ -544,7 +551,7 @@ root.addEventListener('click', event => {
   else if (action === 'start') { screen = 'modes'; render(); }
   else if (action === 'mode') { mode = button.dataset.mode as RunMode; screen = 'characters'; render(); }
   else if (action === 'begin') startRun(mode);
-  else if (action === 'resume') { if (run && !done()) startRun(run.mode); }
+  else if (action === 'resume') { if (run && !done()) resumeRun(run); }
   else if (action === 'again') startRun(button.dataset.mode as RunMode, true);
   else if (action === 'collection' || action === 'help' || action === 'deck' || action === 'settings' || action === 'more') { modalOpener = action; modalOpenerPile = null; modal = action; if (action === 'help') { guidePage = 0; guideDetailsOpen = false; guideGesture = null; } render(); if (action === 'more') void refreshLeaderboard(); }
   else if (action === 'pile') { pile = button.dataset.pile as typeof pile; modalOpener = 'pile'; modalOpenerPile = pile; modal = 'pile'; render(); }
@@ -686,6 +693,23 @@ document.addEventListener('keydown', event => {
     && !(event.target instanceof HTMLButtonElement) && !(event.target instanceof HTMLSelectElement) && !(event.target instanceof HTMLInputElement)) dispatch({ type: 'endTurn' });
 });
 
+function dailyCountdown(): string {
+  const now = new Date();
+  const seconds = Math.max(0, Math.ceil((getDailyResetTime(now) - now.getTime()) / 1000));
+  return [Math.floor(seconds / 3600), Math.floor(seconds / 60) % 60, seconds % 60]
+    .map(value => String(value).padStart(2, '0')).join(':');
+}
+
+/** Roll the challenge and board together; an ongoing run retains its original UTC day. */
+function syncGameDay(): void {
+  const currentDay = getGameDay();
+  if (!day || currentDay === day.day) return;
+  day = { ...fallbackDay(currentDay), spinning: day.spinning, notice: day.notice };
+  boardRequest++; globalRows = []; boardStatus = 'loading';
+  render();
+  if (modal === 'more') void refreshLeaderboard();
+}
+
 function clockText(): string {
   const seconds = Math.max(0, Math.ceil((300000 - (run?.elapsedMs ?? 0)) / 1000));
   return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
@@ -707,6 +731,8 @@ function squeekSound(chain: number): void {
 
 window.setInterval(() => {
   if (!root.isConnected) return;
+  syncGameDay();
+  root.querySelectorAll('[data-daily-countdown]').forEach(clock => { clock.textContent = dailyCountdown(); });
   if (run?.mode === 'endless' && !done()) {
     try {
       run = act(run, { type: 'elapsed', ms: Math.max(run.elapsedMs, endlessElapsed()) }); saveActive(run);

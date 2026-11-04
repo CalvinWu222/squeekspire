@@ -85,7 +85,8 @@ describe('English visual tip guide', () => {
     expect(guideMarkup('en', 0)).toContain('Gold Zoomies hours double multiplicative triggers');
     expect(guideMarkup('en', 0)).toContain('captured real hamster run snapshot');
     expect(guideMarkup('en', 2)).toContain('does not multiply the damage');
-    expect(guideMarkup('en', 3)).toContain('noon Beijing time');
+    expect(guideMarkup('en', 3)).toContain('each UTC day, resetting at 00:00 UTC');
+    expect(guideMarkup('en', 3)).not.toMatch(/Beijing|Shanghai|UTC\+8/);
     expect(guideMarkup('en', 3)).toContain('Starting the run uses your attempt, even if you abandon it');
     expect(guideMarkup('en', 3)).toContain('five-minute');
     expect(guideMarkup('en', 3)).toContain('Local leaderboard (this device)');
