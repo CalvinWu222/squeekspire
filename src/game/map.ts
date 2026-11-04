@@ -1,5 +1,5 @@
-import { mulberry32 } from './rng';
-import type { DayData, MapNode } from './types';
+import { mulberry32 } from './rng.js';
+import type { DayData, MapNode } from './types.js';
 
 const battleEnemies = [
   ['dust-mite', 'queue-snake', 'seed-thief', 'sybil-swarm'],

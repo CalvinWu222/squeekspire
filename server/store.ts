@@ -1,4 +1,4 @@
-import type { RunMode } from '../src/game/types';
+import type { RunMode } from '../src/game/types.js';
 import { localFile } from './local-file.mjs';
 
 export interface ScoreEntry {

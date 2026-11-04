@@ -1,9 +1,9 @@
-import { CARDS, CARD_POOL, STARTER_DECK, RELICS, ENEMIES, type CardType, type Rarity } from './catalog';
-import { nextRandom, hashString } from './rng';
-import { generateMap } from './map';
-import { battleScoreBreakdown, scoreMultipliers, type BattleScoreBreakdown } from './score';
-import type { DayData, MapNode, RunMode } from './types';
-import { baseDamage as damageAmount, cardValues, isCardUpgradable, mergeCandidates, triggerFactor } from './cardValues';
+import { CARDS, CARD_POOL, STARTER_DECK, RELICS, ENEMIES, type CardType, type Rarity } from './catalog.js';
+import { nextRandom, hashString } from './rng.js';
+import { generateMap } from './map.js';
+import { battleScoreBreakdown, scoreMultipliers, type BattleScoreBreakdown } from './score.js';
+import type { DayData, MapNode, RunMode } from './types.js';
+import { baseDamage as damageAmount, cardValues, isCardUpgradable, mergeCandidates, triggerFactor } from './cardValues.js';
 
 export interface CardInstance { uid: string; id: string; level: number; mergeLevel: number; }
 export interface EnemyIntent { type: string; damage: number; times: number; label: string; }

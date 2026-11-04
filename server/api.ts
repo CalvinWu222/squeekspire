@@ -1,6 +1,6 @@
-import { verifySubmission } from './replay';
-import { createStore, type BoardQuery, type Environment, type ScoreEntry, type ScoreStore } from './store';
-import type { RunMode } from '../src/game/types';
+import { verifySubmission } from './replay.js';
+import { createStore, type BoardQuery, type Environment, type ScoreEntry, type ScoreStore } from './store.js';
+import type { RunMode } from '../src/game/types.js';
 
 export const MAX_BODY_BYTES = 256 * 1024;
 export const POST_RATE_LIMIT = 12;

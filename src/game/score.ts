@@ -1,5 +1,5 @@
-import { ENEMIES } from './catalog';
-import type { RunState } from './engine';
+import { ENEMIES } from './catalog.js';
+import type { RunState } from './engine.js';
 
 const bounded = (value: number) => Math.min(1e300, Math.max(0, Number.isFinite(value) ? value : 1e300));
 

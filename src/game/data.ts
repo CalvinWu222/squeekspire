@@ -1,7 +1,7 @@
-import settlementsFixture from '../../fixtures/settlements.json';
-import historyFixture from '../../fixtures/history-30d.json';
-import { hashString } from './rng';
-import type { DayData, HourData } from './types';
+import settlementsFixture from '../../fixtures/settlements.json' with { type: 'json' };
+import historyFixture from '../../fixtures/history-30d.json' with { type: 'json' };
+import { hashString } from './rng.js';
+import type { DayData, HourData } from './types.js';
 
 const API = 'https://api.squeekchain.com/v1';
 const HOUR = 3_600_000;

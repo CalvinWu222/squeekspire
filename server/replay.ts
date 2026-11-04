@@ -1,5 +1,5 @@
-import { replayRun, type RunExport } from '../src/game/engine';
-import { fallbackDay } from '../src/game/data';
+import { replayRun, type RunExport } from '../src/game/engine.js';
+import { fallbackDay } from '../src/game/data.js';
 
 export const MAX_ACTIONS = 4_000;
 const object = (value: unknown): value is Record<string, unknown> => !!value && typeof value === 'object' && !Array.isArray(value);

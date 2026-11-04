@@ -1,5 +1,5 @@
-import { CARDS } from './catalog';
-import type { CardInstance, EnemyState, RunState } from './engine';
+import { CARDS } from './catalog.js';
+import type { CardInstance, EnemyState, RunState } from './engine.js';
 
 const effectUpgrades = new Set(['seed-snack', 'water-bottle', 'night-owl', 'fluff-up', 'ser', 'insomnia', 'genesis-seed', 'wheely-overclock', 'wheel-spin', 'overrun', 'buildooooor', 'peak-rpm', 'gas-war', 'moar']);
 /** Cards without a rule change are deliberately excluded from every upgrade source. */
