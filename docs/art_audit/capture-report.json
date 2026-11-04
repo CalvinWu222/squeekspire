@@ -1,0 +1,4341 @@
+{
+  "startedAt": "2026-11-04T10:48:51.949Z",
+  "baseURL": "http://127.0.0.1:5187/",
+  "browser": "Playwright bundled headless Chromium",
+  "desktop": {
+    "width": 1440,
+    "height": 1000
+  },
+  "mobile": {
+    "width": 390,
+    "height": 844
+  },
+  "methodology": "Actual local Vite source. Controlled states use existing engine exports and an in-memory response hook on loadActive; no source files edited. Network is isolated, preferences muted, normal motion enabled. Leaderboard rows are synthetic demonstration data. Game over is reached through an unmodified, replayable practice run.",
+  "shots": [
+    {
+      "file": "shots/01_title_desktop.png",
+      "state": "Title / clean guest session",
+      "fixture": false,
+      "fullPage": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "document": {
+        "width": 1440,
+        "height": 1000
+      },
+      "horizontalOverflow": false,
+      "svgCount": 1,
+      "cardCount": 0,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [
+        {
+          "name": "wheel-turn",
+          "time": 233.3370000078967,
+          "duration": 100000
+        },
+        {
+          "name": "idle-breathe",
+          "time": 233.3370000078967,
+          "duration": 3500
+        }
+      ],
+      "hand": null,
+      "cards": [],
+      "intentCount": 0,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/02_mode_select_desktop.png",
+      "state": "Mode selection",
+      "fixture": false,
+      "fullPage": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "document": {
+        "width": 1440,
+        "height": 1000
+      },
+      "horizontalOverflow": false,
+      "svgCount": 3,
+      "cardCount": 0,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [
+        {
+          "name": "",
+          "time": 150.03500000198832,
+          "duration": 220
+        },
+        {
+          "name": "",
+          "time": 150.03500000198832,
+          "duration": 220
+        },
+        {
+          "name": "",
+          "time": 150.03500000198832,
+          "duration": 220
+        },
+        {
+          "name": "",
+          "time": 150.03500000198832,
+          "duration": 220
+        },
+        {
+          "name": "",
+          "time": 150.03500000198832,
+          "duration": 220
+        }
+      ],
+      "hand": null,
+      "cards": [],
+      "intentCount": 0,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/03_character_select_desktop.png",
+      "state": "Character selection",
+      "fixture": false,
+      "fullPage": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "document": {
+        "width": 1440,
+        "height": 1000
+      },
+      "horizontalOverflow": false,
+      "svgCount": 4,
+      "cardCount": 0,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [
+        {
+          "name": "idle-breathe",
+          "time": 183.3429999945675,
+          "duration": 3600
+        }
+      ],
+      "hand": null,
+      "cards": [],
+      "intentCount": 0,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/04_map_desktop.png",
+      "state": "Route map with available choices",
+      "fixture": true,
+      "fullPage": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "document": {
+        "width": 1440,
+        "height": 1018
+      },
+      "horizontalOverflow": false,
+      "svgCount": 38,
+      "cardCount": 0,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [],
+      "hand": null,
+      "cards": [],
+      "intentCount": 0,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/05_combat_desktop.png",
+      "state": "Combat idle / two enemies",
+      "fixture": true,
+      "fullPage": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "document": {
+        "width": 1440,
+        "height": 1102
+      },
+      "horizontalOverflow": false,
+      "svgCount": 25,
+      "cardCount": 5,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [
+        {
+          "name": "wheel-turn",
+          "time": 349.97399999711666,
+          "duration": 55000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.97399999711666,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.97399999711666,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.97399999711666,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.97399999711666,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.97399999711666,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.97399999711666,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.97399999711666,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.97399999711666,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.97399999711666,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.97399999711666,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.97399999711666,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.97399999711666,
+          "duration": 14000
+        },
+        {
+          "name": "idle-breathe",
+          "time": 349.97399999711666,
+          "duration": 3000
+        },
+        {
+          "name": "idle-breathe",
+          "time": 349.97399999711666,
+          "duration": 3700
+        },
+        {
+          "name": "idle-breathe",
+          "time": 349.97399999711666,
+          "duration": 3700
+        }
+      ],
+      "hand": {
+        "clientWidth": 1068,
+        "scrollWidth": 1068
+      },
+      "cards": [
+        {
+          "id": "wheel-kick",
+          "box": {
+            "x": 166,
+            "y": 713.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 1044.875
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "cheek-pouch",
+          "box": {
+            "x": 340.15625,
+            "y": 713.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 1044.875
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "sleep-cam",
+          "box": {
+            "x": 514.3125,
+            "y": 713.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 1044.875
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "seed-snack",
+          "box": {
+            "x": 688.46875,
+            "y": 713.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 1044.875
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "lfg",
+          "box": {
+            "x": 862.625,
+            "y": 713.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 1044.875
+          },
+          "descriptionFont": "12px"
+        }
+      ],
+      "intentCount": 2,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/06_card_hover_desktop.png",
+      "state": "Desktop card hover / Wheel Kick",
+      "fixture": true,
+      "fullPage": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "document": {
+        "width": 1440,
+        "height": 1102
+      },
+      "horizontalOverflow": false,
+      "svgCount": 25,
+      "cardCount": 5,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [
+        {
+          "name": "wheel-turn",
+          "time": 750.0199999971167,
+          "duration": 55000
+        },
+        {
+          "name": "seed-fall",
+          "time": 750.0199999971167,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 750.0199999971167,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 750.0199999971167,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 750.0199999971167,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 750.0199999971167,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 750.0199999971167,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 750.0199999971167,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 750.0199999971167,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 750.0199999971167,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 750.0199999971167,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 750.0199999971167,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 750.0199999971167,
+          "duration": 14000
+        },
+        {
+          "name": "idle-breathe",
+          "time": 750.0199999971167,
+          "duration": 3000
+        },
+        {
+          "name": "idle-breathe",
+          "time": 750.0199999971167,
+          "duration": 3700
+        },
+        {
+          "name": "idle-breathe",
+          "time": 750.0199999971167,
+          "duration": 3700
+        }
+      ],
+      "hand": {
+        "clientWidth": 1068,
+        "scrollWidth": 1068
+      },
+      "cards": [
+        {
+          "id": "wheel-kick",
+          "box": {
+            "x": 160.2545166015625,
+            "y": 604.0628662109375,
+            "width": 175.647216796875,
+            "height": 355.0059814453125,
+            "bottom": 959.06884765625
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "cheek-pouch",
+          "box": {
+            "x": 340.15625,
+            "y": 668.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 999.875
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "sleep-cam",
+          "box": {
+            "x": 514.3125,
+            "y": 668.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 999.875
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "seed-snack",
+          "box": {
+            "x": 688.46875,
+            "y": 668.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 999.875
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "lfg",
+          "box": {
+            "x": 862.625,
+            "y": 668.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 999.875
+          },
+          "descriptionFont": "12px"
+        }
+      ],
+      "intentCount": 2,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/07_card_target_desktop.png",
+      "state": "Selected attack / target prompt",
+      "fixture": true,
+      "fullPage": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "document": {
+        "width": 1440,
+        "height": 1102
+      },
+      "horizontalOverflow": false,
+      "svgCount": 25,
+      "cardCount": 5,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [
+        {
+          "name": "",
+          "time": 166.6899999942333,
+          "duration": 180
+        },
+        {
+          "name": "wheel-turn",
+          "time": 166.6899999942333,
+          "duration": 55000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.6899999942333,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.6899999942333,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.6899999942333,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.6899999942333,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.6899999942333,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.6899999942333,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.6899999942333,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.6899999942333,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.6899999942333,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.6899999942333,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.6899999942333,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.6899999942333,
+          "duration": 14000
+        },
+        {
+          "name": "idle-breathe",
+          "time": 166.6899999942333,
+          "duration": 3000
+        },
+        {
+          "name": "idle-breathe",
+          "time": 166.6899999942333,
+          "duration": 3700
+        },
+        {
+          "name": "idle-breathe",
+          "time": 166.6899999942333,
+          "duration": 3700
+        }
+      ],
+      "hand": {
+        "clientWidth": 1068,
+        "scrollWidth": 1068
+      },
+      "cards": [
+        {
+          "id": "wheel-kick",
+          "box": {
+            "x": 160.2545166015625,
+            "y": 604.0628662109375,
+            "width": 175.647216796875,
+            "height": 355.0059814453125,
+            "bottom": 959.06884765625
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "cheek-pouch",
+          "box": {
+            "x": 340.15625,
+            "y": 668.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 999.875
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "sleep-cam",
+          "box": {
+            "x": 514.3125,
+            "y": 668.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 999.875
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "seed-snack",
+          "box": {
+            "x": 688.46875,
+            "y": 668.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 999.875
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "lfg",
+          "box": {
+            "x": 862.625,
+            "y": 668.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 999.875
+          },
+          "descriptionFont": "12px"
+        }
+      ],
+      "intentCount": 2,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/08_card_play_impact_desktop.png",
+      "state": "Card play mid-animation / lunge + HP feedback",
+      "fixture": true,
+      "fullPage": false,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "document": {
+        "width": 1440,
+        "height": 1102
+      },
+      "horizontalOverflow": false,
+      "svgCount": 25,
+      "cardCount": 5,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [
+        {
+          "name": "",
+          "time": 50.03799999315195,
+          "duration": 200
+        },
+        {
+          "name": "",
+          "time": 50.03799999315195,
+          "duration": 200
+        },
+        {
+          "name": "",
+          "time": 50.03799999315195,
+          "duration": 200
+        },
+        {
+          "name": "",
+          "time": 50.03799999315195,
+          "duration": 200
+        },
+        {
+          "name": "",
+          "time": 50.03799999315195,
+          "duration": 200
+        },
+        {
+          "name": "score-float",
+          "time": 50.03799999315195,
+          "duration": 1000
+        },
+        {
+          "name": "wheel-turn",
+          "time": 50.03799999315195,
+          "duration": 55000
+        },
+        {
+          "name": "seed-fall",
+          "time": 50.03799999315195,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 50.03799999315195,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 50.03799999315195,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 50.03799999315195,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 50.03799999315195,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 50.03799999315195,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 50.03799999315195,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 50.03799999315195,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 50.03799999315195,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 50.03799999315195,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 50.03799999315195,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 50.03799999315195,
+          "duration": 14000
+        },
+        {
+          "name": "player-lunge",
+          "time": 50.03799999315195,
+          "duration": 500
+        },
+        {
+          "name": "idle-breathe",
+          "time": 50.03799999315195,
+          "duration": 3000
+        },
+        {
+          "name": "hit-flash",
+          "time": 50.03799999315195,
+          "duration": 400
+        },
+        {
+          "name": "damage-rise",
+          "time": 50.03799999315195,
+          "duration": 850
+        },
+        {
+          "name": "idle-breathe",
+          "time": 50.03799999315195,
+          "duration": 3700
+        },
+        {
+          "name": "card-play",
+          "time": 50.03799999315195,
+          "duration": 650
+        }
+      ],
+      "hand": {
+        "clientWidth": 1068,
+        "scrollWidth": 1068
+      },
+      "cards": [
+        {
+          "id": "cheek-pouch",
+          "box": {
+            "x": 166,
+            "y": 668.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 999.875
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "sleep-cam",
+          "box": {
+            "x": 340.15625,
+            "y": 668.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 999.875
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "seed-snack",
+          "box": {
+            "x": 514.3125,
+            "y": 668.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 999.875
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "lfg",
+          "box": {
+            "x": 688.46875,
+            "y": 668.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 999.875
+          },
+          "descriptionFont": "12px"
+        }
+      ],
+      "intentCount": 2,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/09_block_feedback_desktop.png",
+      "state": "Block card action / shield bubble",
+      "fixture": true,
+      "fullPage": false,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "document": {
+        "width": 1440,
+        "height": 1102
+      },
+      "horizontalOverflow": false,
+      "svgCount": 24,
+      "cardCount": 4,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [
+        {
+          "name": "",
+          "time": 66.75599998695425,
+          "duration": 180
+        },
+        {
+          "name": "wheel-turn",
+          "time": 66.75599998695425,
+          "duration": 55000
+        },
+        {
+          "name": "seed-fall",
+          "time": 66.75599998695425,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 66.75599998695425,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 66.75599998695425,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 66.75599998695425,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 66.75599998695425,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 66.75599998695425,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 66.75599998695425,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 66.75599998695425,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 66.75599998695425,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 66.75599998695425,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 66.75599998695425,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 66.75599998695425,
+          "duration": 14000
+        },
+        {
+          "name": "defend-charge",
+          "time": 66.75599998695425,
+          "duration": 550
+        },
+        {
+          "name": "idle-breathe",
+          "time": 66.75599998695425,
+          "duration": 3000
+        },
+        {
+          "name": "damage-rise",
+          "time": 66.75599998695425,
+          "duration": 850
+        },
+        {
+          "name": "idle-breathe",
+          "time": 66.75599998695425,
+          "duration": 3700
+        },
+        {
+          "name": "idle-breathe",
+          "time": 66.75599998695425,
+          "duration": 3700
+        },
+        {
+          "name": "card-play",
+          "time": 66.75599998695425,
+          "duration": 650
+        }
+      ],
+      "hand": {
+        "clientWidth": 1068,
+        "scrollWidth": 1068
+      },
+      "cards": [
+        {
+          "id": "sleep-cam",
+          "box": {
+            "x": 162.32948303222656,
+            "y": 627.1873779296875,
+            "width": 171.49729919433594,
+            "height": 346.618408203125,
+            "bottom": 973.8057861328125
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "seed-snack",
+          "box": {
+            "x": 340.15625,
+            "y": 668.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 999.875
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "lfg",
+          "box": {
+            "x": 514.3125,
+            "y": 668.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 999.875
+          },
+          "descriptionFont": "12px"
+        }
+      ],
+      "intentCount": 2,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/10_enemy_intents_desktop.png",
+      "state": "Current + revealed future enemy intent queues",
+      "fixture": true,
+      "fullPage": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "document": {
+        "width": 1440,
+        "height": 1181
+      },
+      "horizontalOverflow": false,
+      "svgCount": 26,
+      "cardCount": 5,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [
+        {
+          "name": "wheel-turn",
+          "time": 333.36400000349335,
+          "duration": 55000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.36400000349335,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.36400000349335,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.36400000349335,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.36400000349335,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.36400000349335,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.36400000349335,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.36400000349335,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.36400000349335,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.36400000349335,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.36400000349335,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.36400000349335,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.36400000349335,
+          "duration": 14000
+        },
+        {
+          "name": "idle-breathe",
+          "time": 333.36400000349335,
+          "duration": 3000
+        },
+        {
+          "name": "idle-breathe",
+          "time": 333.36400000349335,
+          "duration": 3700
+        },
+        {
+          "name": "idle-breathe",
+          "time": 333.36400000349335,
+          "duration": 3700
+        }
+      ],
+      "hand": {
+        "clientWidth": 1068,
+        "scrollWidth": 1068
+      },
+      "cards": [
+        {
+          "id": "wheel-kick",
+          "box": {
+            "x": 166,
+            "y": 792.578125,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 1124.359375
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "cheek-pouch",
+          "box": {
+            "x": 340.15625,
+            "y": 792.578125,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 1124.359375
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "sleep-cam",
+          "box": {
+            "x": 514.3125,
+            "y": 792.578125,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 1124.359375
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "seed-snack",
+          "box": {
+            "x": 688.46875,
+            "y": 792.578125,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 1124.359375
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "lfg",
+          "box": {
+            "x": 862.625,
+            "y": 792.578125,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 1124.359375
+          },
+          "descriptionFont": "12px"
+        }
+      ],
+      "intentCount": 2,
+      "revealedIntentCount": 4
+    },
+    {
+      "file": "shots/11_enemy_attack_desktop.png",
+      "state": "Enemy turn action / player damage",
+      "fixture": true,
+      "fullPage": false,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "document": {
+        "width": 1440,
+        "height": 1081
+      },
+      "horizontalOverflow": false,
+      "svgCount": 27,
+      "cardCount": 5,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [
+        {
+          "name": "",
+          "time": 83.3759999940889,
+          "duration": 180
+        },
+        {
+          "name": "",
+          "time": 83.3759999940889,
+          "duration": 180
+        },
+        {
+          "name": "",
+          "time": 83.3759999940889,
+          "duration": 180
+        },
+        {
+          "name": "wheel-turn",
+          "time": 83.3759999940889,
+          "duration": 55000
+        },
+        {
+          "name": "seed-fall",
+          "time": 83.3759999940889,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 83.3759999940889,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 83.3759999940889,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 83.3759999940889,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 83.3759999940889,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 83.3759999940889,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 83.3759999940889,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 83.3759999940889,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 83.3759999940889,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 83.3759999940889,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 83.3759999940889,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 83.3759999940889,
+          "duration": 14000
+        },
+        {
+          "name": "receive-hit",
+          "time": 83.3759999940889,
+          "duration": 400
+        },
+        {
+          "name": "hit-flash",
+          "time": 83.3759999940889,
+          "duration": 400
+        },
+        {
+          "name": "damage-rise",
+          "time": 83.3759999940889,
+          "duration": 850
+        },
+        {
+          "name": "enemy-lunge",
+          "time": 83.3759999940889,
+          "duration": 500
+        },
+        {
+          "name": "idle-breathe",
+          "time": 83.3759999940889,
+          "duration": 3700
+        },
+        {
+          "name": "defend-charge",
+          "time": 83.3759999940889,
+          "duration": 550
+        },
+        {
+          "name": "idle-breathe",
+          "time": 83.3759999940889,
+          "duration": 3700
+        },
+        {
+          "name": "damage-rise",
+          "time": 83.3759999940889,
+          "duration": 850
+        }
+      ],
+      "hand": {
+        "clientWidth": 1068,
+        "scrollWidth": 1068
+      },
+      "cards": [
+        {
+          "id": "cheek-pouch",
+          "box": {
+            "x": 166,
+            "y": 700.59375,
+            "width": 164.15625,
+            "height": 298.1875,
+            "bottom": 998.78125
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "wheel-kick",
+          "box": {
+            "x": 340.15625,
+            "y": 700.59375,
+            "width": 164.15625,
+            "height": 298.1875,
+            "bottom": 998.78125
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "seed-snack",
+          "box": {
+            "x": 514.3125,
+            "y": 700.59375,
+            "width": 164.15625,
+            "height": 298.1875,
+            "bottom": 998.78125
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "cheek-pouch",
+          "box": {
+            "x": 688.46875,
+            "y": 700.59375,
+            "width": 164.15625,
+            "height": 298.1875,
+            "bottom": 998.78125
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "wheel-kick",
+          "box": {
+            "x": 862.625,
+            "y": 700.59375,
+            "width": 164.15625,
+            "height": 298.1875,
+            "bottom": 998.78125
+          },
+          "descriptionFont": "12px"
+        }
+      ],
+      "intentCount": 2,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/12_boss_zoomies_desktop.png",
+      "state": "Boss / golden Zoomies room",
+      "fixture": true,
+      "fullPage": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "document": {
+        "width": 1440,
+        "height": 1154
+      },
+      "horizontalOverflow": false,
+      "svgCount": 24,
+      "cardCount": 5,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [
+        {
+          "name": "wheel-turn",
+          "time": 299.93899999643025,
+          "duration": 55000
+        },
+        {
+          "name": "seed-fall",
+          "time": 299.93899999643025,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 299.93899999643025,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 299.93899999643025,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 299.93899999643025,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 299.93899999643025,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 299.93899999643025,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 299.93899999643025,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 299.93899999643025,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 299.93899999643025,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 299.93899999643025,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 299.93899999643025,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 299.93899999643025,
+          "duration": 14000
+        },
+        {
+          "name": "idle-breathe",
+          "time": 299.93899999643025,
+          "duration": 3000
+        },
+        {
+          "name": "idle-breathe",
+          "time": 299.93899999643025,
+          "duration": 3700
+        }
+      ],
+      "hand": {
+        "clientWidth": 1068,
+        "scrollWidth": 1068
+      },
+      "cards": [
+        {
+          "id": "wheel-kick",
+          "box": {
+            "x": 166,
+            "y": 795.875,
+            "width": 164.15625,
+            "height": 290,
+            "bottom": 1085.875
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "wheel-kick",
+          "box": {
+            "x": 340.15625,
+            "y": 795.875,
+            "width": 164.15625,
+            "height": 290,
+            "bottom": 1085.875
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "cheek-pouch",
+          "box": {
+            "x": 514.3125,
+            "y": 795.875,
+            "width": 164.15625,
+            "height": 290,
+            "bottom": 1085.875
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "3am-dash",
+          "box": {
+            "x": 688.46875,
+            "y": 795.875,
+            "width": 164.15625,
+            "height": 290,
+            "bottom": 1085.875
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "cheek-pouch",
+          "box": {
+            "x": 862.625,
+            "y": 795.875,
+            "width": 164.15625,
+            "height": 290,
+            "bottom": 1085.875
+          },
+          "descriptionFont": "12px"
+        }
+      ],
+      "intentCount": 1,
+      "revealedIntentCount": 2
+    },
+    {
+      "file": "shots/13_reward_desktop.png",
+      "state": "Post-combat three-card reward",
+      "fixture": true,
+      "fullPage": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "document": {
+        "width": 1440,
+        "height": 1000
+      },
+      "horizontalOverflow": false,
+      "svgCount": 11,
+      "cardCount": 3,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [],
+      "hand": null,
+      "cards": [],
+      "intentCount": 0,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/14_shop_desktop.png",
+      "state": "Shop cards, relics, affordability and removal",
+      "fixture": true,
+      "fullPage": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "document": {
+        "width": 1440,
+        "height": 1411
+      },
+      "horizontalOverflow": false,
+      "svgCount": 16,
+      "cardCount": 3,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [],
+      "hand": null,
+      "cards": [],
+      "intentCount": 0,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/15_rest_desktop.png",
+      "state": "Rest / before-and-after upgrade",
+      "fixture": true,
+      "fullPage": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "document": {
+        "width": 1440,
+        "height": 1357
+      },
+      "horizontalOverflow": false,
+      "svgCount": 11,
+      "cardCount": 2,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [],
+      "hand": null,
+      "cards": [],
+      "intentCount": 0,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/16_event_desktop.png",
+      "state": "Event encounter",
+      "fixture": true,
+      "fullPage": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "document": {
+        "width": 1440,
+        "height": 1000
+      },
+      "horizontalOverflow": false,
+      "svgCount": 6,
+      "cardCount": 0,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [],
+      "hand": null,
+      "cards": [],
+      "intentCount": 0,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/17_treasure_relic_reward_desktop.png",
+      "state": "Treasure / acquired relic reward",
+      "fixture": true,
+      "fullPage": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "document": {
+        "width": 1440,
+        "height": 1000
+      },
+      "horizontalOverflow": false,
+      "svgCount": 6,
+      "cardCount": 0,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [],
+      "hand": null,
+      "cards": [],
+      "intentCount": 0,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/18_relic_detail_desktop.png",
+      "state": "Owned relic detail modal",
+      "fixture": true,
+      "fullPage": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "document": {
+        "width": 1440,
+        "height": 1000
+      },
+      "horizontalOverflow": false,
+      "svgCount": 7,
+      "cardCount": 0,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [],
+      "hand": null,
+      "cards": [],
+      "intentCount": 0,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/19_card_codex_desktop.png",
+      "state": "Card codex / frame and art variety",
+      "fixture": true,
+      "fullPage": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "document": {
+        "width": 1440,
+        "height": 1000
+      },
+      "horizontalOverflow": false,
+      "svgCount": 126,
+      "cardCount": 60,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [],
+      "hand": null,
+      "cards": [],
+      "intentCount": 0,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/20_guide_desktop.png",
+      "state": "Guide opening page / illustration",
+      "fixture": true,
+      "fullPage": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "document": {
+        "width": 1440,
+        "height": 1000
+      },
+      "horizontalOverflow": false,
+      "svgCount": 7,
+      "cardCount": 0,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [],
+      "hand": null,
+      "cards": [],
+      "intentCount": 0,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/21_settings_desktop.png",
+      "state": "Settings / animation controls",
+      "fixture": true,
+      "fullPage": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "document": {
+        "width": 1440,
+        "height": 1000
+      },
+      "horizontalOverflow": false,
+      "svgCount": 6,
+      "cardCount": 0,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [],
+      "hand": null,
+      "cards": [],
+      "intentCount": 0,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/22_leaderboard_desktop.png",
+      "state": "Leaderboard modal / synthetic populated rows",
+      "fixture": true,
+      "fullPage": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "document": {
+        "width": 1440,
+        "height": 1000
+      },
+      "horizontalOverflow": false,
+      "svgCount": 6,
+      "cardCount": 0,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [],
+      "hand": null,
+      "cards": [],
+      "intentCount": 0,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/23_game_over_desktop.png",
+      "state": "Game over / real practice loss from menu-started run",
+      "fixture": false,
+      "fullPage": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "document": {
+        "width": 1440,
+        "height": 1731
+      },
+      "horizontalOverflow": false,
+      "svgCount": 6,
+      "cardCount": 0,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [],
+      "hand": null,
+      "cards": [],
+      "intentCount": 0,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/36_game_over_mobile_390.png",
+      "state": "Game over at 390 CSS px / real practice loss",
+      "fixture": false,
+      "fullPage": true,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "document": {
+        "width": 390,
+        "height": 1959
+      },
+      "horizontalOverflow": false,
+      "svgCount": 6,
+      "cardCount": 0,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [],
+      "hand": null,
+      "cards": [],
+      "intentCount": 0,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/24_title_mobile_390.png",
+      "state": "Title at 390 CSS px",
+      "fixture": false,
+      "fullPage": true,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "document": {
+        "width": 390,
+        "height": 844
+      },
+      "horizontalOverflow": false,
+      "svgCount": 1,
+      "cardCount": 0,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [
+        {
+          "name": "wheel-turn",
+          "time": 183.3889999960689,
+          "duration": 100000
+        },
+        {
+          "name": "idle-breathe",
+          "time": 183.3889999960689,
+          "duration": 3500
+        }
+      ],
+      "hand": null,
+      "cards": [],
+      "intentCount": 0,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/25_mode_select_mobile_390.png",
+      "state": "Mode selection at 390 CSS px",
+      "fixture": false,
+      "fullPage": true,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "document": {
+        "width": 390,
+        "height": 897
+      },
+      "horizontalOverflow": false,
+      "svgCount": 3,
+      "cardCount": 0,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [
+        {
+          "name": "",
+          "time": 166.64099999722092,
+          "duration": 220
+        },
+        {
+          "name": "",
+          "time": 166.64099999722092,
+          "duration": 220
+        },
+        {
+          "name": "",
+          "time": 166.64099999722092,
+          "duration": 220
+        },
+        {
+          "name": "",
+          "time": 166.64099999722092,
+          "duration": 220
+        },
+        {
+          "name": "",
+          "time": 166.64099999722092,
+          "duration": 220
+        }
+      ],
+      "hand": null,
+      "cards": [],
+      "intentCount": 0,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/26_character_select_mobile_390.png",
+      "state": "Character selection at 390 CSS px",
+      "fixture": false,
+      "fullPage": true,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "document": {
+        "width": 390,
+        "height": 1191
+      },
+      "horizontalOverflow": false,
+      "svgCount": 4,
+      "cardCount": 0,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [
+        {
+          "name": "",
+          "time": 166.61899999426677,
+          "duration": 220
+        },
+        {
+          "name": "",
+          "time": 166.61899999426677,
+          "duration": 220
+        },
+        {
+          "name": "",
+          "time": 166.61899999426677,
+          "duration": 220
+        },
+        {
+          "name": "",
+          "time": 166.61899999426677,
+          "duration": 220
+        },
+        {
+          "name": "",
+          "time": 166.61899999426677,
+          "duration": 220
+        },
+        {
+          "name": "idle-breathe",
+          "time": 166.61899999426677,
+          "duration": 3600
+        }
+      ],
+      "hand": null,
+      "cards": [],
+      "intentCount": 0,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/27_map_mobile_390.png",
+      "state": "Route map at 390 CSS px",
+      "fixture": true,
+      "fullPage": true,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "document": {
+        "width": 390,
+        "height": 855
+      },
+      "horizontalOverflow": false,
+      "svgCount": 38,
+      "cardCount": 0,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [],
+      "hand": null,
+      "cards": [],
+      "intentCount": 0,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/28_combat_mobile_390.png",
+      "state": "Combat at 390 CSS px / initial hand",
+      "fixture": true,
+      "fullPage": true,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "document": {
+        "width": 390,
+        "height": 1047
+      },
+      "horizontalOverflow": false,
+      "svgCount": 25,
+      "cardCount": 5,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [
+        {
+          "name": "wheel-turn",
+          "time": 350.02200000770017,
+          "duration": 55000
+        },
+        {
+          "name": "seed-fall",
+          "time": 350.02200000770017,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 350.02200000770017,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 350.02200000770017,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 350.02200000770017,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 350.02200000770017,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 350.02200000770017,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 350.02200000770017,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 350.02200000770017,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 350.02200000770017,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 350.02200000770017,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 350.02200000770017,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 350.02200000770017,
+          "duration": 14000
+        },
+        {
+          "name": "idle-breathe",
+          "time": 350.02200000770017,
+          "duration": 3000
+        },
+        {
+          "name": "idle-breathe",
+          "time": 350.02200000770017,
+          "duration": 3700
+        },
+        {
+          "name": "idle-breathe",
+          "time": 350.02200000770017,
+          "duration": 3700
+        }
+      ],
+      "hand": {
+        "clientWidth": 376,
+        "scrollWidth": 968
+      },
+      "cards": [
+        {
+          "id": "wheel-kick",
+          "box": {
+            "x": 21,
+            "y": 584.921875,
+            "width": 180,
+            "height": 321.5625,
+            "bottom": 906.484375
+          },
+          "descriptionFont": "14px"
+        },
+        {
+          "id": "cheek-pouch",
+          "box": {
+            "x": 211,
+            "y": 584.921875,
+            "width": 180,
+            "height": 321.5625,
+            "bottom": 906.484375
+          },
+          "descriptionFont": "14px"
+        },
+        {
+          "id": "sleep-cam",
+          "box": {
+            "x": 401,
+            "y": 584.921875,
+            "width": 180,
+            "height": 321.5625,
+            "bottom": 906.484375
+          },
+          "descriptionFont": "14px"
+        },
+        {
+          "id": "seed-snack",
+          "box": {
+            "x": 591,
+            "y": 584.921875,
+            "width": 180,
+            "height": 321.5625,
+            "bottom": 906.484375
+          },
+          "descriptionFont": "14px"
+        },
+        {
+          "id": "lfg",
+          "box": {
+            "x": 781,
+            "y": 584.921875,
+            "width": 180,
+            "height": 321.5625,
+            "bottom": 906.484375
+          },
+          "descriptionFont": "14px"
+        }
+      ],
+      "intentCount": 2,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/29_card_preview_mobile_390.png",
+      "state": "Touch card inspect modal",
+      "fixture": true,
+      "fullPage": true,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "document": {
+        "width": 390,
+        "height": 1047
+      },
+      "horizontalOverflow": false,
+      "svgCount": 27,
+      "cardCount": 6,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [
+        {
+          "name": "wheel-turn",
+          "time": 166.679999999919,
+          "duration": 55000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.679999999919,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.679999999919,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.679999999919,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.679999999919,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.679999999919,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.679999999919,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.679999999919,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.679999999919,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.679999999919,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.679999999919,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.679999999919,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.679999999919,
+          "duration": 14000
+        },
+        {
+          "name": "idle-breathe",
+          "time": 166.679999999919,
+          "duration": 3000
+        },
+        {
+          "name": "idle-breathe",
+          "time": 166.679999999919,
+          "duration": 3700
+        },
+        {
+          "name": "idle-breathe",
+          "time": 166.679999999919,
+          "duration": 3700
+        }
+      ],
+      "hand": {
+        "clientWidth": 376,
+        "scrollWidth": 968
+      },
+      "cards": [
+        {
+          "id": "wheel-kick",
+          "box": {
+            "x": 21,
+            "y": 522.921875,
+            "width": 180,
+            "height": 321.5625,
+            "bottom": 844.484375
+          },
+          "descriptionFont": "14px"
+        },
+        {
+          "id": "cheek-pouch",
+          "box": {
+            "x": 211,
+            "y": 522.921875,
+            "width": 180,
+            "height": 321.5625,
+            "bottom": 844.484375
+          },
+          "descriptionFont": "14px"
+        },
+        {
+          "id": "sleep-cam",
+          "box": {
+            "x": 401,
+            "y": 522.921875,
+            "width": 180,
+            "height": 321.5625,
+            "bottom": 844.484375
+          },
+          "descriptionFont": "14px"
+        },
+        {
+          "id": "seed-snack",
+          "box": {
+            "x": 591,
+            "y": 522.921875,
+            "width": 180,
+            "height": 321.5625,
+            "bottom": 844.484375
+          },
+          "descriptionFont": "14px"
+        },
+        {
+          "id": "lfg",
+          "box": {
+            "x": 781,
+            "y": 522.921875,
+            "width": 180,
+            "height": 321.5625,
+            "bottom": 844.484375
+          },
+          "descriptionFont": "14px"
+        }
+      ],
+      "intentCount": 2,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/30_card_play_mobile_390.png",
+      "state": "Touch card play mid-animation",
+      "fixture": true,
+      "fullPage": false,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "document": {
+        "width": 390,
+        "height": 1047
+      },
+      "horizontalOverflow": false,
+      "svgCount": 25,
+      "cardCount": 5,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [
+        {
+          "name": "score-float",
+          "time": 50.066000001070975,
+          "duration": 1000
+        },
+        {
+          "name": "wheel-turn",
+          "time": 50.066000001070975,
+          "duration": 55000
+        },
+        {
+          "name": "seed-fall",
+          "time": 50.066000001070975,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 50.066000001070975,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 50.066000001070975,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 50.066000001070975,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 50.066000001070975,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 50.066000001070975,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 50.066000001070975,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 50.066000001070975,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 50.066000001070975,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 50.066000001070975,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 50.066000001070975,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 50.066000001070975,
+          "duration": 14000
+        },
+        {
+          "name": "player-lunge",
+          "time": 50.066000001070975,
+          "duration": 500
+        },
+        {
+          "name": "idle-breathe",
+          "time": 50.066000001070975,
+          "duration": 3000
+        },
+        {
+          "name": "hit-flash",
+          "time": 50.066000001070975,
+          "duration": 400
+        },
+        {
+          "name": "damage-rise",
+          "time": 50.066000001070975,
+          "duration": 850
+        },
+        {
+          "name": "idle-breathe",
+          "time": 50.066000001070975,
+          "duration": 3700
+        },
+        {
+          "name": "card-play",
+          "time": 50.066000001070975,
+          "duration": 650
+        }
+      ],
+      "hand": {
+        "clientWidth": 376,
+        "scrollWidth": 778
+      },
+      "cards": [
+        {
+          "id": "cheek-pouch",
+          "box": {
+            "x": 21,
+            "y": 388.921875,
+            "width": 180,
+            "height": 321.5625,
+            "bottom": 710.484375
+          },
+          "descriptionFont": "14px"
+        },
+        {
+          "id": "sleep-cam",
+          "box": {
+            "x": 211,
+            "y": 388.921875,
+            "width": 180,
+            "height": 321.5625,
+            "bottom": 710.484375
+          },
+          "descriptionFont": "14px"
+        },
+        {
+          "id": "seed-snack",
+          "box": {
+            "x": 401,
+            "y": 388.921875,
+            "width": 180,
+            "height": 321.5625,
+            "bottom": 710.484375
+          },
+          "descriptionFont": "14px"
+        },
+        {
+          "id": "lfg",
+          "box": {
+            "x": 591,
+            "y": 388.921875,
+            "width": 180,
+            "height": 321.5625,
+            "bottom": 710.484375
+          },
+          "descriptionFont": "14px"
+        }
+      ],
+      "intentCount": 2,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/31_enemy_intents_mobile_390.png",
+      "state": "Revealed enemy intents at 390 CSS px",
+      "fixture": true,
+      "fullPage": true,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "document": {
+        "width": 390,
+        "height": 1428
+      },
+      "horizontalOverflow": false,
+      "svgCount": 26,
+      "cardCount": 5,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [
+        {
+          "name": "wheel-turn",
+          "time": 333.36199999740813,
+          "duration": 55000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.36199999740813,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.36199999740813,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.36199999740813,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.36199999740813,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.36199999740813,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.36199999740813,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.36199999740813,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.36199999740813,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.36199999740813,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.36199999740813,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.36199999740813,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.36199999740813,
+          "duration": 14000
+        },
+        {
+          "name": "idle-breathe",
+          "time": 333.36199999740813,
+          "duration": 3000
+        },
+        {
+          "name": "idle-breathe",
+          "time": 333.36199999740813,
+          "duration": 3700
+        },
+        {
+          "name": "idle-breathe",
+          "time": 333.36199999740813,
+          "duration": 3700
+        }
+      ],
+      "hand": {
+        "clientWidth": 376,
+        "scrollWidth": 968
+      },
+      "cards": [
+        {
+          "id": "wheel-kick",
+          "box": {
+            "x": 21,
+            "y": 929.390625,
+            "width": 180,
+            "height": 321.5625,
+            "bottom": 1250.953125
+          },
+          "descriptionFont": "14px"
+        },
+        {
+          "id": "cheek-pouch",
+          "box": {
+            "x": 211,
+            "y": 929.390625,
+            "width": 180,
+            "height": 321.5625,
+            "bottom": 1250.953125
+          },
+          "descriptionFont": "14px"
+        },
+        {
+          "id": "sleep-cam",
+          "box": {
+            "x": 401,
+            "y": 929.390625,
+            "width": 180,
+            "height": 321.5625,
+            "bottom": 1250.953125
+          },
+          "descriptionFont": "14px"
+        },
+        {
+          "id": "seed-snack",
+          "box": {
+            "x": 591,
+            "y": 929.390625,
+            "width": 180,
+            "height": 321.5625,
+            "bottom": 1250.953125
+          },
+          "descriptionFont": "14px"
+        },
+        {
+          "id": "lfg",
+          "box": {
+            "x": 781,
+            "y": 929.390625,
+            "width": 180,
+            "height": 321.5625,
+            "bottom": 1250.953125
+          },
+          "descriptionFont": "14px"
+        }
+      ],
+      "intentCount": 2,
+      "revealedIntentCount": 4
+    },
+    {
+      "file": "shots/32_reward_mobile_390.png",
+      "state": "Card reward at 390 CSS px",
+      "fixture": true,
+      "fullPage": true,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "document": {
+        "width": 390,
+        "height": 1397
+      },
+      "horizontalOverflow": false,
+      "svgCount": 11,
+      "cardCount": 3,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [],
+      "hand": null,
+      "cards": [],
+      "intentCount": 0,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/33_shop_mobile_390.png",
+      "state": "Shop at 390 CSS px",
+      "fixture": true,
+      "fullPage": true,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "document": {
+        "width": 390,
+        "height": 2117
+      },
+      "horizontalOverflow": false,
+      "svgCount": 16,
+      "cardCount": 3,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [],
+      "hand": null,
+      "cards": [],
+      "intentCount": 0,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/34_rest_mobile_390.png",
+      "state": "Rest at 390 CSS px",
+      "fixture": true,
+      "fullPage": true,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "document": {
+        "width": 390,
+        "height": 1260
+      },
+      "horizontalOverflow": false,
+      "svgCount": 11,
+      "cardCount": 2,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [],
+      "hand": null,
+      "cards": [],
+      "intentCount": 0,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/35_relic_detail_mobile_390.png",
+      "state": "Relic detail at 390 CSS px",
+      "fixture": true,
+      "fullPage": true,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "document": {
+        "width": 390,
+        "height": 1260
+      },
+      "horizontalOverflow": false,
+      "svgCount": 12,
+      "cardCount": 2,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [],
+      "hand": null,
+      "cards": [],
+      "intentCount": 0,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/37_leaderboard_mobile_390.png",
+      "state": "Leaderboard at 390 CSS px / synthetic rows",
+      "fixture": true,
+      "fullPage": true,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "document": {
+        "width": 390,
+        "height": 1260
+      },
+      "horizontalOverflow": false,
+      "svgCount": 11,
+      "cardCount": 2,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [],
+      "hand": null,
+      "cards": [],
+      "intentCount": 0,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/38_event_mobile_390.png",
+      "state": "Event at 390 CSS px",
+      "fixture": true,
+      "fullPage": true,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "document": {
+        "width": 390,
+        "height": 844
+      },
+      "horizontalOverflow": false,
+      "svgCount": 6,
+      "cardCount": 0,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [],
+      "hand": null,
+      "cards": [],
+      "intentCount": 0,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/39_boss_zoomies_mobile_390.png",
+      "state": "Boss / golden room at 390 CSS px",
+      "fixture": true,
+      "fullPage": true,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "document": {
+        "width": 390,
+        "height": 1114
+      },
+      "horizontalOverflow": false,
+      "svgCount": 24,
+      "cardCount": 5,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [
+        {
+          "name": "wheel-turn",
+          "time": 333.375999995675,
+          "duration": 55000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.375999995675,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.375999995675,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.375999995675,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.375999995675,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.375999995675,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.375999995675,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.375999995675,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.375999995675,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.375999995675,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.375999995675,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.375999995675,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.375999995675,
+          "duration": 14000
+        },
+        {
+          "name": "idle-breathe",
+          "time": 333.375999995675,
+          "duration": 3000
+        },
+        {
+          "name": "idle-breathe",
+          "time": 333.375999995675,
+          "duration": 3700
+        }
+      ],
+      "hand": {
+        "clientWidth": 376,
+        "scrollWidth": 968
+      },
+      "cards": [
+        {
+          "id": "wheel-kick",
+          "box": {
+            "x": 21,
+            "y": 692.203125,
+            "width": 180,
+            "height": 288,
+            "bottom": 980.203125
+          },
+          "descriptionFont": "14px"
+        },
+        {
+          "id": "wheel-kick",
+          "box": {
+            "x": 211,
+            "y": 692.203125,
+            "width": 180,
+            "height": 288,
+            "bottom": 980.203125
+          },
+          "descriptionFont": "14px"
+        },
+        {
+          "id": "cheek-pouch",
+          "box": {
+            "x": 401,
+            "y": 692.203125,
+            "width": 180,
+            "height": 288,
+            "bottom": 980.203125
+          },
+          "descriptionFont": "14px"
+        },
+        {
+          "id": "3am-dash",
+          "box": {
+            "x": 591,
+            "y": 692.203125,
+            "width": 180,
+            "height": 288,
+            "bottom": 980.203125
+          },
+          "descriptionFont": "14px"
+        },
+        {
+          "id": "cheek-pouch",
+          "box": {
+            "x": 781,
+            "y": 692.203125,
+            "width": 180,
+            "height": 288,
+            "bottom": 980.203125
+          },
+          "descriptionFont": "14px"
+        }
+      ],
+      "intentCount": 1,
+      "revealedIntentCount": 2
+    },
+    {
+      "file": "shots/40_sybil_swarm_desktop.png",
+      "state": "Actual five-target Sybil encounter / sprite multiplicity",
+      "fixture": true,
+      "fullPage": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "document": {
+        "width": 1440,
+        "height": 1060
+      },
+      "horizontalOverflow": false,
+      "svgCount": 31,
+      "cardCount": 5,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [
+        {
+          "name": "wheel-turn",
+          "time": 349.96899999406185,
+          "duration": 55000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.96899999406185,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.96899999406185,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.96899999406185,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.96899999406185,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.96899999406185,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.96899999406185,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.96899999406185,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.96899999406185,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.96899999406185,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.96899999406185,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.96899999406185,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.96899999406185,
+          "duration": 14000
+        },
+        {
+          "name": "idle-breathe",
+          "time": 349.96899999406185,
+          "duration": 3000
+        },
+        {
+          "name": "idle-breathe",
+          "time": 349.96899999406185,
+          "duration": 3700
+        },
+        {
+          "name": "idle-breathe",
+          "time": 349.96899999406185,
+          "duration": 3700
+        },
+        {
+          "name": "idle-breathe",
+          "time": 349.96899999406185,
+          "duration": 3700
+        },
+        {
+          "name": "idle-breathe",
+          "time": 349.96899999406185,
+          "duration": 3700
+        },
+        {
+          "name": "idle-breathe",
+          "time": 349.96899999406185,
+          "duration": 3700
+        }
+      ],
+      "hand": {
+        "clientWidth": 1068,
+        "scrollWidth": 1068
+      },
+      "cards": [
+        {
+          "id": "wheel-kick",
+          "box": {
+            "x": 166,
+            "y": 713.09375,
+            "width": 164.15625,
+            "height": 290,
+            "bottom": 1003.09375
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "wheel-kick",
+          "box": {
+            "x": 340.15625,
+            "y": 713.09375,
+            "width": 164.15625,
+            "height": 290,
+            "bottom": 1003.09375
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "cheek-pouch",
+          "box": {
+            "x": 514.3125,
+            "y": 713.09375,
+            "width": 164.15625,
+            "height": 290,
+            "bottom": 1003.09375
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "3am-dash",
+          "box": {
+            "x": 688.46875,
+            "y": 713.09375,
+            "width": 164.15625,
+            "height": 290,
+            "bottom": 1003.09375
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "cheek-pouch",
+          "box": {
+            "x": 862.625,
+            "y": 713.09375,
+            "width": 164.15625,
+            "height": 290,
+            "bottom": 1003.09375
+          },
+          "descriptionFont": "12px"
+        }
+      ],
+      "intentCount": 5,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/41_combo_burst_desktop.png",
+      "state": "Big-combo SQUEEK burst and stage shake",
+      "fixture": true,
+      "fullPage": false,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "document": {
+        "width": 1440,
+        "height": 1103
+      },
+      "horizontalOverflow": false,
+      "svgCount": 25,
+      "cardCount": 5,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [
+        {
+          "name": "",
+          "time": 66.74200000906644,
+          "duration": 200
+        },
+        {
+          "name": "",
+          "time": 66.74200000906644,
+          "duration": 200
+        },
+        {
+          "name": "",
+          "time": 66.74200000906644,
+          "duration": 200
+        },
+        {
+          "name": "",
+          "time": 66.74200000906644,
+          "duration": 200
+        },
+        {
+          "name": "",
+          "time": 66.74200000906644,
+          "duration": 200
+        },
+        {
+          "name": "screen-shake",
+          "time": 66.74200000906644,
+          "duration": 450
+        },
+        {
+          "name": "score-float",
+          "time": 66.74200000906644,
+          "duration": 1000
+        },
+        {
+          "name": "wheel-turn",
+          "time": 66.74200000906644,
+          "duration": 55000
+        },
+        {
+          "name": "seed-fall",
+          "time": 66.74200000906644,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 66.74200000906644,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 66.74200000906644,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 66.74200000906644,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 66.74200000906644,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 66.74200000906644,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 66.74200000906644,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 66.74200000906644,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 66.74200000906644,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 66.74200000906644,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 66.74200000906644,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 66.74200000906644,
+          "duration": 14000
+        },
+        {
+          "name": "player-lunge",
+          "time": 66.74200000906644,
+          "duration": 500
+        },
+        {
+          "name": "idle-breathe",
+          "time": 66.74200000906644,
+          "duration": 3000
+        },
+        {
+          "name": "hit-flash",
+          "time": 66.74200000906644,
+          "duration": 400
+        },
+        {
+          "name": "damage-rise",
+          "time": 66.74200000906644,
+          "duration": 850
+        },
+        {
+          "name": "idle-breathe",
+          "time": 66.74200000906644,
+          "duration": 3700
+        },
+        {
+          "name": "squeek-pop",
+          "time": 66.74200000906644,
+          "duration": 1200
+        },
+        {
+          "name": "card-play",
+          "time": 66.74200000906644,
+          "duration": 650
+        }
+      ],
+      "hand": {
+        "clientWidth": 1068,
+        "scrollWidth": 1068
+      },
+      "cards": [
+        {
+          "id": "cheek-pouch",
+          "box": {
+            "x": 164,
+            "y": 669.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 1000.875
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "sleep-cam",
+          "box": {
+            "x": 338.15625,
+            "y": 669.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 1000.875
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "seed-snack",
+          "box": {
+            "x": 512.3125,
+            "y": 669.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 1000.875
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "lfg",
+          "box": {
+            "x": 686.46875,
+            "y": 669.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 1000.875
+          },
+          "descriptionFont": "12px"
+        }
+      ],
+      "intentCount": 2,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/42_relic_codex_desktop.png",
+      "state": "Relic codex / icon language",
+      "fixture": true,
+      "fullPage": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "document": {
+        "width": 1440,
+        "height": 1102
+      },
+      "horizontalOverflow": false,
+      "svgCount": 40,
+      "cardCount": 5,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [
+        {
+          "name": "wheel-turn",
+          "time": 116.712999992161,
+          "duration": 55000
+        },
+        {
+          "name": "seed-fall",
+          "time": 116.712999992161,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 116.712999992161,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 116.712999992161,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 116.712999992161,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 116.712999992161,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 116.712999992161,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 116.712999992161,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 116.712999992161,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 116.712999992161,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 116.712999992161,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 116.712999992161,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 116.712999992161,
+          "duration": 14000
+        },
+        {
+          "name": "idle-breathe",
+          "time": 116.712999992161,
+          "duration": 3000
+        },
+        {
+          "name": "idle-breathe",
+          "time": 116.712999992161,
+          "duration": 3700
+        },
+        {
+          "name": "idle-breathe",
+          "time": 116.712999992161,
+          "duration": 3700
+        }
+      ],
+      "hand": {
+        "clientWidth": 1068,
+        "scrollWidth": 1068
+      },
+      "cards": [
+        {
+          "id": "wheel-kick",
+          "box": {
+            "x": 166,
+            "y": 702.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 1033.875
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "cheek-pouch",
+          "box": {
+            "x": 340.15625,
+            "y": 702.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 1033.875
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "sleep-cam",
+          "box": {
+            "x": 514.3125,
+            "y": 702.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 1033.875
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "seed-snack",
+          "box": {
+            "x": 688.46875,
+            "y": 702.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 1033.875
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "lfg",
+          "box": {
+            "x": 862.625,
+            "y": 702.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 1033.875
+          },
+          "descriptionFont": "12px"
+        }
+      ],
+      "intentCount": 2,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/43_enemy_codex_desktop.png",
+      "state": "Enemy codex / actor language",
+      "fixture": true,
+      "fullPage": true,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "document": {
+        "width": 1440,
+        "height": 1102
+      },
+      "horizontalOverflow": false,
+      "svgCount": 37,
+      "cardCount": 5,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [
+        {
+          "name": "wheel-turn",
+          "time": 166.6929999992921,
+          "duration": 55000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.6929999992921,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.6929999992921,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.6929999992921,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.6929999992921,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.6929999992921,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.6929999992921,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.6929999992921,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.6929999992921,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.6929999992921,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.6929999992921,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.6929999992921,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 166.6929999992921,
+          "duration": 14000
+        },
+        {
+          "name": "idle-breathe",
+          "time": 166.6929999992921,
+          "duration": 3000
+        },
+        {
+          "name": "idle-breathe",
+          "time": 166.6929999992921,
+          "duration": 3700
+        },
+        {
+          "name": "idle-breathe",
+          "time": 166.6929999992921,
+          "duration": 3700
+        }
+      ],
+      "hand": {
+        "clientWidth": 1068,
+        "scrollWidth": 1068
+      },
+      "cards": [
+        {
+          "id": "wheel-kick",
+          "box": {
+            "x": 166,
+            "y": 702.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 1033.875
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "cheek-pouch",
+          "box": {
+            "x": 340.15625,
+            "y": 702.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 1033.875
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "sleep-cam",
+          "box": {
+            "x": 514.3125,
+            "y": 702.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 1033.875
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "seed-snack",
+          "box": {
+            "x": 688.46875,
+            "y": 702.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 1033.875
+          },
+          "descriptionFont": "12px"
+        },
+        {
+          "id": "lfg",
+          "box": {
+            "x": 862.625,
+            "y": 702.09375,
+            "width": 164.15625,
+            "height": 331.78125,
+            "bottom": 1033.875
+          },
+          "descriptionFont": "12px"
+        }
+      ],
+      "intentCount": 2,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/44_combat_mobile_390_viewport.png",
+      "state": "Combat initial 390x844 viewport / no scrolling",
+      "fixture": true,
+      "fullPage": false,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "document": {
+        "width": 390,
+        "height": 1047
+      },
+      "horizontalOverflow": false,
+      "svgCount": 25,
+      "cardCount": 5,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [
+        {
+          "name": "wheel-turn",
+          "time": 349.9920000122972,
+          "duration": 55000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.9920000122972,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.9920000122972,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.9920000122972,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.9920000122972,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.9920000122972,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.9920000122972,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.9920000122972,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.9920000122972,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.9920000122972,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.9920000122972,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.9920000122972,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 349.9920000122972,
+          "duration": 14000
+        },
+        {
+          "name": "idle-breathe",
+          "time": 349.9920000122972,
+          "duration": 3000
+        },
+        {
+          "name": "idle-breathe",
+          "time": 349.9920000122972,
+          "duration": 3700
+        },
+        {
+          "name": "idle-breathe",
+          "time": 349.9920000122972,
+          "duration": 3700
+        }
+      ],
+      "hand": {
+        "clientWidth": 376,
+        "scrollWidth": 968
+      },
+      "cards": [
+        {
+          "id": "wheel-kick",
+          "box": {
+            "x": 21,
+            "y": 591.921875,
+            "width": 180,
+            "height": 321.5625,
+            "bottom": 913.484375
+          },
+          "descriptionFont": "14px"
+        },
+        {
+          "id": "cheek-pouch",
+          "box": {
+            "x": 211,
+            "y": 591.921875,
+            "width": 180,
+            "height": 321.5625,
+            "bottom": 913.484375
+          },
+          "descriptionFont": "14px"
+        },
+        {
+          "id": "sleep-cam",
+          "box": {
+            "x": 401,
+            "y": 591.921875,
+            "width": 180,
+            "height": 321.5625,
+            "bottom": 913.484375
+          },
+          "descriptionFont": "14px"
+        },
+        {
+          "id": "seed-snack",
+          "box": {
+            "x": 591,
+            "y": 591.921875,
+            "width": 180,
+            "height": 321.5625,
+            "bottom": 913.484375
+          },
+          "descriptionFont": "14px"
+        },
+        {
+          "id": "lfg",
+          "box": {
+            "x": 781,
+            "y": 591.921875,
+            "width": 180,
+            "height": 321.5625,
+            "bottom": 913.484375
+          },
+          "descriptionFont": "14px"
+        }
+      ],
+      "intentCount": 2,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/45_sybil_intents_mobile_390.png",
+      "state": "Five-target swarm + Live Camera at 390 CSS px",
+      "fixture": true,
+      "fullPage": true,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "document": {
+        "width": 390,
+        "height": 1879
+      },
+      "horizontalOverflow": false,
+      "svgCount": 32,
+      "cardCount": 5,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [
+        {
+          "name": "wheel-turn",
+          "time": 333.33599999455174,
+          "duration": 55000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.33599999455174,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.33599999455174,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.33599999455174,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.33599999455174,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.33599999455174,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.33599999455174,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.33599999455174,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.33599999455174,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.33599999455174,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.33599999455174,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.33599999455174,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 333.33599999455174,
+          "duration": 14000
+        },
+        {
+          "name": "idle-breathe",
+          "time": 333.33599999455174,
+          "duration": 3000
+        },
+        {
+          "name": "idle-breathe",
+          "time": 333.33599999455174,
+          "duration": 3700
+        },
+        {
+          "name": "idle-breathe",
+          "time": 333.33599999455174,
+          "duration": 3700
+        },
+        {
+          "name": "idle-breathe",
+          "time": 333.33599999455174,
+          "duration": 3700
+        },
+        {
+          "name": "idle-breathe",
+          "time": 333.33599999455174,
+          "duration": 3700
+        },
+        {
+          "name": "idle-breathe",
+          "time": 333.33599999455174,
+          "duration": 3700
+        }
+      ],
+      "hand": {
+        "clientWidth": 376,
+        "scrollWidth": 968
+      },
+      "cards": [
+        {
+          "id": "wheel-kick",
+          "box": {
+            "x": 21,
+            "y": 1457.375,
+            "width": 180,
+            "height": 288,
+            "bottom": 1745.375
+          },
+          "descriptionFont": "14px"
+        },
+        {
+          "id": "wheel-kick",
+          "box": {
+            "x": 211,
+            "y": 1457.375,
+            "width": 180,
+            "height": 288,
+            "bottom": 1745.375
+          },
+          "descriptionFont": "14px"
+        },
+        {
+          "id": "cheek-pouch",
+          "box": {
+            "x": 401,
+            "y": 1457.375,
+            "width": 180,
+            "height": 288,
+            "bottom": 1745.375
+          },
+          "descriptionFont": "14px"
+        },
+        {
+          "id": "3am-dash",
+          "box": {
+            "x": 591,
+            "y": 1457.375,
+            "width": 180,
+            "height": 288,
+            "bottom": 1745.375
+          },
+          "descriptionFont": "14px"
+        },
+        {
+          "id": "cheek-pouch",
+          "box": {
+            "x": 781,
+            "y": 1457.375,
+            "width": 180,
+            "height": 288,
+            "bottom": 1745.375
+          },
+          "descriptionFont": "14px"
+        }
+      ],
+      "intentCount": 5,
+      "revealedIntentCount": 10
+    },
+    {
+      "file": "shots/46_sybil_intents_mobile_390_viewport.png",
+      "state": "Five-target swarm + Live Camera / initial 390x844 viewport",
+      "fixture": true,
+      "fullPage": false,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "document": {
+        "width": 390,
+        "height": 1879
+      },
+      "horizontalOverflow": false,
+      "svgCount": 32,
+      "cardCount": 5,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [
+        {
+          "name": "wheel-turn",
+          "time": 616.6099999945518,
+          "duration": 55000
+        },
+        {
+          "name": "seed-fall",
+          "time": 616.6099999945518,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 616.6099999945518,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 616.6099999945518,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 616.6099999945518,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 616.6099999945518,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 616.6099999945518,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 616.6099999945518,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 616.6099999945518,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 616.6099999945518,
+          "duration": 14000
+        },
+        {
+          "name": "seed-fall",
+          "time": 616.6099999945518,
+          "duration": 17000
+        },
+        {
+          "name": "seed-fall",
+          "time": 616.6099999945518,
+          "duration": 12000
+        },
+        {
+          "name": "seed-fall",
+          "time": 616.6099999945518,
+          "duration": 14000
+        },
+        {
+          "name": "idle-breathe",
+          "time": 616.6099999945518,
+          "duration": 3000
+        },
+        {
+          "name": "idle-breathe",
+          "time": 616.6099999945518,
+          "duration": 3700
+        },
+        {
+          "name": "idle-breathe",
+          "time": 616.6099999945518,
+          "duration": 3700
+        },
+        {
+          "name": "idle-breathe",
+          "time": 616.6099999945518,
+          "duration": 3700
+        },
+        {
+          "name": "idle-breathe",
+          "time": 616.6099999945518,
+          "duration": 3700
+        },
+        {
+          "name": "idle-breathe",
+          "time": 616.6099999945518,
+          "duration": 3700
+        }
+      ],
+      "hand": {
+        "clientWidth": 376,
+        "scrollWidth": 968
+      },
+      "cards": [
+        {
+          "id": "wheel-kick",
+          "box": {
+            "x": 21,
+            "y": 1457.375,
+            "width": 180,
+            "height": 288,
+            "bottom": 1745.375
+          },
+          "descriptionFont": "14px"
+        },
+        {
+          "id": "wheel-kick",
+          "box": {
+            "x": 211,
+            "y": 1457.375,
+            "width": 180,
+            "height": 288,
+            "bottom": 1745.375
+          },
+          "descriptionFont": "14px"
+        },
+        {
+          "id": "cheek-pouch",
+          "box": {
+            "x": 401,
+            "y": 1457.375,
+            "width": 180,
+            "height": 288,
+            "bottom": 1745.375
+          },
+          "descriptionFont": "14px"
+        },
+        {
+          "id": "3am-dash",
+          "box": {
+            "x": 591,
+            "y": 1457.375,
+            "width": 180,
+            "height": 288,
+            "bottom": 1745.375
+          },
+          "descriptionFont": "14px"
+        },
+        {
+          "id": "cheek-pouch",
+          "box": {
+            "x": 781,
+            "y": 1457.375,
+            "width": 180,
+            "height": 288,
+            "bottom": 1745.375
+          },
+          "descriptionFont": "14px"
+        }
+      ],
+      "intentCount": 5,
+      "revealedIntentCount": 10
+    },
+    {
+      "file": "shots/47_rest_mobile_390_viewport.png",
+      "state": "Rest initial 390x844 viewport / sticky footer",
+      "fixture": true,
+      "fullPage": false,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "document": {
+        "width": 390,
+        "height": 1260
+      },
+      "horizontalOverflow": false,
+      "svgCount": 11,
+      "cardCount": 2,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [],
+      "hand": null,
+      "cards": [],
+      "intentCount": 0,
+      "revealedIntentCount": 0
+    },
+    {
+      "file": "shots/48_shop_mobile_390_viewport.png",
+      "state": "Shop initial 390x844 viewport / sticky footer",
+      "fixture": true,
+      "fullPage": false,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "document": {
+        "width": 390,
+        "height": 2117
+      },
+      "horizontalOverflow": false,
+      "svgCount": 16,
+      "cardCount": 3,
+      "title": "Squeekspire · One wheel. A captured run, a new adventure.",
+      "effects": "full",
+      "animations": [],
+      "hand": null,
+      "cards": [],
+      "intentCount": 0,
+      "revealedIntentCount": 0
+    }
+  ],
+  "errors": [],
+  "blockedExternal": [
+    "https://api.squeekchain.com/v1/settlements?range=24h",
+    "https://api.squeekchain.com/v1/status"
+  ],
+  "transientEvidence": [
+    {
+      "kind": "attack",
+      "acting": 1,
+      "hitFlash": 1,
+      "floats": [
+        "−6"
+      ],
+      "ghost": 1
+    }
+  ],
+  "passed": true,
+  "finishedAt": "2026-11-04T10:54:12.597Z",
+  "hoverDiagnostics": {
+    "hand": {
+      "top": 654.09375,
+      "bottom": 1003.875,
+      "overflowX": "auto",
+      "overflowY": "hidden"
+    },
+    "card": {
+      "top": 604.0628662109375,
+      "bottom": 959.06884765625,
+      "transform": "matrix(1.07, 0, 0, 1.07, 0, -35)"
+    },
+    "clippedTopPixels": 50.0308837890625,
+    "costTop": 595.5028686523438,
+    "nameTop": 637.2328491210938
+  },
+  "domReplacementDiagnostics": {
+    "healthElementReplaced": true,
+    "ambientWheelReplaced": true,
+    "cardPlayGhost": 1
+  },
+  "mobileCombatDiagnostics": {
+    ".intent strong": {
+      "fontSize": "7px",
+      "lineHeight": "10.5px",
+      "top": 360.171875,
+      "bottom": 370.671875,
+      "visibleWithinViewport": true
+    },
+    ".enemy-hp": {
+      "fontSize": "6px",
+      "lineHeight": "9px",
+      "top": 487.921875,
+      "bottom": 496.921875,
+      "visibleWithinViewport": true
+    },
+    ".enemy-status": {
+      "fontSize": "5px",
+      "lineHeight": "7.5px",
+      "top": 536.921875,
+      "bottom": 548.921875,
+      "visibleWithinViewport": true
+    },
+    ".enemy-name": {
+      "fontSize": "9px",
+      "lineHeight": "normal",
+      "top": 460.421875,
+      "bottom": 484.421875,
+      "visibleWithinViewport": true
+    },
+    ".block-label": {
+      "fontSize": "6px",
+      "lineHeight": "9px",
+      "top": 514.921875,
+      "bottom": 532.921875,
+      "visibleWithinViewport": true
+    },
+    ".hand .card-description": {
+      "fontSize": "14px",
+      "lineHeight": "19.6px",
+      "top": 754.921875,
+      "bottom": 813.921875,
+      "visibleWithinViewport": true
+    },
+    ".end-turn": {
+      "fontSize": "10px",
+      "lineHeight": "14px",
+      "top": 944.484375,
+      "bottom": 984.484375,
+      "visibleWithinViewport": false
+    },
+    ".battle-controls": {
+      "fontSize": "16px",
+      "lineHeight": "normal",
+      "top": 570.921875,
+      "bottom": 1007.484375,
+      "visibleWithinViewport": false
+    }
+  }
+}

@@ -30,7 +30,7 @@ and 135 settlements. Public safe settlement hashes and settled-through rounds ar
 retained as reproducible seed material. `fixtures/status.json` omits the API's unrelated
 signer metadata. Fixture capture timestamps are retained in each JSON file.
 
-## Why this MVP displays a frozen-data fallback even when the API is online
+## Publishing immutable UTC daily snapshots
 
 The API exposes rolling ranges, and requests adding `startAt`, `endAt`, or `end`
 were rejected with HTTP 400 `{"error":"invalid_query"}`. A rolling window or a
@@ -38,15 +38,23 @@ first-visitor localStorage snapshot would give players different official maps o
 same date. Without a historical window API or a published immutable daily manifest,
 a static client cannot independently establish a globally identical 00:00 UTC snapshot.
 
-The MVP therefore uses the same published settled fixture for **all official rules**,
-with the UTC game date included in its seed. It always announces this
-fallback; online/offline status never changes the daily map or scoring inputs.
-It still fetches both required public endpoints at startup. Only the accepted, online
-`SPINNING` flag affects practice energy. Fetch failure or oracle rejection leaves the
-canonical fallback playable. Refreshing or clearing browser storage cannot reroll it.
+The daily publisher now collects completed 24h hourly buckets twice a day, at
+00:10 and 12:10 UTC. The hourly archive reconstructs the previous full UTC day.
+Missing hours are explicitly zero-filled in each snapshot and recorded in its metadata;
+they are never inserted as observed data into the archive. A dated file names the
+day it is played, while `dataDate` identifies the source UTC day. It remains frozen
+on repeat runs, and `latest.json` mirrors it. The noon job continues archiving even
+when that day's file already exists.
 
-A production daily publisher can replace the fixtures with a versioned 00:00 UTC manifest
-served as a static file. That is deliberately not represented as an implemented backend.
+Clients load and validate the dated file, then latest, then the bundled fixture.
+The seed uses the UTC play date and loaded snapshot. The verifier reads the same
+files from `public/data`, included in the deployed Vercel functions. Seven historical
+periods prefer complete archived UTC daily sums; 30d fallback periods keep their
+real rolling timestamps, and provenance is recorded. Snapshot seeds omit the API's
+rolling recent-event list so events from another UTC day cannot enter a challenge.
+Daily block height uses the sum of that day's completed blocks when no safe event
+anchor is present. Only the accepted, online live `SPINNING` flag affects practice
+energy. See [publisher operation and recovery](daily-data.md).
 
 ## Explicit MVP approximations
 
@@ -60,7 +68,8 @@ served as a static file. That is deliberately not represented as an implemented 
   45.08 for the bundled snapshot. It is clearly described as an estimate, not a sensor peak.
 - Price inflation is the saved 24h minted amount divided by the seven-period median
   minted amount, clamped to 0.8–1.2. Minted values are used only as a game-price ratio.
-- The safe settlement anchor supplies immutable block height and progress. Live status
+- The bundled fallback retains its safe settlement anchor for block height and progress.
+  Published daily files use their completed-block sum and zero progress. Live status
   anchors, arrival order, generated timestamps, and local storage never enter the seed.
 - Top 1–3 nonzero work hours are gold jackpot nodes. Required gates are hours 8 and 16
   (elite) and hour 24 (Squeektoshi). Safe zero-work hours become rest/shop nodes, except

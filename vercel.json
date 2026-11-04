@@ -5,7 +5,7 @@
   "outputDirectory": "dist",
   "functions": {
     "api/*.ts": {
-      "includeFiles": "{fixtures,server,src/game}/**"
+      "includeFiles": "{fixtures,public/data,server,src/game}/**"
     }
   }
 }

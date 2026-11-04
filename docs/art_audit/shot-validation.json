@@ -1,0 +1,344 @@
+{
+  "verifiedAt": "2026-11-04T11:00:22.232Z",
+  "count": 48,
+  "allPngHeadersValid": true,
+  "noBrowserPageErrors": true,
+  "shots": [
+    {
+      "file": "shots/01_title_desktop.png",
+      "width": 1440,
+      "height": 1000,
+      "bytes": 721030,
+      "sha256": "2b17d4e700fd88c32f6c7a462dd761b1587f6cf17c505aaf96b5c6797213e0b3"
+    },
+    {
+      "file": "shots/02_mode_select_desktop.png",
+      "width": 1440,
+      "height": 1000,
+      "bytes": 584551,
+      "sha256": "2e4107796c64af85a1c5f553a6820f61f8696a9ebc58474393f1e7a167eb5bfb"
+    },
+    {
+      "file": "shots/03_character_select_desktop.png",
+      "width": 1440,
+      "height": 1000,
+      "bytes": 555338,
+      "sha256": "2b502bd11ac48d79f837b9aef4e119c1660f796ec877201ca52c0d4a0c782648"
+    },
+    {
+      "file": "shots/04_map_desktop.png",
+      "width": 1440,
+      "height": 1018,
+      "bytes": 398496,
+      "sha256": "91d1fec7772bac9568a18f769866e07cea24858546583c05ca97a4d25b6747e4"
+    },
+    {
+      "file": "shots/05_combat_desktop.png",
+      "width": 1440,
+      "height": 1102,
+      "bytes": 437591,
+      "sha256": "ad86e8b6f3b14ff57ea42ad1c80bef0dfae814a83eb9379252a0248555d5d58a"
+    },
+    {
+      "file": "shots/06_card_hover_desktop.png",
+      "width": 1440,
+      "height": 1102,
+      "bytes": 442658,
+      "sha256": "f1cf31296ebf9179f71087f7841ed91aacea5c7698a23274a18a7f242305bfab"
+    },
+    {
+      "file": "shots/07_card_target_desktop.png",
+      "width": 1440,
+      "height": 1102,
+      "bytes": 449476,
+      "sha256": "5910d919ac876b6c25a90b689e8a0c6ff1004a4694f58a77bc4d725b46f0c073"
+    },
+    {
+      "file": "shots/08_card_play_impact_desktop.png",
+      "width": 1440,
+      "height": 1000,
+      "bytes": 436056,
+      "sha256": "9ac38247c5e4b2d524b9727de0bec5be1795295b3c1bb268a728d3742a34a545"
+    },
+    {
+      "file": "shots/09_block_feedback_desktop.png",
+      "width": 1440,
+      "height": 1000,
+      "bytes": 464876,
+      "sha256": "8575d4b42cc3abc0af100caa4343f59b94fd2640e9c6c616ce4332498b1a9778"
+    },
+    {
+      "file": "shots/10_enemy_intents_desktop.png",
+      "width": 1440,
+      "height": 1181,
+      "bytes": 485304,
+      "sha256": "d7fa2833cb47a92b1205ad02306b9b5c3cbf8143cfd198a5b8732fb654f5b4b9"
+    },
+    {
+      "file": "shots/11_enemy_attack_desktop.png",
+      "width": 1440,
+      "height": 1000,
+      "bytes": 442792,
+      "sha256": "e2f5bcaa9cbc60ad795b2b3843eab8a7684fc74bb5b11ba369c4fd0345fc3abf"
+    },
+    {
+      "file": "shots/12_boss_zoomies_desktop.png",
+      "width": 1440,
+      "height": 1154,
+      "bytes": 473277,
+      "sha256": "edec85c40b4ae0c6ea8e15fdc62905bc14f4b876f9b41f72f4b633024906563a"
+    },
+    {
+      "file": "shots/13_reward_desktop.png",
+      "width": 1440,
+      "height": 1000,
+      "bytes": 277805,
+      "sha256": "bbcde685a2e48b22fe6adf7148a3e00de967623ce4dc28603ab566f68fc55237"
+    },
+    {
+      "file": "shots/14_shop_desktop.png",
+      "width": 1440,
+      "height": 1411,
+      "bytes": 394060,
+      "sha256": "7cd2c06e9f3333adb73e6a0e860840f8f877fad180f0b9f028dcac053f49b192"
+    },
+    {
+      "file": "shots/15_rest_desktop.png",
+      "width": 1440,
+      "height": 1357,
+      "bytes": 314091,
+      "sha256": "c031646756af9e2b5a6c40afcf8a602be03dbcc963e341e41d63e78db825e6ae"
+    },
+    {
+      "file": "shots/16_event_desktop.png",
+      "width": 1440,
+      "height": 1000,
+      "bytes": 220948,
+      "sha256": "c4c59bc9bf0105c561783a902fd84af902eacbac4194cb524465f0dd685946da"
+    },
+    {
+      "file": "shots/17_treasure_relic_reward_desktop.png",
+      "width": 1440,
+      "height": 1000,
+      "bytes": 304054,
+      "sha256": "9e3062c1c6350e8715d5a1e92913560be7da69f4f31c93e5c5bc96a8172774b1"
+    },
+    {
+      "file": "shots/18_relic_detail_desktop.png",
+      "width": 1440,
+      "height": 1000,
+      "bytes": 185831,
+      "sha256": "60d544ae621c7937afda389a29987c842e3350d6cd0f29c66a5a5cce2f4d8acb"
+    },
+    {
+      "file": "shots/19_card_codex_desktop.png",
+      "width": 1440,
+      "height": 1000,
+      "bytes": 360038,
+      "sha256": "af1a5136f0118c09e15e32ed86fa8e9afc6b2d45519458906be4b50be3741ef5"
+    },
+    {
+      "file": "shots/20_guide_desktop.png",
+      "width": 1440,
+      "height": 1000,
+      "bytes": 218341,
+      "sha256": "2de5e0d6eeac0b89c51745a60640360343c5e83fa8dc2721bbec4a8d36fd8f9a"
+    },
+    {
+      "file": "shots/21_settings_desktop.png",
+      "width": 1440,
+      "height": 1000,
+      "bytes": 253221,
+      "sha256": "a125e0c5464356ccf95c0d0931967f0267e19466e4fcc9323949a56fe255e80b"
+    },
+    {
+      "file": "shots/22_leaderboard_desktop.png",
+      "width": 1440,
+      "height": 1000,
+      "bytes": 148399,
+      "sha256": "6eb076e8548a4ed6cf41570ede3ae091be84261d62f8b530574be609770e8001"
+    },
+    {
+      "file": "shots/23_game_over_desktop.png",
+      "width": 1440,
+      "height": 1731,
+      "bytes": 451558,
+      "sha256": "98282e4511c6bebd88aa934e994c6ab13f1747f58f2b7d9b60bd8e947460efdf"
+    },
+    {
+      "file": "shots/24_title_mobile_390.png",
+      "width": 390,
+      "height": 844,
+      "bytes": 222692,
+      "sha256": "a3b887579b9c516731de9b12f071b18cfbf7faabe41f1fb00fbdc1e569bf6fe3"
+    },
+    {
+      "file": "shots/25_mode_select_mobile_390.png",
+      "width": 390,
+      "height": 897,
+      "bytes": 165835,
+      "sha256": "7842f0b8e4b44ee651942ac423dbe6f239dc3e9b8672077618f4337ee98c1aa3"
+    },
+    {
+      "file": "shots/26_character_select_mobile_390.png",
+      "width": 390,
+      "height": 1191,
+      "bytes": 201098,
+      "sha256": "f10cefd41d1dd9c797fc1e1e2433d9a5e47b4f81823a653643758f1000238063"
+    },
+    {
+      "file": "shots/27_map_mobile_390.png",
+      "width": 390,
+      "height": 855,
+      "bytes": 165407,
+      "sha256": "2f2b7fc19277870526326d12fce097800a7a2da18bc292e8fe17572a26e53547"
+    },
+    {
+      "file": "shots/28_combat_mobile_390.png",
+      "width": 390,
+      "height": 1047,
+      "bytes": 161949,
+      "sha256": "ecd725b00e8b7afaa37f532fb478c84738791859569bdc49e7dd553ae3a59201"
+    },
+    {
+      "file": "shots/29_card_preview_mobile_390.png",
+      "width": 390,
+      "height": 1047,
+      "bytes": 105094,
+      "sha256": "f4c47ec0bdc0a42be70d86124247f8271e87c7e7cd0643dc819fd007552a73a9"
+    },
+    {
+      "file": "shots/30_card_play_mobile_390.png",
+      "width": 390,
+      "height": 844,
+      "bytes": 174494,
+      "sha256": "5bdb53c2e2fb60da024a43a2fcc739a40a1c92ad9714152321b1712187c330f6"
+    },
+    {
+      "file": "shots/31_enemy_intents_mobile_390.png",
+      "width": 390,
+      "height": 1428,
+      "bytes": 238526,
+      "sha256": "3be9a6715118bacda34c57468cec055769221dc53d5ea1888e314b5377ac86ab"
+    },
+    {
+      "file": "shots/32_reward_mobile_390.png",
+      "width": 390,
+      "height": 1397,
+      "bytes": 132994,
+      "sha256": "4e4f0f4a94c7efd8c54b7b5c1c20614b800a8a1adc5665bb764c2890484127e7"
+    },
+    {
+      "file": "shots/33_shop_mobile_390.png",
+      "width": 390,
+      "height": 2117,
+      "bytes": 206170,
+      "sha256": "f672a61990d337e451147c093fe2ceb5e7c7777ad566b132b4dcc649d260028d"
+    },
+    {
+      "file": "shots/34_rest_mobile_390.png",
+      "width": 390,
+      "height": 1260,
+      "bytes": 102576,
+      "sha256": "680cb3f4e694ee2ffc54d1de140818d2decce271490024e2949e60c336ab5980"
+    },
+    {
+      "file": "shots/35_relic_detail_mobile_390.png",
+      "width": 390,
+      "height": 1260,
+      "bytes": 109926,
+      "sha256": "e212a3a46111e27e1641f67110d516aa3b605e9cd9bfdea52586eafd201223b0"
+    },
+    {
+      "file": "shots/36_game_over_mobile_390.png",
+      "width": 390,
+      "height": 1959,
+      "bytes": 191784,
+      "sha256": "278b31a3161fcd338da16b2f57acfe0101094e2f15fed829372c9348e203464f"
+    },
+    {
+      "file": "shots/37_leaderboard_mobile_390.png",
+      "width": 390,
+      "height": 1260,
+      "bytes": 101871,
+      "sha256": "51180b62e8896ad4fa3acc24445b3778278811ab9c14452cb165964a6fc18138"
+    },
+    {
+      "file": "shots/38_event_mobile_390.png",
+      "width": 390,
+      "height": 844,
+      "bytes": 81110,
+      "sha256": "5b5b9d403c0a5a69fc0c1f083d07f9aa7faf72abcc68b1538bf6f220a4ba648f"
+    },
+    {
+      "file": "shots/39_boss_zoomies_mobile_390.png",
+      "width": 390,
+      "height": 1114,
+      "bytes": 172210,
+      "sha256": "60869b5634d33bfcda17a067a23802985c8b65555753ec08b61041dbd93f45b2"
+    },
+    {
+      "file": "shots/40_sybil_swarm_desktop.png",
+      "width": 1440,
+      "height": 1060,
+      "bytes": 427466,
+      "sha256": "52068c9a4dbe43581dd2a8073ebecb7dcae1cde9f221c9650b53d1ce276b07ea"
+    },
+    {
+      "file": "shots/41_combo_burst_desktop.png",
+      "width": 1440,
+      "height": 1000,
+      "bytes": 634389,
+      "sha256": "ea57f99889e12d42b1f5bc4332f17ba9e977664da5af93b765aab1f52b242fc9"
+    },
+    {
+      "file": "shots/42_relic_codex_desktop.png",
+      "width": 1440,
+      "height": 1102,
+      "bytes": 310259,
+      "sha256": "a73e0a0e913eb29f47f97ec3af51df5b1d2c5533e920cb3a4f56add546fbaad5"
+    },
+    {
+      "file": "shots/43_enemy_codex_desktop.png",
+      "width": 1440,
+      "height": 1102,
+      "bytes": 252460,
+      "sha256": "1bb8519fee2fa26b38d18ef2776156d2edcb00aeea54665dd79351b0ae69ca7c"
+    },
+    {
+      "file": "shots/44_combat_mobile_390_viewport.png",
+      "width": 390,
+      "height": 844,
+      "bytes": 144188,
+      "sha256": "ecf7433363107183c76d0e58b93a8f49ef8017b991e1e75e4961e7abbeb29143"
+    },
+    {
+      "file": "shots/45_sybil_intents_mobile_390.png",
+      "width": 390,
+      "height": 1879,
+      "bytes": 317819,
+      "sha256": "f343a185993d4a3542cf58f892f528d99f2f969ac1bf7d0dfb64bdca3ca21b26"
+    },
+    {
+      "file": "shots/46_sybil_intents_mobile_390_viewport.png",
+      "width": 390,
+      "height": 844,
+      "bytes": 167312,
+      "sha256": "7a00e0a6993aa6ff5976831d93bc07f45c2645d236bc5fef2a6429b3bd201e3a"
+    },
+    {
+      "file": "shots/47_rest_mobile_390_viewport.png",
+      "width": 390,
+      "height": 844,
+      "bytes": 79360,
+      "sha256": "d6be2312b83d9be4e9c0a9519dd980c8923dc37f356ab9b48509c34a241bee22"
+    },
+    {
+      "file": "shots/48_shop_mobile_390_viewport.png",
+      "width": 390,
+      "height": 844,
+      "bytes": 90872,
+      "sha256": "5ba0cb4a882436f58a26d56712e56de17a2d6330ce0c82b5df105e574a97541d"
+    }
+  ]
+}

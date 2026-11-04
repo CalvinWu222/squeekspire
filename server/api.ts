@@ -2,6 +2,7 @@ import { verifySubmission } from './replay.js';
 import { createStore, type BoardQuery, type Environment, type ScoreEntry, type ScoreStore } from './store.js';
 import type { RunMode } from '../src/game/types.js';
 import { SCORE_VERSION } from '../src/game/score.js';
+import type { DayResolver } from './daily.js';
 
 export const MAX_BODY_BYTES = 256 * 1024;
 export const POST_RATE_LIMIT = 12;
@@ -79,7 +80,7 @@ function queryFrom(url: URL): BoardQuery {
 }
 
 /** Vercel and local Vite middleware use this same handler. */
-export function createApi(options: { store?: ScoreStore; env?: Environment; now?: () => number } = {}) {
+export function createApi(options: { store?: ScoreStore; env?: Environment; now?: () => number; resolveDay?: DayResolver } = {}) {
   let store = options.store;
   const now = options.now ?? Date.now;
   return async function handler(request: ApiRequest, response: ApiResponse) {
@@ -113,7 +114,7 @@ export function createApi(options: { store?: ScoreStore; env?: Environment; now?
       if (!object(payload) || !seedValue(payload.seed)) throw new ApiError(400, 'invalid_payload', 'Submit a seed and run export');
       let verified: ReturnType<typeof verifySubmission>;
       const run = payload.run ?? { version: payload.version, scoreVersion: payload.scoreVersion, day: payload.day, mode: payload.mode, actions: payload.actions, claimedScore: payload.claimedScore, claimedBestHit: payload.claimedBestHit, checksum: payload.checksum };
-      try { verified = verifySubmission(run, payload.seed); }
+      try { verified = verifySubmission(run, payload.seed, options.resolveDay); }
       catch (error) { throw new ApiError(400, 'invalid_replay', error instanceof Error ? error.message : 'Invalid replay'); }
       const who = identity(payload, ipHash);
       const actions = JSON.stringify((run as { actions: unknown }).actions, ['type', 'nodeId', 'uid', 'target', 'choice', 'mergePair', 'prediction', 'cardId', 'index', 'option', 'ms']);

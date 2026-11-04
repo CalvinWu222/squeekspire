@@ -60,7 +60,7 @@ describe('English visual tip guide', () => {
     expect(titles.size).toBe(5);
   });
 
-  it('teaches Seeds, intent and block, ending a turn, routes, then captured run influence', () => {
+  it('teaches Seeds, intent and block, ending a turn, routes, then daily run influence', () => {
     const lines = Array.from({ length: GUIDE_PAGE_COUNT }, (_, page) => renderGuide(page).querySelector('.guide-copy')!.textContent!);
     expect(lines[0]).toContain('Spend sunflower Seeds');
     expect(lines[1]).toContain('enemy intent');
@@ -68,9 +68,9 @@ describe('English visual tip guide', () => {
     expect(lines[2]).toContain('End Turn');
     expect(lines[2]).toContain('draw fresh cards and refill');
     expect(lines[3]).toContain('lit route on the map');
-    expect(lines[4]).toContain('Captured snapshot');
+    expect(lines[4]).toContain('Yesterday’s snapshot');
     expect(lines[4]).toContain('routes, encounters, rewards & prices');
-    expect(lines[4]).toContain('daily refresh coming soon');
+    expect(lines[4]).toContain('Refreshed daily');
   });
 
   it('keeps complete rules behind an initially collapsed native details outside the swipe card', () => {
@@ -84,7 +84,7 @@ describe('English visual tip guide', () => {
     expect(guideMarkup('en', 0)).toContain('block');
     expect(guideMarkup('en', 0)).toContain('×1.1 chain, capped at 20');
     expect(guideMarkup('en', 0)).toContain('Gold Zoomies hours double multiplicative triggers');
-    expect(guideMarkup('en', 0)).toContain('captured real hamster run snapshot');
+    expect(guideMarkup('en', 0)).toContain('Yesterday’s real hamster data');
     expect(guideMarkup('en', 2)).toContain('does not multiply the damage');
     expect(guideMarkup('en', 3)).toContain('each UTC day, resetting at 00:00 UTC');
     expect(guideMarkup('en', 3)).not.toMatch(/Beijing|Shanghai|UTC\+8/);
@@ -92,7 +92,7 @@ describe('English visual tip guide', () => {
     expect(guideMarkup('en', 3)).toContain('five-minute');
     expect(guideMarkup('en', 3)).toContain('online global leaderboard');
     expect(guideMarkup('en', 3)).toContain('Offline - local scores');
-    expect(guideMarkup('en', 3)).toContain('resets the attempt allowance, not the captured data snapshot');
+    expect(guideMarkup('en', 3)).toContain('loads its published snapshot before you begin');
   });
 
   it('explains progression, clear priority, room caps and the cost of stalling', () => {

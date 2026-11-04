@@ -12,6 +12,9 @@ coverage/
 logs/
 server/data/
 data/
+!public/data/
+!public/data/**
+/docs/art_audit/.vite/
 local-data/
 *.sqlite
 *.sqlite3

@@ -1,6 +1,7 @@
 import { replayRun, type RunExport } from '../src/game/engine.js';
-import { fallbackDay, getGameDay } from '../src/game/data.js';
+import { getGameDay } from '../src/game/data.js';
 import { SCORE_VERSION } from '../src/game/score.js';
+import { resolveSnapshotDay, type DayResolver } from './daily.js';
 
 export const MAX_ACTIONS = 4_000;
 const object = (value: unknown): value is Record<string, unknown> => !!value && typeof value === 'object' && !Array.isArray(value);
@@ -30,7 +31,7 @@ function validateAction(value: unknown) {
 }
 
 /** Validate shape and bounded work before running the authoritative deterministic replay. */
-export function verifySubmission(input: unknown, seed?: number) {
+export function verifySubmission(input: unknown, seed?: number, resolveDay: DayResolver = resolveSnapshotDay) {
   requireValue(object(input) && input.version === 1 && object(input.day), 'Invalid replay format');
   requireValue(input.scoreVersion === SCORE_VERSION, 'Unsupported score version; start a new run');
   requireValue(typeof input.day.day === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(input.day.day), 'Invalid game day');
@@ -47,9 +48,9 @@ export function verifySubmission(input: unknown, seed?: number) {
   const payload = input as unknown as RunExport;
   // The exported day is a UTC calendar date. Keep historical runs on their original
   // UTC seed, even if the server receives them after the next UTC midnight.
-  const canonical = fallbackDay(getGameDay(date));
+  const canonical = resolveDay(getGameDay(date), input.day.seed as number);
   // Only practice uses the declared live spinning bonus; it has a separate board.
-  // Every gameplay-relevant daily/endless rule must match the immutable fixture.
+  // Every gameplay-relevant daily/endless rule must match published immutable data.
   const state = replayRun(payload, canonical);
   if (state.phase !== 'won' && state.phase !== 'lost') throw new Error('Only finished runs can be submitted');
   return { day: canonical.day, seed: canonical.seed, mode: state.mode, scoreVersion: SCORE_VERSION, score: state.totalScore, bestHit: state.bestHit, floor: state.floor, floors: state.floor, actions: state.log.length, won: state.phase === 'won', hibernation: canonical.hibernation, spinning: state.mode === 'practice' && state.day.spinning };

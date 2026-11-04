@@ -2,8 +2,8 @@
 
 Unofficial fan-made game, not affiliated with Squeekchain.
 
-A captured real hamster run snapshot shapes your dungeon (daily refresh coming
-soon). A Vite + TypeScript roguelike deckbuilder with a replay-validated shared
+Yesterday's real hamster data shapes your dungeon, refreshed daily from a public
+hourly archive. A Vite + TypeScript roguelike deckbuilder with a replay-validated shared
 leaderboard, featuring **Zoomie
 Gremlin**: “gm, I have not slept”.
 
@@ -103,29 +103,34 @@ The real API was fetched and inspected before coding:
 - `https://api.squeekchain.com/v1/status`
 - Historical baseline inspection also used `range=7d` and `range=30d`.
 
-The API exposes **rolling** ranges and rejects historical start/end parameters. It
-cannot supply a globally frozen 00:00 UTC snapshot to a static client. A first-player
-localStorage snapshot would give different players different daily maps.
+The API exposes **rolling** ranges and rejects historical start/end parameters.
+`scripts/refresh-daily.mjs` fetches and validates 24h, 30d, and status responses before
+writing anything. It merges completed hourly buckets into
+`public/data/hourly-buckets.json`; incomplete current hours never enter the archive.
+GitHub Actions runs at **00:10 and 12:10 UTC**, and can also run manually. Changed
+data is committed to `main`, which triggers the Vercel deployment.
 
-This MVP therefore deliberately uses a **captured real hamster run snapshot** for
-official gameplay; **daily refresh is coming soon**. A snapshot notice remains
-visible even when the API is online. The UTC game date is salted into the public settlement
-hash/round seed, producing the same map for everyone on that date. Both requested
-endpoints are still fetched at startup with a four-second timeout; availability and
-the practice energy flag are the only live effects. Offline play uses the identical
-canonical daily rules. This snapshot does not automatically update each night.
+`public/data/daily/YYYY-MM-DD.json` is named for its UTC **play date** and describes
+the preceding full UTC day in `dataDate`. Every file contains 24 hourly buckets;
+unavailable hours are zero and listed in `meta.missingHours`. Seven complete daily
+periods supply the median: archived UTC sums are preferred, otherwise real 30d API
+buckets retain their rolling boundaries and recorded provenance. The API's daily
+buckets are not assumed to start at midnight. The first bootstrap can contain
+partial hours; see [daily publishing and recovery](docs/daily-data.md).
 
-The snapshot contains 8,725 work and 853 blocks. Difficulty is
-`clamp(8725 / 10891, 0.8, 1.3)`. The median is calculated from seven complete historical
-daily buckets. Their captured API boundary is 12:00 UTC, distinct from the game's
-00:00 UTC reset. Historical peak RPM is unavailable; boss cadence uses the disclosed estimate
-`max(hourly work) / 60`, rather than current sensor RPM. Price inflation is clamped to
-±20% using historical minted-volume ratios. See [API shape and evidence](docs/api-shape.md).
+The client validates and loads today's dated file, then `latest.json`, then the
+bundled fixture. Its notice gives the actual UTC data date and labels fallbacks.
+The UTC play date and loaded settlement buckets determine the shared seed.
+Startup and midnight rollover await loading before a new run begins. Dated files
+stay immutable on reruns unless explicitly regenerated with `--force`; the noon
+job still advances the archive for tomorrow. The server verifier reads the same
+published files bundled into its Vercel functions and recomputes authoritative rules.
 
-A future static daily publisher can archive a versioned 00:00 UTC manifest; clients and
-the verifier should then use that identical published manifest. No daily publisher
-is included. The shared score API verifies against that same
-captured fixture; enabling Redis does not refresh the gameplay snapshot.
+Only an accepted, online live `SPINNING` status affects practice energy. Historical
+peak RPM is unavailable; boss cadence uses the estimate `max(hourly work) / 60`.
+Price inflation is clamped to ±20% using historical minted-volume ratios. The bundled
+fallback contains 8,725 work and 853 blocks, with a seven-period median of 10,891.
+See [API shape and evidence](docs/api-shape.md).
 
 ## Shared leaderboard and replay
 
@@ -164,7 +169,7 @@ old-version scores, and old action saves cannot resume under the new rules.
 Profiles, consumed daily attempts, and streaks remain intact.
 
 [`server/replay.ts`](server/replay.ts) is the API's server-verification boundary.
-`verifySubmission(payload)` supplies the authoritative fixture to the shared engine,
+`verifySubmission(payload)` supplies the authoritative published snapshot (or validated fallback) to the shared engine,
 rejects altered rule inputs and unfinished runs, and returns recomputed scores. It
 is shared by serverless handlers and the local Vite middleware. The checksum detects
 accidental corruption; it is not a signature. A client action log cannot prove

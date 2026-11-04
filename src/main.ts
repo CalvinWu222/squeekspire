@@ -2,7 +2,7 @@ import './style.css';
 import './hand-readability.css';
 import './shop-balance.css';
 import './intent-queue.css';
-import { fallbackDay, loadDay, getGameDay, getDailyResetTime } from './game/data';
+import { loadDay, getGameDay, getDailyResetTime } from './game/data';
 import { generateMap } from './game/map';
 import { act, createRun, effectiveMult, exportRun, formatNumber, replayRun, scoreBattle, revealedIntents, oracleDrawOptions,
   type RunAction, type RunState, type CardInstance } from './game/engine';
@@ -21,6 +21,7 @@ import { fetchLeaderboard, submitScore, type GlobalEntry } from './leaderboard';
 
 const root = document.querySelector<HTMLDivElement>('#app')!;
 let day: DayData;
+let pendingDay: { day: string; promise: Promise<void> } | null = null;
 let profile = '';
 let guestProfile = '';
 const wallet = new WalletController(() => (window as Window & { ethereum?: Eip1193Provider }).ethereum);
@@ -418,6 +419,10 @@ function render(): void {
   const content = screen === 'run' && run ? runScreen() : screen === 'modes' ? modeSelect() : screen === 'characters' ? characterSelect() : camp();
   root.innerHTML = `<div class="app-shell ${burst ? 'squeek-shake' : ''}" data-screen="${screen}">${header()}${content}${burst ? `<div class="squeek-burst" aria-hidden="true"><span>SQUEEK!</span><strong>${fmt(burstScore)}</strong><small>THAT’S ONE VERY AWAKE HAMSTER.</small></div>` : ''}${playEffect && Date.now() < playEffect.until ? `<div class="card-play-effect" aria-hidden="true" inert>${playEffect.markup}</div>` : ''}${toast ? `<div class="toast" role="status">${esc(toast)}</div>` : ''}${modalMarkup()}</div>`;
   const guideDetails = root.querySelector<HTMLDetailsElement>('.guide-details');
+  if (pendingDay) {
+    root.querySelectorAll<HTMLButtonElement>('[data-action="begin"], [data-action="again"]').forEach(button => { button.disabled = true; });
+    root.querySelectorAll<HTMLElement>('.selection-note').forEach(note => { note.textContent = `Loading daily data for ${pendingDay!.day} UTC...`; });
+  }
   if (guideDetails) guideDetails.open = guideDetailsOpen;
   document.body.classList.toggle('modal-open', !!modal);
   root.querySelectorAll<HTMLElement>('.app-shell > .topbar, .app-shell > .layout, .app-shell > main').forEach(element => element.toggleAttribute('inert', !!modal));
@@ -505,7 +510,10 @@ function resumeRun(saved: RunState): void {
 }
 
 function startRun(selected: RunMode, fresh = false): void {
-  syncGameDay();
+  if (day.day !== getGameDay()) {
+    void syncGameDay().then(() => { if (root.isConnected) startRun(selected, fresh); });
+    return;
+  }
   clearPresentation();
   const saved = !fresh ? loadActive(selected) : null;
   if (saved && !['won', 'lost'].includes(saved.phase) && saved.day.day === day.day) {
@@ -728,13 +736,22 @@ function dailyCountdown(): string {
 }
 
 /** Roll the challenge and board together; an ongoing run retains its original UTC day. */
-function syncGameDay(): void {
-  const currentDay = getGameDay();
-  if (!day || currentDay === day.day) return;
-  day = { ...fallbackDay(currentDay), spinning: day.spinning, notice: day.notice };
-  boardRequest++; globalRows = []; boardStatus = 'loading';
+function syncGameDay(): Promise<void> {
+  const now = new Date();
+  const currentDay = getGameDay(now);
+  if (!day || currentDay === day.day) return Promise.resolve();
+  if (pendingDay?.day === currentDay) return pendingDay.promise;
+  const promise = loadDay(now).then(loaded => {
+    if (pendingDay?.day !== currentDay) return;
+    day = loaded;
+    pendingDay = null;
+    boardRequest++; globalRows = []; boardStatus = 'loading';
+    render();
+    if (modal === 'more') void refreshLeaderboard();
+  });
+  pendingDay = { day: currentDay, promise };
   render();
-  if (modal === 'more') void refreshLeaderboard();
+  return promise;
 }
 
 function clockText(): string {
@@ -758,7 +775,7 @@ function squeekSound(chain: number): void {
 
 window.setInterval(() => {
   if (!root.isConnected) return;
-  syncGameDay();
+  void syncGameDay();
   root.querySelectorAll('[data-daily-countdown]').forEach(clock => { clock.textContent = dailyCountdown(); });
   if (run?.mode === 'endless' && !done()) {
     try {
@@ -770,7 +787,9 @@ window.setInterval(() => {
 }, 1000);
 
 async function boot(): Promise<void> {
-  day = await loadDay(); guestProfile = getProfile(); profile = guestProfile;
+  day = await loadDay();
+  await syncGameDay();
+  guestProfile = getProfile(); profile = guestProfile;
   run = (['daily', 'practice', 'endless'] as RunMode[]).map(m => loadActive(m)).find(saved => saved && saved.day.day === day.day && !['won', 'lost'].includes(saved.phase)) ?? null;
   if (run) mode = run.mode;
   wallet.subscribe(state => {

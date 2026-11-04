@@ -1,6 +1,8 @@
 // @vitest-environment happy-dom
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fallbackDay } from './game/data';
+import settlements from '../fixtures/settlements.json';
+import history from '../fixtures/history-30d.json';
 
 const prefix = 'squeekspire:v1:';
 const today = fallbackDay('2026-11-04');
@@ -13,6 +15,21 @@ const click = (selector: string) => {
 };
 const countdown = () => document.querySelector('[data-daily-countdown]')!.textContent;
 const dailyButton = () => document.querySelector<HTMLButtonElement>('[data-action="mode"][data-mode="daily"]')!;
+function publishedFor(playDay: string) {
+  const end = Date.parse(`${playDay}T00:00:00.000Z`);
+  const start = end - 86_400_000;
+  const buckets = settlements.buckets.map((bucket, hour) => ({ ...bucket,
+    startAt: new Date(start + hour * 3_600_000).toISOString(),
+    endAt: new Date(start + (hour + 1) * 3_600_000).toISOString(),
+  }));
+  const previous = history.buckets.filter(bucket => Date.parse(bucket.endAt) <= start).slice(-7);
+  return { schemaVersion: 1, status: 'available', day: playDay,
+    dataDate: new Date(start).toISOString().slice(0, 10), generatedAt: new Date(end).toISOString(),
+    sourceWindow: settlements.window, window: { startAt: buckets[0].startAt, endAt: buckets[23].endAt, bucketSeconds: 3600 },
+    buckets, recentSettlements: [], meta: { missingHours: [] },
+    history: { status: 'available', window: { startAt: previous[0].startAt, endAt: previous[6].endAt, bucketSeconds: 86400 }, buckets: previous },
+  };
+}
 const boot = async () => {
   await import('./main');
   await vi.waitFor(() => expect(document.querySelector('.hero-title')).not.toBeNull());
@@ -31,6 +48,41 @@ describe('UTC daily labels, countdown and rollover', () => {
   });
   afterEach(() => {
     vi.clearAllTimers(); vi.useRealTimers(); vi.restoreAllMocks(); vi.unstubAllGlobals();
+  });
+
+  it('keeps daily play unavailable until the startup snapshot resolves', async () => {
+    let resolveSnapshot!: (value: Response) => void;
+    vi.mocked(fetch).mockImplementation(input => String(input) === '/data/daily/2026-11-04.json'
+      ? new Promise<Response>(resolve => { resolveSnapshot = resolve; })
+      : Promise.reject(new Error('Offline')));
+    await import('./main');
+    expect(resolveSnapshot).toBeTypeOf('function');
+    expect(document.querySelector('[data-action="begin"]')).toBeNull();
+    expect(localStorage.getItem(`${prefix}official-days`)).toBeNull();
+    resolveSnapshot({ ok: true, json: async () => publishedFor('2026-11-04') } as Response);
+    await vi.waitFor(() => expect(document.querySelector('.hero-title')).not.toBeNull());
+    click('[data-action="start"]'); click('[data-action="mode"][data-mode="daily"]'); click('[data-action="begin"]');
+    const saved = JSON.parse(localStorage.getItem(`${prefix}active:daily`)!);
+    expect(saved.day.seed).not.toBe(today.seed);
+    expect(saved.day.notice).toContain('2026-11-03 (UTC)');
+  });
+
+  it('waits for the new published snapshot when a sleeping tab starts a run after UTC midnight', async () => {
+    vi.setSystemTime(new Date('2026-11-04T23:59:59Z'));
+    await boot(); click('[data-action="start"]'); click('[data-action="mode"][data-mode="daily"]');
+    let resolveSnapshot!: (value: Response) => void;
+    vi.mocked(fetch).mockImplementation(input => String(input) === '/data/daily/2026-11-05.json'
+      ? new Promise<Response>(resolve => { resolveSnapshot = resolve; })
+      : Promise.reject(new Error('Offline')));
+    vi.setSystemTime(new Date('2026-11-05T00:00:01Z'));
+    click('[data-action="begin"]');
+    expect(document.querySelector<HTMLButtonElement>('[data-action="begin"]')!.disabled).toBe(true);
+    expect(localStorage.getItem(`${prefix}official-days`)).toBeNull();
+    resolveSnapshot({ ok: true, json: async () => publishedFor('2026-11-05') } as Response);
+    await vi.waitFor(() => expect(document.querySelector('.run-day')?.textContent).toBe('Daily · 2026-11-05 UTC'));
+    expect(JSON.parse(localStorage.getItem(`${prefix}active:daily`)!)).toMatchObject({ day: { day: tomorrow.day } });
+    expect(JSON.parse(localStorage.getItem(`${prefix}active:daily`)!).day.seed).not.toBe(tomorrow.seed);
+    expect(JSON.parse(localStorage.getItem(`${prefix}official-days`)!)).toEqual([tomorrow.day]);
   });
 
   it('uses the UTC date for labels, seeds, daily claims and leaderboard requests at Beijing midnight', async () => {
@@ -89,7 +141,7 @@ describe('UTC daily labels, countdown and rollover', () => {
     await boot(); click('[data-action="start"]'); click('[data-action="mode"][data-mode="daily"]');
     vi.setSystemTime(new Date('2026-11-05T00:00:01Z'));
     click('[data-action="begin"]');
-    expect(document.querySelector('.run-day')!.textContent).toBe('Daily · 2026-11-05 UTC');
+    await vi.waitFor(() => expect(document.querySelector('.run-day')!.textContent).toBe('Daily · 2026-11-05 UTC'));
     expect(JSON.parse(localStorage.getItem(`${prefix}official-days`)!)).toEqual([tomorrow.day]);
     expect(JSON.parse(localStorage.getItem(`${prefix}active:daily`)!)).toMatchObject({ day: { day: tomorrow.day, seed: tomorrow.seed } });
   });

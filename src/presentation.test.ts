@@ -416,12 +416,12 @@ describe('the illustrated card codex and daily route', () => {
     expect(vi.mocked(storage.saveActive).mock.calls.length).toBe(savesBefore);
   });
 
-  it('labels the offline fallback and discloses the captured snapshot', async () => {
+  it('labels the offline fallback with its actual UTC source date', async () => {
     await boot();
     click('[data-action="more"]');
     await vi.waitFor(() => expect(document.querySelector('.leaderboard h2')!.textContent).toBe('Offline - local scores'));
-    expect(document.querySelector('.data-notice')!.textContent).toMatch(/captured real hamster run snapshot/i);
-    expect(document.querySelector('.data-notice')!.textContent).toMatch(/daily refresh coming soon/i);
+    expect(document.querySelector('.data-notice')!.textContent).toContain('Real hamster data from 2026-11-02 (UTC)');
+    expect(document.querySelector('.data-notice')!.textContent).toMatch(/fallback/i);
   });
 
   it.each((['rest', 'shop', 'event'] as const).flatMap(kind =>

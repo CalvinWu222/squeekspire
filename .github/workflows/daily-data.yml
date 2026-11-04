@@ -1,0 +1,40 @@
+name: Refresh daily Squeekchain data
+
+on:
+  schedule:
+    - cron: '10 0 * * *'
+    - cron: '10 12 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-data
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Collect completed hours and publish today's snapshot
+        run: node scripts/refresh-daily.mjs
+      - name: Commit changed data and trigger the Vercel deployment
+        shell: bash
+        run: |
+          git add public/data
+          if git diff --cached --quiet; then
+            echo "Daily data is unchanged."
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m "data: daily snapshot $(date -u +%F) [bot]"
+          git pull --rebase origin main
+          git push origin HEAD:main
