@@ -1,0 +1,14 @@
+# Server-only Upstash Redis REST credentials. Fill one complete pair.
+# Copy to .env.local for npm run dev, or set in Vercel Project Settings.
+# Never prefix these names with VITE_ or commit real credentials.
+UPSTASH_REDIS_REST_URL=
+UPSTASH_REDIS_REST_TOKEN=
+
+# Optional aliases, supported for Vercel KV / Upstash integrations:
+# KV_REST_API_URL=
+# KV_REST_API_TOKEN=
+
+# With no credentials, local development uses a file / memory store.
+# Configure Redis on Vercel for durable rankings shared across instances.
+# Optional local store path (default .tmp/leaderboard.json):
+# SQUEEKSPIRE_SCORE_FILE=.tmp/leaderboard.json

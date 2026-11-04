@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Squeekspire · Original cover scene</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; overflow: hidden; background: #191a29; }
+  canvas { display: block; width: 100vw; height: 100vh; }
+</style>
+<canvas role="img" aria-label="Squeekspire, a fan of illustrated cards beside a brave pixel hamster running in a copper wheel beneath a moonlit cage spire."></canvas>
+<script>
+/** Original code-composed illustration. No images, logos, libraries, or web fonts. */
+const square = new URLSearchParams(location.search).get('shape') === 'square';
+const canvas = document.querySelector('canvas');
+canvas.width = square ? 512 : 1200;
+canvas.height = square ? 512 : 630;
+const ctx = canvas.getContext('2d');
+const W = canvas.width, H = canvas.height;
+ctx.imageSmoothingEnabled = false;
+const C = {
+  ink: '#171b2b', deep: '#29273b', plum: '#41354d', stone: '#695569',
+  lilac: '#b09bbd', pale: '#e3d7e2', cream: '#fff0ce', oat: '#e7c49a',
+  tan: '#c78d6f', brown: '#855d57', gold: '#efbd78', amber: '#c58161',
+  mint: '#9ac6b8', green: '#5f8b84', rose: '#e1a6a2', blue: '#8eabbd'
+};
+function rect(x,y,w,h,c) { ctx.fillStyle=c; ctx.fillRect(x,y,w,h); }
+function poly(points, color) {
+  ctx.fillStyle=color; ctx.beginPath(); points.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y)); ctx.closePath(); ctx.fill();
+}
+function path(d,color) { ctx.fillStyle=color; ctx.fill(new Path2D(d)); }
+function at(x,y,s,draw) { ctx.save(); ctx.translate(x,y); ctx.scale(s,s); draw(); ctx.restore(); }
+function text(t,x,y,size,color,font='monospace',align='left') {
+  ctx.fillStyle=color; ctx.font=`${size}px ${font}`; ctx.textAlign=align; ctx.fillText(t,x,y);
+}
+function tracked(t,x,y,size,spacing,color) {
+  ctx.font=`${size}px "Courier New", monospace`; ctx.fillStyle=color;
+  for (const letter of t) { ctx.fillText(letter,x,y); x+=ctx.measureText(letter).width+spacing; }
+}
+function star(x,y,s=1,c=C.gold) { at(x,y,s,()=>path('M4 0h2v4h4v2H6v4H4V6H0V4h4Z',c)); }
+function seed(x,y,s=1) { at(x,y,s,()=>{
+  path('M6 0h4v4h4v8h-2v4H4v-4H2V6h2V2h2Z',C.ink);
+  path('M6 3h3v3h3v6H9v2H5v-3H4V7h2Z',C.oat); rect(7,6,2,5,C.cream);
+}); }
+function bolt(x,y,s=1) { at(x,y,s,()=>{
+  path('M9 0h8l-4 9h7L5 28l4-13H2Z',C.ink);
+  path('M10 3h4l-5 9h6L8 22l3-10H6Z',C.gold);
+}); }
+function shield(x,y,s=1) { at(x,y,s,()=>{
+  path('M3 0h18v3h3v16h-3v5h-5v4H8v-4H3v-5H0V3h3Z',C.ink);
+  path('M4 4h16v14h-3v4h-5v2H9v-3H6v-4H4Z',C.mint); rect(7,6,3,11,C.cream);
+}); }
+function sprout(x,y,s=1) { at(x,y,s,()=>{
+  rect(11,10,3,22,C.green);
+  path('M1 2h9v4h4v8H7v-4H3V7H1ZM25 0h-8v4h-4v9h7V9h4V6h1Z',C.mint); seed(5,25,1.1);
+}); }
+function hamster(x,y,s=1) { at(x,y,s,()=>{
+  // New running pose: outstretched paws, a lifted heel, and a windblown scarf.
+  path('M7 3h7v4h6V3h7v4h3v7h-2v3h3v10h-5v5H8v-4H2V18h3v-5H3V7h4Z',C.ink);
+  rect(7,6,6,8,C.oat); rect(21,6,6,8,C.oat);
+  rect(8,7,3,4,C.rose); rect(23,7,3,4,C.rose);
+  path('M11 10h12v3h4v8h2v5h-5v3H10v-3H5v-8h3v-5h3Z',C.oat);
+  path('M11 19h12v3h3v4h-5v3H11v-3H8v-4h3Z',C.cream);
+  rect(12,14,3,4,C.ink); rect(23,14,3,4,C.ink);
+  rect(12,14,1,1,C.cream); rect(23,14,1,1,C.cream);
+  rect(18,19,4,3,C.rose); rect(19,22,2,2,C.ink);
+  rect(8,20,4,3,C.rose); rect(25,20,3,3,C.rose);
+  rect(3,25,7,4,C.tan); rect(24,29,8,4,C.tan); rect(25,29,5,1,C.cream);
+  path('M6 25h21v3H10v3H5v-3H0v-3h-4v-3h7v3Z',C.mint);
+}); }
+function miniWheel(x,y,s=1) { at(x,y,s,()=>{
+  path('M14 0h20v4h8v8h4v20h-4v8h-8v4H14v-4H6v-8H2V12h4V4h8Z',C.ink);
+  path('M14 4h20v4h6v6h2v18h-6v6h-6v2H16v-4h-6v-6H6V14h4V8h4Z',C.gold);
+  path('M16 10h16v4h4v16h-4v4H16v-4h-4V14h4Z',C.plum);
+  rect(21,9,5,27,C.gold); rect(10,20,28,5,C.gold); rect(20,19,7,7,C.ink);
+}); }
+
+// Atmosphere, cage architecture and the distant climb.
+const bg=ctx.createLinearGradient(0,0,W,H); bg.addColorStop(0,'#242a3a'); bg.addColorStop(.55,'#252338'); bg.addColorStop(1,'#151e2b'); rect(0,0,W,H,bg);
+const light=ctx.createRadialGradient(W*.77,H*.39,0,W*.77,H*.39,W*.62);
+light.addColorStop(0,'#81736a48');light.addColorStop(.58,'#63506618');light.addColorStop(1,'#25233800');rect(0,0,W,H,light);
+for(let i=0;i<12;i++) {
+  const x=(square?-30:570)+i*(square?66:82);
+  rect(x,0,9,H,'#0c14232f'); rect(x+10,0,2,H,'#b9a3af0c');
+}
+const spireX=square?292:680, spireY=square?122:73, towerScale=square?.78:1.2;
+at(spireX,spireY,towerScale,()=>{
+  poly([[0,310],[0,105],[19,105],[19,83],[40,83],[40,48],[51,48],[51,17],[62,48],[73,48],[73,83],[96,83],[96,105],[113,105],[113,310]],'#0e192a59');
+  rect(44,100,27,206,'#34425128');
+  for(let y=113;y<295;y+=35) rect(54,y,6,13,'#ceb18618');
+});
+// Stars are deterministic so both exports are reproducible.
+for(let i=0;i<58;i++) {
+  const x=(i*173+47)%W, y=(i*i*37+28)%(H-80);
+  rect(x,y,i%4?2:3,i%4?2:3,i%4?'#d7c9b334':'#efbd7866');
+}
+if(!square) { star(1093,97,1.2,C.mint); star(661,267,.8,C.lilac); star(762,63,.6,C.gold); }
+else { star(460,112,.7,C.mint); star(263,167,.6,C.lilac); }
+// Bedding and its sparse, warm illuminated flecks.
+const floor=ctx.createLinearGradient(0,H*.75,0,H); floor.addColorStop(0,'#5a4a5100'); floor.addColorStop(1,'#68504a55'); rect(0,H*.72,W,H*.28,floor);
+for(let i=0;i<45;i++) {
+  const x=(i*133+17)%W, y=H-14-(i*29)%(square?75:100);
+  ctx.save(); ctx.translate(x,y); ctx.rotate((i%5-2)*.14); rect(0,0,11+(i%4)*8,3,i%3?'#c8996b26':'#eac6923f'); ctx.restore();
+}
+
+function wheel(cx,cy,r) {
+  const points=(radius)=>Array.from({length:24},(_,i)=>[cx+Math.cos(i*Math.PI/12)*radius,cy+Math.sin(i*Math.PI/12)*radius]);
+  // Grounded plinth and slightly offset back rim establish the wheel's depth.
+  const footY=cy+r+13;
+  poly([[cx-28,cy+58],[cx+23,cy+58],[cx+49,footY],[cx-54,footY]],C.ink);
+  poly([[cx-15,cy+83],[cx+11,cy+83],[cx+30,footY-6],[cx-35,footY-6]],C.brown);
+  rect(cx-r*.49,footY,r*.98,12,C.ink); rect(cx-r*.43,footY-3,r*.86,6,C.amber);
+  ctx.save(); ctx.translate(11,6); poly(points(r+7),'#101723'); poly(points(r-8),'#3c3944'); ctx.restore();
+  poly(points(r+5),C.ink); poly(points(r-1),C.amber); poly(points(r-10),C.gold); poly(points(r-18),C.brown); poly(points(r-23),'#272838');
+  // Muted spokes stay behind the hero; inset bolts make the rim feel handmade.
+  ctx.save(); ctx.translate(cx,cy);
+  for(let i=0;i<8;i++) {
+    ctx.save(); ctx.rotate(i*Math.PI/4+.15); rect(-3,-r+25,6,(r-25)*2,'#8e99855b'); rect(-1,-r+25,2,r-37,'#c9d1af2b'); ctx.restore();
+  }
+  ctx.restore();
+  for(let i=0;i<12;i++) {
+    const a=i*Math.PI/6;
+    rect(cx+Math.cos(a)*(r-10)-2,cy+Math.sin(a)*(r-10)-2,4,4,C.ink);
+  }
+  // Hub and the upper-left glint.
+  poly(points(21),C.ink); poly(points(13),C.amber); rect(cx-4,cy-4,8,8,C.gold);
+  ctx.save(); ctx.strokeStyle='#ffe1a4';ctx.lineWidth=3;ctx.beginPath();ctx.arc(cx,cy,r-6,Math.PI*1.03,Math.PI*1.46);ctx.stroke();ctx.restore();
+  const scale=square?3.3:4.8, hx=cx+8, hy=cy+r-34*scale-12;
+  ctx.save();ctx.globalAlpha=.42;rect(hx-2,cy+r-24,32*scale,7,C.ink);ctx.restore();
+  hamster(hx,hy,scale);
+  // A few movement marks, in the same rectilinear language as the card art.
+  rect(hx-29,hy+57,20,4,C.gold); rect(hx-43,hy+69,27,4,C.amber); rect(hx-25,hy+80,15,4,C.gold);
+  star(cx-r*.52,cy-r*.38,square?.8:1.25,C.cream);
+}
+wheel(square?338:944,square?264:302,square?142:202);
+
+function card(kind,angle,offsetX,offsetY,scale) {
+  ctx.save();ctx.translate(offsetX,offsetY);ctx.rotate(angle*Math.PI/180);ctx.scale(scale,scale);
+  const accent=[C.rose,C.mint,C.gold,C.lilac,C.blue][kind];
+  ctx.shadowColor='#080e1cad';ctx.shadowBlur=15;ctx.shadowOffsetY=10;
+  // Clipped corners and double borders echo the game's handmade pixel cards.
+  poly([[-70,-227],[70,-227],[78,-219],[78,-9],[70,-1],[-70,-1],[-78,-9],[-78,-219]],C.ink);
+  ctx.shadowBlur=0;ctx.shadowOffsetY=0;
+  poly([[-68,-222],[68,-222],[73,-217],[73,-12],[67,-6],[-67,-6],[-73,-12],[-73,-217]],accent);
+  rect(-68,-217,136,205,C.cream);rect(-64,-213,128,197,'#362e40');
+  rect(-61,-210,122,23,'#222234');
+  text(['BURST SPRINT','BEDDING FORT','WHEEL SPIN','GENESIS SEED','CHEEK POUCH'][kind],0,-195,10,C.cream,'"Courier New", monospace','center');
+  rect(-61,-183,122,109,'#4b3b52');
+  rect(-56,-178,112,99,'#3c3349');
+  rect(-51,-94,101,10,'#2e2a3d');
+  star(-48,-170,.65,accent);star(43,-144,.45,C.lilac);
+  if(kind===0) { bolt(-19,-167,2.4);rect(-44,-110,22,4,C.rose);rect(25,-140,15,4,C.rose); }
+  if(kind===1) { shield(-27,-164,2.1); }
+  if(kind===2) { miniWheel(-44,-174,1.8); }
+  if(kind===3) { sprout(-25,-170,1.8); star(27,-174,.65,C.gold); }
+  if(kind===4) { hamster(-31,-165,1.8);seed(28,-119,1.3); }
+  rect(-57,-66,114,2,accent);
+  // Abstract rule lines keep the illustration readable at thumbnail size.
+  rect(-42,-53,84,3,'#c9b7b2');rect(-33,-44,66,3,'#8d7e8c');rect(-23,-35,46,3,'#8d7e8c');
+  rect(-67,-212,17,17,C.ink);text(String(kind===2?2:1),-58.5,-199,13,accent,'"Courier New", monospace','center');
+  rect(-7,-25,14,3,accent);
+  ctx.restore();
+}
+// Fanned cards are individually composed, rather than a reused deck texture.
+if(square) {
+  card(0,-23,144,506,.61);card(1,-12,166,506,.63);card(3,16,212,509,.64);card(4,27,233,511,.63);card(2,1,192,508,.68);
+} else {
+  card(0,-26,241,621,.98);card(1,-13,292,617,1.02);card(3,13,395,620,1.03);card(4,25,448,626,.99);card(2,0,343,617,1.09);
+}
+
+// The type is local and deliberate: heavy game-title lettering, restrained labels.
+if(square) {
+  tracked('TINY HERO / TOWERING DECK',39,37,8.7,1.1,C.mint);
+  ctx.save();ctx.shadowColor='#101522';ctx.shadowBlur=0;ctx.shadowOffsetY=5;
+  text('Squeekspire',35,105,72,C.gold,'Impact, "Arial Black", sans-serif');ctx.restore();
+  text('A HAMSTER DECKBUILDING ROGUELIKE',39,128,9,'#c5b7ba','"Courier New", monospace');
+  star(35,191,.9,C.gold); rect(39,216,2,92,'#ac8d6d43');
+} else {
+  tracked('A HAMSTER DECKBUILDING ROGUELIKE',71,104,11,2.5,C.mint);
+  ctx.save();ctx.shadowColor='#0e1525';ctx.shadowBlur=0;ctx.shadowOffsetY=8;
+  text('Squeekspire',65,220,110,C.gold,'Impact, "Arial Black", sans-serif');ctx.restore();
+  rect(74,250,36,3,C.rose);
+  text('A tiny hero. A towering deck.',126,260,22,'#e2d3cd','"Trebuchet MS", sans-serif');
+  tracked('BUILD YOUR DECK. CLIMB THE CAGE.',74,295,10,1.8,'#aa9fad');
+  star(645,372,1.5,C.gold);seed(631,525,1.6);seed(676,554,1.1);
+  tracked('ONE SEED. A NEW CLIMB.',868,589,8,1.4,C.mint);
+}
+// A thin frame makes the exported scene feel like a collectible card itself.
+ctx.strokeStyle='#c4a98b38';ctx.lineWidth=1;ctx.strokeRect(15.5,15.5,W-31,H-31);
+for(const [x,y,sx,sy] of [[15,15,1,1],[W-15,15,-1,1],[15,H-15,1,-1],[W-15,H-15,-1,-1]]) {
+  rect(x+(sx<0?-17:0),y,18,2,'#c4a98b88');rect(x,y+(sy<0?-17:0),2,18,'#c4a98b88');
+}
+window.__coverReady=true;
+</script>
+</html>

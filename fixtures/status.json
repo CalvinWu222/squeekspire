@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-11-03T17:27:21.215Z",
+  "measurement": {
+    "freshness": "online",
+    "observedAt": "2026-11-03T17:27:13.950Z",
+    "receivedAt": "2026-11-03T17:27:14.475Z",
+    "staleAfterSeconds": 120,
+    "counterEpoch": "c011f01a-93ba-45ff-8579-619ddfdf40ec",
+    "cumulativeWorkUnits": "84732",
+    "provenance": "hardware",
+    "coreStatus": "IDLE",
+    "rpmMilli": 0,
+    "speedMmPerSecond": 0,
+    "distanceMm": 0
+  },
+  "builder": {
+    "status": "available",
+    "anchor": {
+      "cumulativeWork": "84732",
+      "cumulativeBlockUnits": "7661911286742",
+      "blockHeight": "7661",
+      "blockProgress": "911286742",
+      "workPerThousandBlocks": "10539",
+      "settledThroughRound": "1173",
+      "confirmedAt": "2026-11-03T17:20:36.000Z",
+      "transactionHash": "0xd21ed795037ba92de4b7f00ace3f13b55e5e98168a1e2d38cc706bfd7415b45b"
+    }
+  },
+  "oracle": {
+    "state": "accepted",
+    "reason": null,
+    "latestAcceptedAt": "2026-11-03T17:27:14.475Z",
+    "latestClosure": {
+      "firstRound": "1173",
+      "lastRound": "1173",
+      "roundCount": "1",
+      "acceptedAt": "2026-11-03T17:20:04.486Z"
+    }
+  }
+}
