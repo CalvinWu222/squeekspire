@@ -27,7 +27,7 @@ export function cardValues(card: CardInstance, state: RunState | null = null, ta
   if (card.id === 'wheel-spin') damage = cardAmount(card, (n?.tier ?? 0) * 3);
   if (card.id === 'overrun') damage = cardAmount(card, (c?.turnCards.length ?? 0) * 5);
   if (card.id === 'buildooooor') damage = cardAmount(card, 7 + Math.min(5, (state?.buildCount ?? 0) + (!state?.buildCount && state?.relics.includes('early-buildooooor') ? 4 : 0)));
-  if (card.id === 'peak-rpm') damage = cardAmount(card, Math.round(cost * (state?.day.peakRpm ?? 0) / 100));
+  if (card.id === 'peak-rpm') damage = cardAmount(card, cost * (state?.day.peakRpm ?? 0) / 100);
   if (card.id === 'gas-war') damage = cardAmount(card, 6 * (cost + (n?.jackpot ? 1 : 0)) ** 2);
   if (card.id === 'moar') damage = cardAmount(card, c?.lastAttackDamage ?? 0);
   const rawDamage = damage;

@@ -1,0 +1,998 @@
+{
+  "startedAt": "2026-11-04T09:41:42.689Z",
+  "browser": "Playwright headless Chromium",
+  "runs": [
+    {
+      "name": "desktop click route",
+      "path": "click",
+      "viewport": "1440x900",
+      "fixture": false,
+      "plays": [
+        {
+          "card": "wheel-kick",
+          "path": "click",
+          "turn": 1,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "click",
+          "turn": 1,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "click",
+          "turn": 1,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "seed-snack",
+          "path": "click",
+          "turn": 2,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "click",
+          "turn": 2,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "click",
+          "turn": 2,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "click",
+          "turn": 2,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "click",
+          "turn": 3,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "click",
+          "turn": 3,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "click",
+          "turn": 3,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "seed-snack",
+          "path": "click",
+          "turn": 4,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "click",
+          "turn": 4,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "click",
+          "turn": 4,
+          "room": 1,
+          "target": "e0",
+          "phase": "reward"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "click",
+          "turn": 1,
+          "room": 4,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "click",
+          "turn": 1,
+          "room": 4,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "click",
+          "turn": 1,
+          "room": 4,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "click",
+          "turn": 2,
+          "room": 4,
+          "target": "e1",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "click",
+          "turn": 2,
+          "room": 4,
+          "target": "e1",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "click",
+          "turn": 2,
+          "room": 4,
+          "target": "e2",
+          "phase": "combat"
+        },
+        {
+          "card": "seed-snack",
+          "path": "click",
+          "turn": 3,
+          "room": 4,
+          "target": "e3",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "click",
+          "turn": 3,
+          "room": 4,
+          "target": "e3",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "click",
+          "turn": 3,
+          "room": 4,
+          "target": "e3",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "click",
+          "turn": 3,
+          "room": 4,
+          "target": "e4",
+          "phase": "reward"
+        },
+        {
+          "card": "wood-chew",
+          "path": "click",
+          "turn": 1,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "click",
+          "turn": 1,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "bedding-fort",
+          "path": "click",
+          "turn": 2,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "click",
+          "turn": 2,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "click",
+          "turn": 2,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "seed-snack",
+          "path": "click",
+          "turn": 3,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "click",
+          "turn": 3,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "click",
+          "turn": 3,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "click",
+          "turn": 3,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "click",
+          "turn": 4,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "click",
+          "turn": 4,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "click",
+          "turn": 4,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "seed-snack",
+          "path": "click",
+          "turn": 5,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "click",
+          "turn": 5,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "bedding-fort",
+          "path": "click",
+          "turn": 5,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "click",
+          "turn": 5,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "click",
+          "turn": 6,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "click",
+          "turn": 6,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "click",
+          "turn": 6,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "click",
+          "turn": 7,
+          "room": 6,
+          "target": "e0",
+          "phase": "reward"
+        }
+      ],
+      "roomKinds": [
+        "shop",
+        "event",
+        "battle",
+        "rest",
+        "elite"
+      ],
+      "turnsEnded": 11,
+      "phase": "map",
+      "floor": 6,
+      "roomsVisited": 6,
+      "hp": 72,
+      "actions": 67,
+      "cardsPlayed": 43
+    },
+    {
+      "name": "desktop native drag route",
+      "path": "drag",
+      "viewport": "1440x900",
+      "fixture": false,
+      "plays": [
+        {
+          "card": "wheel-kick",
+          "path": "drag",
+          "turn": 1,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "drag",
+          "turn": 1,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "drag",
+          "turn": 1,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "seed-snack",
+          "path": "drag",
+          "turn": 2,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "drag",
+          "turn": 2,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "drag",
+          "turn": 2,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "drag",
+          "turn": 2,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "drag",
+          "turn": 3,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "drag",
+          "turn": 3,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "drag",
+          "turn": 3,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "seed-snack",
+          "path": "drag",
+          "turn": 4,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "drag",
+          "turn": 4,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "drag",
+          "turn": 4,
+          "room": 1,
+          "target": "e0",
+          "phase": "reward"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "drag",
+          "turn": 1,
+          "room": 5,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "drag",
+          "turn": 1,
+          "room": 5,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "drag",
+          "turn": 1,
+          "room": 5,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "drag",
+          "turn": 2,
+          "room": 5,
+          "target": "e1",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "drag",
+          "turn": 2,
+          "room": 5,
+          "target": "e1",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "drag",
+          "turn": 2,
+          "room": 5,
+          "target": "e2",
+          "phase": "combat"
+        },
+        {
+          "card": "seed-snack",
+          "path": "drag",
+          "turn": 3,
+          "room": 5,
+          "target": "e3",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "drag",
+          "turn": 3,
+          "room": 5,
+          "target": "e3",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "drag",
+          "turn": 3,
+          "room": 5,
+          "target": "e3",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "drag",
+          "turn": 3,
+          "room": 5,
+          "target": "e4",
+          "phase": "reward"
+        }
+      ],
+      "roomKinds": [
+        "shop",
+        "event",
+        "event",
+        "battle",
+        "rest"
+      ],
+      "turnsEnded": 5,
+      "phase": "map",
+      "floor": 6,
+      "roomsVisited": 6,
+      "hp": 72,
+      "actions": 41,
+      "cardsPlayed": 23
+    },
+    {
+      "name": "mobile tap preview route",
+      "path": "tap",
+      "viewport": "390x844",
+      "fixture": false,
+      "plays": [
+        {
+          "card": "wheel-kick",
+          "path": "tap",
+          "turn": 1,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "tap",
+          "turn": 1,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "tap",
+          "turn": 1,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "seed-snack",
+          "path": "tap",
+          "turn": 2,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "tap",
+          "turn": 2,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "tap",
+          "turn": 2,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "tap",
+          "turn": 2,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "tap",
+          "turn": 3,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "tap",
+          "turn": 3,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "tap",
+          "turn": 3,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "seed-snack",
+          "path": "tap",
+          "turn": 4,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "tap",
+          "turn": 4,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "tap",
+          "turn": 4,
+          "room": 1,
+          "target": "e0",
+          "phase": "reward"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "tap",
+          "turn": 1,
+          "room": 4,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "tap",
+          "turn": 1,
+          "room": 4,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "tap",
+          "turn": 1,
+          "room": 4,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "tap",
+          "turn": 2,
+          "room": 4,
+          "target": "e1",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "tap",
+          "turn": 2,
+          "room": 4,
+          "target": "e1",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "tap",
+          "turn": 2,
+          "room": 4,
+          "target": "e2",
+          "phase": "combat"
+        },
+        {
+          "card": "seed-snack",
+          "path": "tap",
+          "turn": 3,
+          "room": 4,
+          "target": "e3",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "tap",
+          "turn": 3,
+          "room": 4,
+          "target": "e3",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "tap",
+          "turn": 3,
+          "room": 4,
+          "target": "e3",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "tap",
+          "turn": 3,
+          "room": 4,
+          "target": "e4",
+          "phase": "reward"
+        },
+        {
+          "card": "wood-chew",
+          "path": "tap",
+          "turn": 1,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "tap",
+          "turn": 1,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "bedding-fort",
+          "path": "tap",
+          "turn": 2,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "tap",
+          "turn": 2,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "tap",
+          "turn": 2,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "seed-snack",
+          "path": "tap",
+          "turn": 3,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "tap",
+          "turn": 3,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "tap",
+          "turn": 3,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "tap",
+          "turn": 3,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "tap",
+          "turn": 4,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "tap",
+          "turn": 4,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "tap",
+          "turn": 4,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "seed-snack",
+          "path": "tap",
+          "turn": 5,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "tap",
+          "turn": 5,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "bedding-fort",
+          "path": "tap",
+          "turn": 5,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "tap",
+          "turn": 5,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "tap",
+          "turn": 6,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "tap",
+          "turn": 6,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "tap",
+          "turn": 6,
+          "room": 6,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "tap",
+          "turn": 7,
+          "room": 6,
+          "target": "e0",
+          "phase": "reward"
+        }
+      ],
+      "roomKinds": [
+        "shop",
+        "event",
+        "battle",
+        "rest",
+        "elite"
+      ],
+      "turnsEnded": 11,
+      "phase": "map",
+      "floor": 6,
+      "roomsVisited": 6,
+      "hp": 72,
+      "actions": 67,
+      "cardsPlayed": 43
+    }
+  ],
+  "controlled": [
+    {
+      "name": "controlled choices and targeting",
+      "plays": [
+        {
+          "card": "oracle-ping",
+          "choice": 1,
+          "asserted": "chosen second draw becomes next draw, confirmation only"
+        },
+        {
+          "card": "gud-tek",
+          "asserted": "chosen Cheek Pouch upgraded to level 1"
+        },
+        {
+          "card": "merge",
+          "asserted": "confirmed pair merged in deck and hand"
+        },
+        {
+          "card": "wheel-kick",
+          "asserted": "second enemy loses HP, first unchanged"
+        }
+      ]
+    },
+    {
+      "name": "normal-animation rapid native drag",
+      "plays": [
+        {
+          "card": "tail-whip",
+          "path": "drag",
+          "turn": 1,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "wheel-kick",
+          "path": "drag",
+          "turn": 1,
+          "room": 1,
+          "target": "e0",
+          "phase": "combat"
+        },
+        {
+          "card": "cheek-pouch",
+          "path": "native drag held for 1150ms",
+          "asserted": "drop survives previous animation expiry and gains Block"
+        }
+      ],
+      "secondDragElapsedMs": 123
+    }
+  ],
+  "errors": [],
+  "passed": true,
+  "finishedAt": "2026-11-04T09:41:59.251Z"
+}

@@ -1,0 +1,16 @@
+[
+  {
+    ".hand .card-name": "12px",
+    ".hand .card-description": "9px",
+    ".pile span": "7px",
+    ".piles > small": "6px",
+    ".card-bottom": "5px"
+  },
+  {
+    ".hand .card-name": "14px",
+    ".hand .card-description": "11px",
+    ".pile span": "5px",
+    ".piles > small": "5px",
+    ".card-bottom": "7px"
+  }
+]

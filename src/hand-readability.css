@@ -1,0 +1,32 @@
+/* Battle cards keep their rules readable, including long and upgraded effects. */
+.hand { align-items:stretch; justify-content:flex-start; gap:10px; min-height:300px; overflow-x:auto; overflow-y:hidden; padding:14px 10px 4px; }
+.hand .card { min-height:290px; max-height:none; padding:11px; margin:0; transform:none; }
+.hand .card > * { flex-shrink:0; }
+.hand .card-name { font-size:16px; line-height:1.2; min-height:39px; }
+.hand .card-description { font-size:12px; line-height:1.4; min-height:51px; }
+.hand .card-description strong { font-size:inherit; }
+.hand .card-art { height:92px; max-height:92px; aspect-ratio:auto; }
+.hand .card-type { font-size:8px; line-height:1.35; letter-spacing:0; }
+.hand .card-bottom { font:600 10px/1.3 "Trebuchet MS","Segoe UI",sans-serif; letter-spacing:.1px; padding:7px 0 1px; color:#e9dfc8; }
+.pile span { font:600 11px/1.3 "Trebuchet MS","Segoe UI",sans-serif; }
+.piles > small { font:600 12px/1.3 "Trebuchet MS","Segoe UI",sans-serif; letter-spacing:.2px; color:#b8cebf; }
+@media (min-width:761px) and (max-height:950px) {
+ .combat-arena { min-height:260px; }.combatants { min-height:255px; padding-block:12px 25px; }
+ .player-sprite { width:130px; }.enemy-sprite { width:110px; }
+ .battle-controls { min-height:315px; }.hand .card { transform:none; }
+ .hand .card:hover:not(:disabled),.hand .card:focus-visible,.hand .card.selected-card { transform:translateY(-12px); }
+}
+@media (max-width:760px) {
+ .combat-arena { min-height:210px; }.combatants { min-height:210px; padding-block:5px 22px; }
+ .player-sprite { width:85px; }.enemy-sprite { width:76px; }
+ .hand { min-height:304px; padding:12px 14px 4px; align-items:stretch; }
+ .hand .card { flex:0 0 180px; width:180px; min-height:288px; max-height:none; padding:11px; transform:none; }
+ .hand .card:hover:not(:disabled),.hand .card:focus-visible,.hand .card.selected-card { transform:none; }
+ .hand .card-name { font-size:18px; line-height:1.2; min-height:44px; }
+ .hand .card-description { font-size:14px; line-height:1.4; min-height:59px; }
+ .hand .card-art { height:78px; max-height:78px; }
+ .battle-controls { min-height:390px; padding-bottom:90px; }
+ .energy-display { left:12px; bottom:26px; gap:5px; }.energy-display > span { font-size:8px; }
+ .piles { right:130px; bottom:38px; gap:8px; }.pile { width:43px; min-height:50px; }
+ .piles > small { top:calc(100% + 7px); font-size:11px; }
+}

@@ -3,7 +3,7 @@ import { nextRandom, hashString } from './rng.js';
 import { generateMap } from './map.js';
 import { battleScoreBreakdown, scoreMultipliers, type BattleScoreBreakdown } from './score.js';
 import type { DayData, MapNode, RunMode } from './types.js';
-import { baseDamage as damageAmount, cardValues, isCardUpgradable, mergeCandidates, triggerFactor } from './cardValues.js';
+import { cardValues, isCardUpgradable, mergeCandidates, triggerFactor } from './cardValues.js';
 
 export interface CardInstance { uid: string; id: string; level: number; mergeLevel: number; }
 export interface EnemyIntent { type: string; damage: number; times: number; label: string; }
@@ -90,6 +90,18 @@ function draw(s: RunState, count: number) {
     if (card.id === 'nyn-sob') loseHp(s, 2);
   }
 }
+function prepareOracleDraw(s: RunState) {
+  const c = s.combat!;
+  // The existing top cards are drawn before a shuffled discard. Materialize that
+  // same sequence now so the choice can include all of the next three draws.
+  if (c.draw.length < 3 && c.discard.length) c.draw = [...shuffle(s, c.discard.splice(0)), ...c.draw];
+}
+/** Pure Oracle choices, including the deterministic next discard reshuffle. */
+export function oracleDrawOptions(state: RunState): CardInstance[] {
+  if (!state.combat) return [];
+  const s = clone(state); prepareOracleDraw(s);
+  return s.combat!.draw.slice(-3).reverse();
+}
 function intent(s: RunState, enemy: EnemyState, forcedType?: string): EnemyIntent {
   const definition = ENEMIES[enemy.id]!;
   const type = forcedType ?? definition.pattern[(s.combat!.turn - 1) % definition.pattern.length]!;
@@ -106,12 +118,14 @@ export function previewIntents(state: RunState, turns = 2): { uid: string; name:
   const s = clone(state), count = Math.max(0, Math.min(5, Math.floor(turns)));
   const result = living(s).map(enemy => ({ uid: enemy.uid, name: enemy.name, intents: [] as EnemyIntent[] }));
   for (let turn = 0; turn < count; turn++) {
-    for (const enemy of living(s)) {
-      if (enemy.intent.type === 'attack') enemy.fud = false;
-      if (enemy.intent.type === 'buff') enemy.strength += 2;
-      if (enemy.id === 'queue-snake') enemy.strength++;
-      enemy.weak = Math.max(0, enemy.weak - 1);
-    }
+    const fold = s.combat!.powers['spacetime-fold'] && !s.combat!.powers['fold-used'] && living(s).every(enemy => enemy.intent.type !== 'attack');
+    if (fold) s.combat!.powers['fold-used'] = 1;
+    else for (const enemy of living(s)) {
+        if (enemy.intent.type === 'attack') enemy.fud = false;
+        if (enemy.intent.type === 'buff') enemy.strength += 2;
+        if (enemy.id === 'queue-snake') enemy.strength++;
+        enemy.weak = Math.max(0, enemy.weak - 1);
+      }
     delete s.combat!.powers['fluff-up'];
     s.combat!.turn++;
     for (const enemy of living(s)) {
@@ -204,8 +218,32 @@ function endTurn(s: RunState) {
   const c = s.combat!;
   const attacksThisTurn = c.turnCards.filter(id => CARDS[id]!.type === 'attack').length;
   c.noAttackTurns = attacksThisTurn ? 0 : c.noAttackTurns + 1;
-  if (c.noAttackTurns >= 2) { const ngmi = c.hand.filter(k => k.id === 'ngmi'); c.exhaust.push(...ngmi); c.hand = c.hand.filter(k => k.id !== 'ngmi'); }
-  if (c.hand.some(k => k.id === 'paper-hands') && c.hand.length > 1) { const candidate = [...c.hand].filter(k => k.id !== 'paper-hands').sort((a, b) => damageAmount(b) - damageAmount(a))[0]!; c.hand = c.hand.filter(k => k.uid !== candidate.uid); c.discard.push(candidate); }
+  if (c.noAttackTurns >= 2) for (const pile of [c.hand, c.draw, c.discard]) {
+    for (let i = pile.length - 1; i >= 0; i--) if (pile[i]!.id === 'ngmi') c.exhaust.push(...pile.splice(i, 1));
+  }
+  for (const _curse of c.hand.filter(k => k.id === 'paper-hands')) {
+    // Compare each card's immediate scoring outcome with the same current state.
+    // Choice cards use their best legal choice; delayed effects have no score yet.
+    const candidates = c.hand.filter(k => k.id !== 'paper-hands').map(candidate => {
+      let score = -1;
+      const oracleOptions = candidate.id === 'oracle-ping' ? oracleDrawOptions(s) : [];
+      const choices = candidate.id === 'oracle-ping' && oracleOptions.length ? oracleOptions.map((_, i) => i)
+        : candidate.id === 'gud-tek' ? c.hand.filter(k => k.uid !== candidate.uid).map((_, i) => i) : [undefined];
+      const pairs = candidate.id === 'merge' ? mergeCandidates(s).map(item => item.pair) : [undefined];
+      for (const choice of choices) for (const mergePair of pairs) {
+        try {
+          const projected = clone(s), cost = CARDS[candidate.id]!.cost;
+          // A spent Seed supply must not protect a high-scoring fixed-cost card.
+          // X cards continue to use the actual current supply for their formula.
+          if (cost !== 'X') projected.combat!.energy = Math.max(projected.combat!.energy, cost);
+          play(projected, { type: 'play', uid: candidate.uid, choice, mergePair });
+          score = Math.max(score, scoreBattle(projected) - scoreBattle(s));
+        } catch { /* Invalid choices or spent once-per-run cards have no immediate score. */ }
+      }
+      return { card: candidate, score };
+    }).sort((a, b) => b.score - a.score);
+    if (candidates.length) { const candidate = candidates[0]!.card; c.hand = c.hand.filter(k => k.uid !== candidate.uid); c.discard.push(candidate); }
+  }
   if (has(s, 'stay-squeeky') && effectiveMult(s) >= c.turnStartMult && c.stayBonus < 2) { const add = Math.min(0.2, 2 - c.stayBonus); c.addMult += add; c.stayBonus += add; }
   const retained = has(s, 'diamond-hands') && !c.powers.lfg;
   if (retained) c.addMult += c.hand.length * 0.2;
@@ -248,6 +286,7 @@ function play(s: RunState, action: Extract<RunAction, { type: 'play' }>) {
   if (action.target) fail(target, 'Invalid enemy target');
   const choiceCards = c.hand.filter(k => k.uid !== card.uid);
   if (card.id === 'oracle-ping') {
+    prepareOracleDraw(s);
     const count = Math.min(3, c.draw.length);
     fail(!count || (action.choice !== undefined && action.choice < count), 'Choose one of the next Oracle draws');
     fail(count > 0 || action.choice === undefined, 'Oracle has no draw to choose');
@@ -275,7 +314,7 @@ function play(s: RunState, action: Extract<RunAction, { type: 'play' }>) {
   if (c.fud && before === 0) { if (card.id !== 'wagmi') trigger(s, 0.5); c.fud = false; }
   if (has(s, 'pillhead') && !c.powers['pillhead-used']) { trigger(s, node(s).jackpot ? 3 : 2); c.powers['pillhead-used'] = 1; }
   if (c.powers['maus-mode'] && cost === 0) c.addMult += c.powers['maus-mode'];
-  if (c.powers.lfg) c.turnMult += 0.3;
+  if (c.powers.lfg) c.turnMult += 0.3 * c.powers.lfg;
   // Compute X-card values before paying, so the resolver and preview use the same X.
   const values = cardValues(card, { ...s, combat: { ...c, energy: cost } });
   let damage = values.rawDamage;
@@ -291,6 +330,7 @@ function play(s: RunState, action: Extract<RunAction, { type: 'play' }>) {
   }
   if (definition.block) c.block += values.block;
   switch (card.id) {
+    case 'wheel-kick': c.squeeks = bounded(c.squeeks + values.rawDamage); break;
     case '3am-dash': if (target) target.vulnerable += values.vulnerable; break;
     case 'tail-whip': if (target) target.weak += values.weak; break;
     case 'seed-snack': draw(s, values.draw); c.chain = Math.min(20, c.chain + 1); break;
@@ -323,17 +363,20 @@ function play(s: RunState, action: Extract<RunAction, { type: 'play' }>) {
     case 'wagmi': s.minMult = Math.max(1.5, s.minMult); c.powers['wild-chain'] = 1; c.fud = false; break;
     case 'rug-pull': { const stolen = living(s).reduce((sum, e) => sum + e.block, 0); c.squeeks += stolen; for (const e of living(s)) e.block = 0; c.block = 0; if (stolen >= 8 && c.turnCards.includes('ser')) { trigger(s, 2); hint(s, 'Polite Exit', 'ser created liquidity for a Rug Pull.'); } break; }
     case 'ser': for (const e of living(s).filter(e => e.intent.type === 'attack').slice(0, values.serTargets)) e.intent = { type: 'block', damage: 0, times: 1, label: 'Gain 8 Block (ser)' }; break;
-    case 'lfg': c.powers.lfg = 1; break;
+    case 'lfg': c.turnMult += 0.3 * (before + 1); c.powers.lfg = (c.powers.lfg ?? 0) + 1; break;
     case 'wen-mint': c.pending.push({ kind: 'wen-mint', turn: c.turn + 3, baseline: c.squeeks }); break;
     case 'ape-in': trigger(s, 3); c.nextEnergy -= 2; break;
     case 'exit-liquidity': break; // Status transfer precedes first-card FUD consumption above.
-    case 'touch-grass': s.hp = s.maxHp; s.touchGrassUsed = true; s.deck = s.deck.filter(k => CARDS[k.id]!.type !== 'curse'); for (const pile of [c.hand, c.draw, c.discard]) for (let i = pile.length - 1; i >= 0; i--) if (CARDS[pile[i]!.id]!.type === 'curse') pile.splice(i, 1); c.weak = 0; c.fud = false; break;
+    case 'touch-grass': s.hp = s.maxHp; s.touchGrassUsed = true; s.deck = s.deck.filter(k => CARDS[k.id]!.type !== 'curse'); for (const pile of [c.hand, c.draw, c.discard, c.exhaust]) for (let i = pile.length - 1; i >= 0; i--) if (CARDS[pile[i]!.id]!.type === 'curse') pile.splice(i, 1); c.weak = 0; c.fud = false; break;
     case 'gsqueek': if (c.turn === 1) { draw(s, 1); c.turnMult += 0.5; } break;
     case 'hammy-gang': c.addMult += s.deck.filter(k => /hammy|squeek/i.test(CARDS[k.id]!.name)).length * 0.3; break;
     case 'gud-tek': { const chosen = c.hand[action.choice!]!; if (chosen.level) c.squeeks = bounded(c.squeeks * 1.5); else chosen.level = 1; break; }
     case 'sleep-cam': c.powers['sleep-cam'] = 1; if (s.day.hibernation) draw(s, 1); break;
     case 'nyn-sob': c.squeeks += 10; break;
-    case 'firmware-upgrade': for (const pile of [s.deck, c.hand, c.draw, c.discard]) for (const k of pile) if (/WHEELY/i.test(CARDS[k.id]!.name) && isCardUpgradable(k)) k.level = 1; break;
+    case 'firmware-upgrade':
+      for (const pile of [s.deck, c.hand, c.draw, c.discard, c.exhaust]) for (const k of pile) if (/WHEELY/i.test(CARDS[k.id]!.name) && isCardUpgradable(k)) k.level = 1;
+      if (c.powers['wheely-overclock']) c.powers['overclock-upgraded'] = c.powers['wheely-overclock'];
+      break;
   }
   if (definition.type === 'power') {
     c.powers[card.id] = (c.powers[card.id] ?? 0) + (card.id === 'night-owl' ? values.nightSqueeks : 1);

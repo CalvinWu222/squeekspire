@@ -1,0 +1,50 @@
+.screen-coins {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  flex: 0 0 auto;
+  padding: 13px 18px;
+  border: 1px solid #c9ae64;
+  border-radius: 8px;
+  background: #162d32;
+  color: #f5d987;
+}
+.screen-coins > .ui-icon { width: 30px; height: 30px; }
+.screen-coins > span { display: grid; gap: 4px; }
+.screen-coins small { color: #d4c797; font-size: 10px; letter-spacing: 1px; }
+.screen-coins strong { font-size: 26px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.screen-coins strong span { font-size: 13px; }
+.shop-wallet-row { display: flex; align-items: center; flex-wrap: wrap; gap: 16px 22px; margin-top: 24px; }
+.shop-wallet-row > .muted { flex: 1 1 230px; }
+.shop-footer { display: flex; align-items: center; gap: 20px; }
+.shop-footer .encounter-continue { flex: 1 1 auto; width: auto; }
+.shop-footer .screen-coins { padding: 8px 13px; }
+.shop-footer .screen-coins strong { font-size: 23px; }
+.shop-affordability { display: block; margin-top: 5px; color: #ffb2b5; font-size: 10px; }
+.shop-item.unaffordable > .card,
+.shop-item.unaffordable > .relic-shop-art,
+.shop-item.unaffordable > h3,
+.shop-item.unaffordable > p,
+.shop-item.sold > .card,
+.shop-item.sold > .relic-shop-art { filter: grayscale(1); opacity: .6; }
+.shop-item.unaffordable > button,
+.shop-remove.unaffordable > button { opacity: 1; background: #253337; border-color: #697176; color: #aeb8ba; cursor: not-allowed; }
+.shop-scene .unaffordable-price { color: #ff9fa6; }
+.shop-remove.unaffordable > select { opacity: .6; cursor: not-allowed; }
+.encounter-wallet-row { margin: 20px 0 16px; }
+.map-heading-meta { display: flex; flex: 0 0 auto; flex-direction: column; align-items: flex-end; gap: 12px; }
+.map-heading-meta .screen-coins { padding: 9px 14px; }
+.map-heading-meta .screen-coins strong { font-size: 23px; }
+@media (max-width: 600px) {
+  .shop-wallet-row { margin-top: 18px; gap: 12px; }
+  .shop-wallet-row > .muted { flex-basis: 100%; }
+  .screen-coins { padding: 10px 13px; }
+  .screen-coins strong { font-size: 24px; }
+  .shop-footer { gap: 12px; flex-wrap: wrap; }
+  .shop-footer .screen-coins { flex: 1 1 120px; }
+  .shop-footer .encounter-continue { flex: 1 1 140px; min-width: 0; padding-inline: 12px; }
+  .map-header { flex-wrap: wrap; }
+  .map-heading-meta { flex-direction: row; align-items: center; justify-content: space-between; flex: 1 1 100%; gap: 10px; }
+  .map-heading-meta .screen-coins > .ui-icon { width: 22px; height: 22px; }
+  .map-heading-meta .screen-coins strong { font-size: 21px; }
+}
