@@ -1,0 +1,20 @@
+{
+  "branch": "stream-overlay",
+  "node": "22.11.0",
+  "NODE_OPTIONS": "--preserve-symlinks --preserve-symlinks-main",
+  "checks": {
+    "npm run build": "passed: TypeScript and Vite production build",
+    "npm test": "passed: 35 files, 620 tests",
+    "node scripts/qa-overlay.mjs": "passed: 17 check groups, 864 matrix combinations plus 31 source/placement/downscale cases, 34 screenshots",
+    "node scripts/verify-overlay.mjs": "passed: 18 acceptance check groups, including real read-only APIs, polling recovery and UTC rollover",
+    "README.md": "byte-for-byte unchanged against HEAD before this commit",
+    "README.sha256": "8839e437c12df14032eb455706b0f7e2093df1ab607e81526e90dc4fa3f2f674",
+    "project meta": "unchanged: ddbde212-c014-45ae-8071-800e29e5e36f"
+  },
+  "limitations": [
+    "Chromium 156 browser simulation; no installed OBS/CEF execution or GPU/encoder measurement",
+    "AI-generated MOBA/webcam scene and browser-only stress fixtures; real API checks are separate in legacy/",
+    "Small full-detail text and scale 0.5 remain unsuitable for readable 720p output",
+    "Safe presets cannot detect custom HUDs, webcams or gameplay action"
+  ]
+}
