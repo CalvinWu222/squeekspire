@@ -621,6 +621,123 @@
       "workAdded": "0",
       "completedBlockCount": "0",
       "sqkMintedBaseUnits": "0"
+    },
+    {
+      "startAt": "2026-11-08T17:00:00.000Z",
+      "endAt": "2026-11-08T18:00:00.000Z",
+      "settlementCount": "6",
+      "activeRoundCount": "0",
+      "workAdded": "0",
+      "completedBlockCount": "0",
+      "sqkMintedBaseUnits": "0"
+    },
+    {
+      "startAt": "2026-11-08T18:00:00.000Z",
+      "endAt": "2026-11-08T19:00:00.000Z",
+      "settlementCount": "6",
+      "activeRoundCount": "0",
+      "workAdded": "0",
+      "completedBlockCount": "0",
+      "sqkMintedBaseUnits": "0"
+    },
+    {
+      "startAt": "2026-11-08T19:00:00.000Z",
+      "endAt": "2026-11-08T20:00:00.000Z",
+      "settlementCount": "6",
+      "activeRoundCount": "0",
+      "workAdded": "0",
+      "completedBlockCount": "0",
+      "sqkMintedBaseUnits": "0"
+    },
+    {
+      "startAt": "2026-11-08T20:00:00.000Z",
+      "endAt": "2026-11-08T21:00:00.000Z",
+      "settlementCount": "6",
+      "activeRoundCount": "0",
+      "workAdded": "0",
+      "completedBlockCount": "0",
+      "sqkMintedBaseUnits": "0"
+    },
+    {
+      "startAt": "2026-11-08T21:00:00.000Z",
+      "endAt": "2026-11-08T22:00:00.000Z",
+      "settlementCount": "6",
+      "activeRoundCount": "3",
+      "workAdded": "1185",
+      "completedBlockCount": "138",
+      "sqkMintedBaseUnits": "507090756601519810913039"
+    },
+    {
+      "startAt": "2026-11-08T22:00:00.000Z",
+      "endAt": "2026-11-08T23:00:00.000Z",
+      "settlementCount": "6",
+      "activeRoundCount": "6",
+      "workAdded": "2383",
+      "completedBlockCount": "266",
+      "sqkMintedBaseUnits": "977435806202929490600495"
+    },
+    {
+      "startAt": "2026-11-08T23:00:00.000Z",
+      "endAt": "2026-11-09T00:00:00.000Z",
+      "settlementCount": "6",
+      "activeRoundCount": "6",
+      "workAdded": "2113",
+      "completedBlockCount": "236",
+      "sqkMintedBaseUnits": "867198685202599096923747"
+    },
+    {
+      "startAt": "2026-11-09T00:00:00.000Z",
+      "endAt": "2026-11-09T01:00:00.000Z",
+      "settlementCount": "6",
+      "activeRoundCount": "4",
+      "workAdded": "1385",
+      "completedBlockCount": "155",
+      "sqkMintedBaseUnits": "569558458501707033996529"
+    },
+    {
+      "startAt": "2026-11-09T01:00:00.000Z",
+      "endAt": "2026-11-09T02:00:00.000Z",
+      "settlementCount": "6",
+      "activeRoundCount": "3",
+      "workAdded": "1142",
+      "completedBlockCount": "127",
+      "sqkMintedBaseUnits": "466670478901398666564898"
+    },
+    {
+      "startAt": "2026-11-09T02:00:00.000Z",
+      "endAt": "2026-11-09T03:00:00.000Z",
+      "settlementCount": "6",
+      "activeRoundCount": "0",
+      "workAdded": "0",
+      "completedBlockCount": "0",
+      "sqkMintedBaseUnits": "0"
+    },
+    {
+      "startAt": "2026-11-09T03:00:00.000Z",
+      "endAt": "2026-11-09T04:00:00.000Z",
+      "settlementCount": "6",
+      "activeRoundCount": "1",
+      "workAdded": "54",
+      "completedBlockCount": "6",
+      "sqkMintedBaseUnits": "22047424200066078735349"
+    },
+    {
+      "startAt": "2026-11-09T04:00:00.000Z",
+      "endAt": "2026-11-09T05:00:00.000Z",
+      "settlementCount": "6",
+      "activeRoundCount": "4",
+      "workAdded": "1778",
+      "completedBlockCount": "199",
+      "sqkMintedBaseUnits": "731239569302191611389092"
+    },
+    {
+      "startAt": "2026-11-09T05:00:00.000Z",
+      "endAt": "2026-11-09T06:00:00.000Z",
+      "settlementCount": "6",
+      "activeRoundCount": "0",
+      "workAdded": "0",
+      "completedBlockCount": "0",
+      "sqkMintedBaseUnits": "0"
     }
   ]
 }
